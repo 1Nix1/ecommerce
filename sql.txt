@@ -6,3 +6,28 @@ CREATE TABLE usuarios(
     senha varchar(32)
 );
 
+CREATE TABLE categorias(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    nome varchar(150),
+);
+
+CREATE TABLE subcategorias(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    nome varchar(150),
+    id_categoria int,
+    FOREIGN KEY id_categoria REFERENCES categorias(id)
+);
+
+CREATE TABLE Produtos(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    nome varchar(150),
+    id_categoria int,
+    id_subcategoria int,
+    descricao varchar(250),
+    imagem varchar(250),
+    valor double(17,2),
+    quantidade int,
+    FOREIGN KEY (id_categoria) REFERENCES categorias(id),
+    FOREIGN KEY (id_subcategoria) REFERENCES subcategorias(id)
+);
+

@@ -1180,7 +1180,7 @@ Version:1.0
 
 
 .header.sticky .header-inner .nav li a {
-	color: #333;
+	color: #fff;
 }
 .header.sticky.v3 .header-inner .nav li a {
 	color: #fff;
@@ -1207,7 +1207,7 @@ Version:1.0
 	position:fixed;
 	top:0;
 	left:0;
-	background:#fff;
+	background:#333;
 	animation: fadeInDown 1s both 0.2s;
 	-webkit-box-shadow:0px 0px 10px rgba(0, 0, 0, 0.3);
 	-moz-box-shadow:0px 0px 10px rgba(0, 0, 0, 0.3);
@@ -3624,9 +3624,7 @@ Version:1.0
 }
 /* Pagination CSS */
 .pagination {
-	text-align: left;
-	margin: 50px 0 0 0;
-	display:block;
+	float: right;
 }
 .pagination.center {
 	text-align: center;
