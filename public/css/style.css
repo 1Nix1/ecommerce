@@ -643,7 +643,7 @@ Version:1.0
 	position: relative;
 }
 .header.shop .search-bar {
-	width: 535px;
+	width: 481px;
 	height: 50px;
 	display: inline-block;
 	background: #fff;
@@ -803,7 +803,7 @@ Version:1.0
 	color: #333;
 	padding: 13px 25px 13px 25px;
 	display: block;
-	text-transform: uppercase;
+	/*text-transform: ;*/
 }
 .header.shop .main-category li a i{
 	display:inline-block;
@@ -832,7 +832,7 @@ Version:1.0
 }
 
 .header.shop .main-category li a{
-	text-transform:capitalize;
+	/*text-transform:capitalize;*/
 	font-weight:400;
 }
 .header.shop .main-category li a:hover{

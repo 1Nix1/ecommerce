@@ -44,6 +44,24 @@ class Route extends Bootstrap {
             'action' => 'sair'
         );
 
+        $routes['categoria'] = array(
+            'route' => '/categoria',
+            'controller' => 'IndexController',
+            'action' => 'filterCategoria'
+        );
+
+        $routes['subcategoria'] = array(
+            'route' => '/subcategoria',
+            'controller' => 'IndexController',
+            'action' => 'filterSubcategoria'
+        );
+
+        $routes['search'] = array(
+            'route' => '/search',
+            'controller' => 'IndexController',
+            'action' => 'search'
+        );
+
         $this->setRoutes($routes);
     }   
 }

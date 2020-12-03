@@ -27,7 +27,7 @@ class Categoria extends Model {
             categorias
         ORDER BY 
             id 
-        DESC";
+        ";
 
         $stmt = $this->db->prepare($query);
         $stmt->execute();

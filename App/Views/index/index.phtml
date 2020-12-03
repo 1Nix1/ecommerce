@@ -57,22 +57,26 @@
 						<!--/ End Search Form -->
 						<div class="mobile-nav"></div>
 					</div>
+					
 					<div class="col-lg-8 col-md-7 col-12">
 						<div class="search-bar-top">
-							<div class="search-bar">
-								<select>
-									<option selected="selected">All Category</option>
-									<option>watch</option>
-									<option>mobile</option>
-									<option>kid’s item</option>
-								</select>
-								<form>
-									<input name="search" placeholder="Search Products Here....." type="search">
+							<form action="/search" method="get">
+								<div class="search-bar">
+									<select name="categoria">
+										<option selected="selected" value=" "><strong>Categorias</strong></option>
+										<?php 
+											foreach($this->view->categorias as $idx => $categoria) {
+										?>
+										<option value="<?= $categoria['id'] ?>"><?= $categoria['nome'] ?></option>
+										<?php } ?>
+									</select>
+									<input name="pesquisa" value="<?php echo isset($_GET['pesquisa']) ? $_GET['pesquisa'] : '' ?>"  placeholder="Search Products Here....." type="search">
 									<button class="btnn"><i class="ti-search"></i></button>
-								</form>
-							</div>
+								</div>
+							</form>
 						</div>
 					</div>
+					
 					<div class="col-lg-2 col-md-3 col-12">
 						<div class="right-bar">
 							<!-- Search Form -->
@@ -131,13 +135,13 @@
 									<?php 
 										foreach($this->view->categorias as $idx => $categoria) {
 									?>
-									<li><a href="/?id_categoria=<?= $categoria['id'] ?>"><?= $categoria['nome'] ?><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+									<li><a href="/categoria?categoria=<?= $categoria['id'] ?>"><?= $categoria['nome'] ?><i class="fa fa-angle-right" aria-hidden="true"></i></a>
 										<ul class="sub-category">
 											<?php 
 											foreach($this->view->subcategorias as $idx_sub => $subcategoria) {
 												if($categoria['id'] == $subcategoria['id_categoria']){
 											?>
-											<li><a href="/?id_subcategoria=<?= $subcategoria['id_categoria'] ?>"><?= $subcategoria['nome'] ?></a></li>
+											<li><a href="/subcategoria?subcategoria=<?= $subcategoria['id'] ?>&categoria=<?= $categoria['id'] ?>"><?= $subcategoria['nome'] ?></a></li>
 											<?php 
 												}
 											} 
@@ -239,14 +243,50 @@
 							</div>
 						</div>
 					</div>
+					<?php 
+					?>
 					<div class="col-12">
 						<nav aria-label="Page navigation example">
 							<ul class="pagination">
-								<li class="page-item"><a class="page-link" href="?pagina=1">Previous</a></li>
+								<li class="page-item"><a class="page-link" href="?pagina=1
+								<?php 
+									if(isset($_GET['categoria']) && isset($_GET['subcategoria'])){
+										echo '&categoria='.$_GET['categoria'].'&subcategoria='.$_GET['subcategoria'];
+									} else if(isset($_GET['pesquisa']) && isset($_GET['categoria']) && $_GET['categoria'] != ' '){
+										echo '&pesquisa='.$_GET['pesquisa'].'&categoria='.$_GET['categoria'];
+									} else if(isset($_GET['categoria']) != ' '){
+										echo '&categoria='.$_GET['categoria'];
+									} else if(isset($_GET['pesquisa'])){
+										echo '&pesquisa='.$_GET['pesquisa'].'&categoria='.'+';
+									}
+								 ?>">Previous</a></li>
 								<?php for($i = 1; $i <= $this->view->total_de_paginas; $i++){ ?>
-								<li class="page-item"><a class="page-link" style="background-color: <?= $this->view->pagina_ativa == $i ? '#F7941D' : '' ?>;" href="?pagina=<?= $i ?>"><?= $i ?></a></li>
+								<li class="page-item"><a class="page-link" style="background-color: <?= $this->view->pagina_ativa == $i ? '#F7941D' : '' ?>;" href="?pagina=<?= $i ?>
+								<?php 
+									if(isset($_GET['categoria']) && isset($_GET['subcategoria'])){
+										echo '&categoria='.$_GET['categoria'].'&subcategoria='.$_GET['subcategoria'];
+									} else if(isset($_GET['pesquisa']) && isset($_GET['categoria']) && $_GET['categoria']  != ' '){
+										echo '&pesquisa='.$_GET['pesquisa'].'&categoria='.$_GET['categoria'];
+									} else if(isset($_GET['categoria']) != ' '){
+										echo '&categoria='.$_GET['categoria'];
+									} else if(isset($_GET['pesquisa'])){
+										echo '&pesquisa='.$_GET['pesquisa'].'&categoria='.'+';
+									}
+								 ?>"><?= $i ?></a></li>
 								<?php } ?>
-								<li class="page-item"><a class="page-link" href="?pagina=<?= $this->view->total_de_paginas ?>">Next</a></li>
+								<li class="page-item"><a class="page-link" href="?pagina=<?= $this->view->total_de_paginas ?>
+								<?php 
+									if(isset($_GET['categoria']) && isset($_GET['subcategoria'])){
+										echo '&categoria='.$_GET['categoria'].'&subcategoria='.$_GET['subcategoria'];
+									} else if(isset($_GET['pesquisa']) && isset($_GET['categoria']) && $_GET['categoria'] != ' '){
+										echo '&pesquisa='.$_GET['pesquisa'].'&categoria='.$_GET['categoria'];
+									} else if(isset($_GET['categoria']) != ' '){
+										echo '&categoria='.$_GET['categoria'];
+									} else if(isset($_GET['pesquisa'])){
+										echo '&pesquisa='.$_GET['pesquisa'].'&categoria='.'+';
+									}
+									
+								 ?>">Next</a></li>
 							</ul>
 						</nav>
 					</div>
