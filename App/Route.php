@@ -10,19 +10,19 @@ class Route extends Bootstrap {
 
         $routes['home'] = array(
             'route' => '/',
-            'controller' => 'indexController',
+            'controller' => 'IndexController',
             'action' => 'index'
         );
 
         $routes['inscreverse'] = array(
             'route' => '/inscreverse',
-            'controller' => 'indexController',
+            'controller' => 'IndexController',
             'action' => 'inscreverse'
         );
 
         $routes['registrar'] = array(
             'route' => '/registrar',
-            'controller' => 'indexController',
+            'controller' => 'IndexController',
             'action' => 'registrar'
         );
 
@@ -30,6 +30,30 @@ class Route extends Bootstrap {
             'route' => '/login',
             'controller' => 'IndexController',
             'action' => 'login'
+        );
+
+        $routes['categoria'] = array(
+            'route' => '/categoria',
+            'controller' => 'IndexController',
+            'action' => 'categoria'
+        );
+
+        $routes['subcategoria'] = array(
+            'route' => '/subcategoria',
+            'controller' => 'IndexController',
+            'action' => 'categoria'
+        );
+
+        $routes['search'] = array(
+            'route' => '/search',
+            'controller' => 'IndexController',
+            'action' => 'search'
+        );
+
+        $routes['produto'] = array(
+            'route' => '/produto',
+            'controller' => 'IndexController',
+            'action' => 'produto'
         );
 
         $routes['logar'] = array(
@@ -44,23 +68,13 @@ class Route extends Bootstrap {
             'action' => 'sair'
         );
 
-        $routes['categoria'] = array(
-            'route' => '/categoria',
-            'controller' => 'IndexController',
-            'action' => 'filterCategoria'
+        $routes['carrinho'] = array(
+            'route' => '/carrinho',
+            'controller' => 'AppController',
+            'action' => 'carrinho'
         );
 
-        $routes['subcategoria'] = array(
-            'route' => '/subcategoria',
-            'controller' => 'IndexController',
-            'action' => 'filterSubcategoria'
-        );
-
-        $routes['search'] = array(
-            'route' => '/search',
-            'controller' => 'IndexController',
-            'action' => 'search'
-        );
+        
 
         $this->setRoutes($routes);
     }   

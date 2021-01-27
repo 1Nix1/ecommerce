@@ -9,10 +9,13 @@ use MF\Model\Container;
 class IndexController extends Action {
 
     public function index() {
+        
         session_start();
 
         //Inicio buscar produtos
         $produto = Container::getModel('Produto');
+        $categoria = Container::getModel('Categoria');
+        $subcategoria = Container::getModel('Subcategoria');
 
         //variaveis de páginação
         $total_registros_pagina = 16;
@@ -27,97 +30,55 @@ class IndexController extends Action {
         $this->view->total_de_paginas = ceil($total_produtos['total'] / $total_registros_pagina);
 
         $this->view->produtos = $produtos;
-        //Fim buscar produtos
-
-        //Inicio buscar categorias
-        $categoria = Container::getModel('Categoria');
+        //Buscar categorias
         $this->view->categorias = $categoria->getAll();       
-        //Fim buscar categorias
-
-        //Inicio buscar subcategorias
-        $subcategoria = Container::getModel('Subcategoria');
+        //Buscar subcategorias
         $this->view->subcategorias = $subcategoria->getAll();
-        //Fim buscar subcategorias
 
         $this->render('index');
     }
 
-    public function filterCategoria() {
+    public function categoria() {
+
         session_start();
-
-        $id_categoria = isset($_GET['categoria']) ? $_GET['categoria'] : '';
-
-        //Inicio buscar produtos
-        $produto = Container::getModel('Produto');
-
-        //variaveis de páginação
-        $total_registros_pagina = 16;
-        //$descocamento = 0;
-        $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
-        $deslocamento = ($pagina - 1) * $total_registros_pagina;
-        $this->view->pagina_ativa = $pagina;
-
-        $produto->__set('categoria', $id_categoria);
-        $produtos = $produto->getPorCategoria($total_registros_pagina, $deslocamento);
-        $total_produtos = $produto->getTotalPorCategoria();
-
-        $this->view->total_de_paginas = ceil($total_produtos['total'] / $total_registros_pagina);
-
-        $this->view->produtos = $produtos;
-        //Fim buscar produtos
-
-        //Inicio buscar categorias
-        $categoria = Container::getModel('Categoria');
-        $this->view->categorias = $categoria->getAll();       
-        //Fim buscar categorias
-
-        //Inicio buscar subcategorias
-        $subcategoria = Container::getModel('Subcategoria');
-        $this->view->subcategorias = $subcategoria->getAll();
-        //Fim buscar subcategorias
-
-        $this->render('index');
-    }
-
-    public function filterSubcategoria() {
-        session_start();
-
         $id_categoria = isset($_GET['categoria']) ? $_GET['categoria'] : '';
         $id_subcategoria = isset($_GET['subcategoria']) ? $_GET['subcategoria'] : '';
 
         //Inicio buscar produtos
         $produto = Container::getModel('Produto');
+        $categoria = Container::getModel('Categoria');
+        $subcategoria = Container::getModel('Subcategoria');
 
         //variaveis de páginação
         $total_registros_pagina = 16;
-        //$descocamento = 0;
         $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
         $deslocamento = ($pagina - 1) * $total_registros_pagina;
         $this->view->pagina_ativa = $pagina;
 
-        $produto->__set('categoria', $id_categoria);
-        $produto->__set('subcategoria', $id_subcategoria);
-        $produtos = $produto->getPorSubcategoria($total_registros_pagina, $deslocamento);
-        $total_produtos = $produto->getTotalPorSubcategoria();
+        if(isset($_GET['categoria']) && isset($_GET['subcategoria'])){
+            
+            $produto->__set('categoria', $id_categoria);
+            $produto->__set('subcategoria', $id_subcategoria);
+            $produtos = $produto->getPorSubcategoria($total_registros_pagina, $deslocamento);
+            $total_produtos = $produto->getTotalPorSubcategoria();
+            
+        } else if(isset($_GET['categoria'])) {
+
+            $produto->__set('categoria', $id_categoria);
+            $produtos = $produto->getPorCategoria($total_registros_pagina, $deslocamento);
+            $total_produtos = $produto->getTotalPorCategoria();
+        }
+        
 
         $this->view->total_de_paginas = ceil($total_produtos['total'] / $total_registros_pagina);
 
         $this->view->produtos = $produtos;
-        //Fim buscar produtos
-
-        //Inicio buscar categorias
-        $categoria = Container::getModel('Categoria');
+        //Buscar categorias
         $this->view->categorias = $categoria->getAll();       
-        //Fim buscar categorias
-
-        //Inicio buscar subcategorias
-        $subcategoria = Container::getModel('Subcategoria');
+        //Buscar subcategorias
         $this->view->subcategorias = $subcategoria->getAll();
-        //Fim buscar subcategorias
 
         $this->render('index');
-
-
     }
 
     public function search() {
@@ -125,37 +86,32 @@ class IndexController extends Action {
         session_start();
 
         $pesquisa = isset($_GET['pesquisa']) ? $_GET['pesquisa'] : '';
-        $categoria = isset($_GET['categoria']) && $_GET['categoria'] != ' ' ? $_GET['categoria'] : ' ';
+        $pesquisa_categorias = isset($_GET['categoria']) && $_GET['categoria'] != ' ' ? $_GET['categoria'] : '';
 
         //Inicio buscar produtos
         $produto = Container::getModel('Produto');
+        $categoria = Container::getModel('Categoria');
+        $subcategoria = Container::getModel('Subcategoria');
 
         //variaveis de páginação
         $total_registros_pagina = 16;
-        //$descocamento = 0;
         $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
         $deslocamento = ($pagina - 1) * $total_registros_pagina;
         $this->view->pagina_ativa = $pagina;
 
         $produto->__set('nome', $pesquisa);
-        $produto->__set('categoria', $categoria);
+        $produto->__set('categoria', $pesquisa_categorias);
+
         $produtos = $produto->pesquisaProduto($total_registros_pagina, $deslocamento);
         $total_produtos = $produto->getTotalPesquisa();
 
         $this->view->total_de_paginas = ceil($total_produtos['total'] / $total_registros_pagina);
 
         $this->view->produtos = $produtos;
-        //Fim buscar produtos
-
-        //Inicio buscar categorias
-        $categoria = Container::getModel('Categoria');
-        $this->view->categorias = $categoria->getAll();       
-        //Fim buscar categorias
-
-        //Inicio buscar subcategorias
-        $subcategoria = Container::getModel('Subcategoria');
+        //Buscar categorias
+        $this->view->categorias = $categoria->getAll();
+        //Buscar subcategorias
         $this->view->subcategorias = $subcategoria->getAll();
-        //Fim buscar subcategorias
 
         $this->render('index');
 
@@ -164,6 +120,9 @@ class IndexController extends Action {
     public function inscreverse() {
 
         session_start();
+
+        $categoria = Container::getModel('Categoria');
+        $subcategoria = Container::getModel('Subcategoria');
 
         if(isset($_SESSION['id']) && isset($_SESSION['nome'])){
             header('Location: /');
@@ -177,6 +136,11 @@ class IndexController extends Action {
 
             $this->view->erroCadastro = false;
 
+            //Buscar categorias
+            $this->view->categorias = $categoria->getAll();
+            //Buscar subcategorias
+            $this->view->subcategorias = $subcategoria->getAll();
+
             $this->render('inscreverse');
         }
     }
@@ -184,7 +148,10 @@ class IndexController extends Action {
     public function registrar() {
 
         session_start();
-        session_start();
+
+        $categoria = Container::getModel('Categoria');
+        $subcategoria = Container::getModel('Subcategoria');
+
         if(isset($_SESSION['id']) && isset($_SESSION['nome'])){
             header('Location: /');
         } else {
@@ -203,11 +170,17 @@ class IndexController extends Action {
             $usuario->__set('senha', md5($_POST['senha']));
             $usuario->__set('conf_senha', md5($_POST['conf-senha']));
 
+            //Buscar categorias
+            $this->view->categorias = $categoria->getAll();
+            //Buscar subcategorias
+            $this->view->subcategorias = $subcategoria->getAll();
+
             if($usuario->validaCadastro() && count($usuario->getUsuarioPorEmail()) == 0) {
 
                 $usuario->salvar();
 
                 $this->render('cadastro');
+                
             } else {
 
                 $this->view->usuario = array(
@@ -226,6 +199,15 @@ class IndexController extends Action {
 
     public function login() {
         session_start();
+
+        $categoria = Container::getModel('Categoria');
+        $subcategoria = Container::getModel('Subcategoria');
+
+        //Buscar categorias
+        $this->view->categorias = $categoria->getAll();
+        //Buscar subcategorias
+        $this->view->subcategorias = $subcategoria->getAll();
+
         if(isset($_SESSION['id']) && isset($_SESSION['nome'])){
             header('Location: /');
         } else {
@@ -233,5 +215,19 @@ class IndexController extends Action {
             
             $this->render('login');
         }
+    }
+
+    public function produto() {
+        session_start();
+
+        $categoria = Container::getModel('Categoria');
+        $subcategoria = Container::getModel('Subcategoria');
+
+        //Buscar categorias
+        $this->view->categorias = $categoria->getAll();
+        //Buscar subcategorias
+        $this->view->subcategorias = $subcategoria->getAll();
+
+        $this->render('produto');
     }
 }

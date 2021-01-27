@@ -8,7 +8,7 @@ class Produto extends Model {
 
     private $id;
     private $nome;
-    private $categoria;
+    public $categoria;
     private $subcategoria;
     private $descricao;
     private $imagem;
@@ -176,7 +176,7 @@ class Produto extends Model {
             produtos
         WHERE
             nome LIKE :nome ";
-        if($this->__get('categoria') != ' '){
+        if($this->__get('categoria') != ''){
             $query = $query."AND id_categoria LIKE :categoria ";
         }
         
@@ -184,7 +184,7 @@ class Produto extends Model {
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':nome', '%'.$this->__get('nome').'%');
-        if($this->__get('categoria') != ' '){
+        if($this->__get('categoria') != ''){
             $stmt->bindValue(':categoria', $this->__get('categoria'));
         }
         $stmt->execute();
