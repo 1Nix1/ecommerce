@@ -37,5 +37,24 @@ class Categoria extends Model {
 
     }
 
+    //recupera categoria por id
+    public function getCategoria(){
+        $query = "
+        SELECT 
+            id, 
+            nome
+        FROM 
+            categorias
+        WHERE
+            id = :id
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $this->__get('id'));
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
     
 }

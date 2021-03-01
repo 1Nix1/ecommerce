@@ -32,150 +32,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- End Topbar -->
-		<div class="middle-inner">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-2 col-md-2 col-12">
-						<!-- Logo -->
-						<div class="logo">
-							<a href="/"><img src="images/logo3.png" alt="logo"></a>
-						</div>
-						<!--/ End Logo -->
-						<!-- Search Form -->
-						<div class="search-top">
-							<div class="top-search"><a href="#0"><i class="ti-search"></i></a></div>
-							<!-- Search Form -->
-							<div class="search-top">
-								<form class="search-form">
-									<input type="text" placeholder="Search here..." name="search">
-									<button value="search" type="submit"><i class="ti-search"></i></button>
-								</form>
-							</div>
-							<!--/ End Search Form -->
-						</div>
-						<!--/ End Search Form -->
-						<div class="mobile-nav"></div>
-					</div>
-					
-					<div class="col-lg-8 col-md-7 col-12">
-						<div class="search-bar-top">
-							<form action="/search" method="get">
-								<div class="search-bar">
-									<select name="categoria">
-										<option selected="selected" value=" "><strong>Categorias</strong></option>
-										<?php 
-											foreach($this->view->categorias as $idx => $categoria) {
-										?>
-										<option value="<?= $categoria['id'] ?>"><?= $categoria['nome'] ?></option>
-										<?php } ?>
-									</select>
-									<input name="pesquisa" value="<?php echo isset($_GET['pesquisa']) ? $_GET['pesquisa'] : '' ?>"  placeholder="Search Products Here....." type="search">
-									<button class="btnn"><i class="ti-search"></i></button>
-								</div>
-							</form>
-						</div>
-					</div>
-					
-					<div class="col-lg-2 col-md-3 col-12">
-						<div class="right-bar">
-							<!-- Search Form -->
-							<div class="sinlge-bar">
-								<a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
-							</div>
-							<div class="sinlge-bar">
-								<a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
-							</div>
-							<div class="sinlge-bar shopping">
-								<a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">2</span></a>
-								<!-- Shopping Item -->
-								<div class="shopping-item">
-									<div class="dropdown-cart-header">
-										<span>2 Items</span>
-										<a href="/carrinho">View Cart</a>
-									</div>
-									<ul class="shopping-list">
-										<li>
-											<a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-											<a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
-											<h4><a href="#">Woman Ring</a></h4>
-											<p class="quantity">1x - <span class="amount">$99.00</span></p>
-										</li>
-										<li>
-											<a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-											<a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
-											<h4><a href="#">Woman Necklace</a></h4>
-											<p class="quantity">1x - <span class="amount">$35.00</span></p>
-										</li>
-									</ul>
-									<div class="bottom">
-										<div class="total">
-											<span>Total</span>
-											<span class="total-amount">$134.00</span>
-										</div>
-										<a href="checkout.html" class="btn animate">Checkout</a>
-									</div>
-								</div>
-								<!--/ End Shopping Item -->
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Header Inner -->
-		<div class="header-inner">
-			<div class="container">
-				<div class="cat-nav-head">
-					<div class="row">
-						<div class="col-lg-3">
-							<div class="all-category">
-								<h3 class="cat-heading"><i class="fa fa-bars" aria-hidden="true"></i>CATEGORIAS</h3>
-								<ul class="main-category">
-									<?php 
-										foreach($this->view->categorias as $idx => $categoria) {
-									?>
-									<li><a href="/categoria?categoria=<?= $categoria['id'] ?>"><?= $categoria['nome'] ?><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-										<ul class="sub-category">
-											<?php 
-											foreach($this->view->subcategorias as $idx_sub => $subcategoria) {
-												if($categoria['id'] == $subcategoria['id_categoria']){
-											?>
-											<li><a href="/subcategoria?subcategoria=<?= $subcategoria['id'] ?>&categoria=<?= $categoria['id'] ?>"><?= $subcategoria['nome'] ?></a></li>
-											<?php 
-												}
-											} 
-											?>
-										</ul>
-									</li>
-										<?php } ?>
-								</ul>
-							</div>
-						</div>
-						<div class="col-lg-9 col-12">
-							<div class="menu-area">
-								<!-- Main Menu -->
-								<nav class="navbar navbar-expand-lg">
-									<div class="navbar-collapse">	
-										<div class="nav-inner">	
-											<ul class="nav main-menu menu navbar-nav">
-													<li class="active"><a href="/">Home</a></li>																			
-													<li><a href="contact.html">Contato</a></li>
-													<li><a href="contact.html">Carrinho</a></li>
-												</ul>
-										</div>
-									</div>
-								</nav>
-								<!--/ End Main Menu -->	
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--/ End Header Inner -->
-	</header>
-	<!--/ End Header -->
 	
 	<!-- Breadcrumbs -->
 	<div class="breadcrumbs">
@@ -184,8 +40,8 @@
 				<div class="col-12">
 					<div class="bread-inner">
 						<ul class="bread-list">
-							<li><a href="index1.html">Home<i class="ti-arrow-right"></i></a></li>
-							<li class="active"><a href="blog-single.html">Cart</a></li>
+							<li><a href="/">Home<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="#">Cart</a></li>
 						</ul>
 					</div>
 				</div>
@@ -237,59 +93,7 @@
 								</td>
 								<td class="total-amount" data-title="Total"><span>$220.88</span></td>
 								<td class="action" data-title="Remove"><a href="#"><i class="ti-trash remove-icon"></i></a></td>
-							</tr>
-							<tr>
-								<td class="image" data-title="No"><img src="https://via.placeholder.com/100x100" alt="#"></td>
-								<td class="product-des" data-title="Description">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-									<p class="product-des">Maboriosam in a tonto nesciung eget  distingy magndapibus.</p>
-								</td>
-								<td class="price" data-title="Price"><span>$110.00 </span></td>
-								<td class="qty" data-title="Qty"><!-- Input Order -->
-									<div class="input-group">
-										<div class="button minus">
-											<button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[2]">
-												<i class="ti-minus"></i>
-											</button>
-										</div>
-										<input type="text" name="quant[2]" class="input-number"  data-min="1" data-max="100" value="2">
-										<div class="button plus">
-											<button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[2]">
-												<i class="ti-plus"></i>
-											</button>
-										</div>
-									</div>
-									<!--/ End Input Order -->
-								</td>
-								<td class="total-amount" data-title="Total"><span>$220.88</span></td>
-								<td class="action" data-title="Remove"><a href="#"><i class="ti-trash remove-icon"></i></a></td>
-							</tr>
-							<tr>
-								<td class="image" data-title="No"><img src="https://via.placeholder.com/100x100" alt="#"></td>
-								<td class="product-des" data-title="Description">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-									<p class="product-des">Maboriosam in a tonto nesciung eget  distingy magndapibus.</p>
-								</td>
-								<td class="price" data-title="Price"><span>$110.00 </span></td>
-								<td class="qty" data-title="Qty"><!-- Input Order -->
-									<div class="input-group">
-										<div class="button minus">
-											<button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[3]">
-												<i class="ti-minus"></i>
-											</button>
-										</div>
-										<input type="text" name="quant[3]" class="input-number"  data-min="1" data-max="100" value="3">
-										<div class="button plus">
-											<button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[3]">
-												<i class="ti-plus"></i>
-											</button>
-										</div>
-									</div>
-									<!--/ End Input Order -->
-								</td>
-								<td class="total-amount" data-title="Total"><span>$220.88</span></td>
-								<td class="action" data-title="Remove"><a href="#"><i class="ti-trash remove-icon"></i></a></td>
-							</tr>
+							</tr>						
 						</tbody>
 					</table>
 					<!--/ End Shopping Summery -->
@@ -322,8 +126,8 @@
 										<li class="last">You Pay<span>$310.00</span></li>
 									</ul>
 									<div class="button5">
-										<a href="#" class="btn">Checkout</a>
-										<a href="#" class="btn">Continue shopping</a>
+										<a href="#" class="btn">Finalizar compra</a>
+										<a href="#" class="btn">Voltar a comprar</a>
 									</div>
 								</div>
 							</div>

@@ -222,6 +222,21 @@ class IndexController extends Action {
 
         $categoria = Container::getModel('Categoria');
         $subcategoria = Container::getModel('Subcategoria');
+        $produto = Container::getModel('Produto');
+
+        if(!$_GET['id']){
+            header('Location: /');
+        }
+        
+        $produto->__set('id', $_GET['id']);
+        
+
+        $this->view->produtos = $produto->getProdutoPorId();
+
+        $categoria->__set('id', $this->view->produtos['id_categoria']);
+
+        //retorna a categoria do produto
+        $this->view->categorias_especifica = $categoria->getCategoria();
 
         //Buscar categorias
         $this->view->categorias = $categoria->getAll();

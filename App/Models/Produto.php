@@ -237,6 +237,30 @@ class Produto extends Model {
 
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
+    
+    //retorna um produto por id
+    public function getProdutoPorId(){
+        $query = "
+        SELECT 
+            id, 
+            nome, 
+            id_categoria, 
+            descricao, 
+            imagem, 
+            valor, 
+            quantidade 
+        FROM 
+            produtos 
+        WHERE
+            id = :id
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $this->__get('id'));
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
 
     
 }

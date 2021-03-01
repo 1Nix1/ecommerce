@@ -31,3 +31,34 @@ CREATE TABLE Produtos(
     FOREIGN KEY (id_subcategoria) REFERENCES subcategorias(id)
 );
 
+CREATE TABLE itens_carrinho(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    id_produtos int,
+    id_usuario int,
+    data_hora TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_produtos) REFERENCES produtos(id),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+);
+
+$query = "
+        SELECT 
+            i.id, 
+            i.id_produtos, 
+            i.id_usuario, 
+            i.quantidade, 
+            i.total, 
+            i.data_hora, 
+            p.imagem, 
+            p.nome, 
+            p.valor 
+        FROM 
+            itens_carrinho AS i 
+        INNER JOIN 
+            produtos AS p 
+        ON 
+            i.id_produtos = p.id 
+        WHERE 
+            id_usuario = :id_usuario
+        ORDER BY id
+        ";
+
