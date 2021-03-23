@@ -1,0 +1,92 @@
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="bread-inner">
+						<ul class="bread-list">
+							<li><a href="/">Home<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="#">Minha conta</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Breadcrumbs -->
+
+    <!-- Shopping Cart -->
+	<div class="shopping-cart section">
+		<div class="container container-user">
+        
+			<header class="header shop header-user">
+				<div class="header-inner">
+					<div class="container">
+						<div class="cat-nav-head">
+							<div class="row">
+								<div class="col-lg-9 col-12">
+									<div class="menu-area">
+										<!-- Main Menu -->
+										<nav class="navbar navbar-expand-lg">
+											<div class="navbar-collapse">	
+												<div class="nav-inner">	
+													<ul class="nav main-menu menu navbar-nav">
+														<li><a href="/pagina_usuario">Minha conta</a></li>																			
+														<li><a href="/pedido_usuario">Meus pedidos</a></li>
+														<li class="active"><a href="/endereco_usuario">Endereços cadastrados</a></li>
+													</ul>
+												</div>
+											</div>
+										</nav>
+										<!--/ End Main Menu -->	
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</header>
+			<!--/ End Header Inner -->
+			<section class="pagina-usuario">
+				<div class="user-title">
+                    <div  class="endereco-title">
+					    <h4>Endereços:</h4>
+                    </div>
+                    
+                    <div class="bnt-user">
+                        <a href="/add_new_endereco" class="bnt-new-endereco">Adicionar novo indereço</a>
+				    </div>
+				</div>
+                
+                <div style="clear: both"></div>
+				
+				<?php foreach($this->view->enderecos as $id_item => $item){ ?>	
+				<div class="enderecos">
+					<h5>Endereço padrão:</h5>
+					<p><?= $item['nome'].' '.$item['sobrenome'] ?></p>
+					<p><?= $item['rua']?></p>
+					<p><?= $item['bairro']?></p>
+					<p><?= $item['numero']?></p>
+					<p><?= $item['complemento']?></p>
+					<p><?= $item['cidade']. ', ' . $item['estado'] . ', ' . $item['cep']?></p>
+					<p><?= $item['pais']?></p>
+					<p>Telelefone: <?= $item['telefone']?></p>
+					<?php if($item['complemento'] == ''){ ?>
+						<br>
+					<?php } ?>
+                    <div class="bnt-user btn-endereco">
+						<a href="#" class="bnt-user-edit">Editar</a>
+						<a href="#" class="bnt-user-edit-senha">Excluir</a>
+					</div>
+                    
+				</div>
+
+				<?php } ?>
+				<div style="clear: both"></div>
+				
+			</section>
+
+			
+
+        </div>
+    </div>

@@ -56,6 +56,12 @@ class Route extends Bootstrap {
             'action' => 'produto'
         );
 
+        $routes['add_carrinho'] = array(
+            'route' => '/add_carrinho',
+            'controller' => 'AppController',
+            'action' => 'addCarrinho'
+        );
+
         $routes['logar'] = array(
             'route' => '/logar',
             'controller' => 'AuthController',
@@ -72,6 +78,48 @@ class Route extends Bootstrap {
             'route' => '/carrinho',
             'controller' => 'AppController',
             'action' => 'carrinho'
+        );
+
+        $routes['remove-item'] = array(
+            'route' => '/remove-item',
+            'controller' => 'AppController',
+            'action' => 'removeItem'
+        );
+        
+        $routes['transportadora'] = array(
+            'route' => '/transportadora',
+            'controller' => 'AppController',
+            'action' => 'addFrete'
+        );
+
+        $routes['pagina_usuario'] = array(
+            'route' => '/pagina_usuario',
+            'controller' => 'AppController',
+            'action' => 'paginaUsuario'
+        );
+
+        $routes['pedido_usuario'] = array(
+            'route' => '/pedido_usuario',
+            'controller' => 'AppController',
+            'action' => 'pedidoUsuario'
+        );
+
+        $routes['endereco_usuario'] = array(
+            'route' => '/endereco_usuario',
+            'controller' => 'AppController',
+            'action' => 'enderecoUsuario'
+        );
+        
+        $routes['add_new_endereco'] = array(
+            'route' => '/add_new_endereco',
+            'controller' => 'AppController',
+            'action' => 'addNewEndereco'
+        );
+
+        $routes['cadastrar_endereco'] = array(
+            'route' => '/cadastrar_endereco',
+            'controller' => 'AppController',
+            'action' => 'cadastrarEndereco'
         );
 
         

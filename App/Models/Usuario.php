@@ -8,6 +8,7 @@ class Usuario extends Model {
 
     private $id;
     private $nome;
+    private $sobrenome;
     private $email;
     private $cpf;
     private $senha;
@@ -23,10 +24,11 @@ class Usuario extends Model {
 
     //salvar
     public function salvar() {
-        $query = "INSERT INTO usuarios(nome, email, cpf, senha) VALUES(:nome, :email, :cpf, :senha)";
+        $query = "INSERT INTO usuarios(nome, sobrenome, email, cpf, senha) VALUES(:nome, :sobrenome, :email, :cpf, :senha)";
         try{
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':nome', $this->__get('nome'));
+            $stmt->bindValue(':sobrenome', $this->__get('sobrenome'));
             $stmt->bindValue(':email', $this->__get('email'));
             $stmt->bindValue(':cpf', $this->__get('cpf'));
             $stmt->bindValue(':senha', $this->__get('senha')); //md5() -> hash 32 caracteres
@@ -35,9 +37,6 @@ class Usuario extends Model {
         }catch(Exception $e) {
             return 'Erro ao cadastrar usuario: '.$e;
         }
-        
-
-        
     }
 
     //valida se o cadastro pode ser feito
@@ -130,6 +129,13 @@ class Usuario extends Model {
             return $this;
         } catch (Exception $e) {
             return $e;
+        }
+    }
+
+    //confirma que está logado
+    public function authLogin(){
+        if(!$_SESSION['id'] && !$_SESSION['nome']){
+            header('Location: /');
         }
     }
 

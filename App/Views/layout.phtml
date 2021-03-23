@@ -69,7 +69,7 @@
 							<div class="right-content">
 								<ul class="list-main">
 									<?php if(isset($_SESSION['id']) && isset($_SESSION['nome'])) {?>
-									<li><i class="ti-user"></i> <a href="#">Minha conta</a></li>
+									<li><i class="ti-user"></i> <a href="/pagina_usuario">Minha conta</a></li>
 									<li><i class="ti-close"></i> <a href="/sair">Sair</a></li>
 									<?php } else { ?>
 									<li><i class="ti-id-badge"></i><a href="/inscreverse">Registrar-se</a></li>
@@ -134,39 +134,16 @@
 									<a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
 								</div>
 								<div class="sinlge-bar">
-									<a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+									<a href="/pagina_usuario" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
 								</div>
 								<div class="sinlge-bar shopping">
-									<a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">1</span></a>
-									<!-- Shopping Item -->
-									<div class="shopping-item">
-										<div class="dropdown-cart-header">
-											<span>2 Items</span>
-											<a href="/carrinho">View Cart</a>
-										</div>
-										<ul class="shopping-list">
-											<li>
-												<a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-												<a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
-												<h4><a href="#">Woman Ring</a></h4>
-												<p class="quantity">1x - <span class="amount">$99.00</span></p>
-											</li>
-											<li>
-												<a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-												<a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
-												<h4><a href="#">Woman Necklace</a></h4>
-												<p class="quantity">1x - <span class="amount">$35.00</span></p>
-											</li>
-										</ul>
-										<div class="bottom">
-											<div class="total">
-												<span>Total</span>
-												<span class="total-amount">$134.00</span>
-											</div>
-											<a href="checkout.html" class="btn animate">Checkout</a>
-										</div>
-									</div>
-									<!--/ End Shopping Item -->
+									<a href="<?php 
+										if(isset($_SESSION['id']) && isset($_SESSION['nome'])){
+											echo '/carrinho';
+										}else{
+											echo '/login';
+										}
+									?>" class="single-icon"><i class="ti-bag"></i> <span class="total-count">1</span></a>
 								</div>
 							</div>
 						</div>
@@ -211,7 +188,13 @@
 												<ul class="nav main-menu menu navbar-nav">
 														<li class="active"><a href="/">Home</a></li>																			
 														<li><a href="contact.html">Contato</a></li>
-														<li><a href="contact.html">Carrinho</a></li>
+														<li><a href="<?php 
+																		if(isset($_SESSION['id']) && isset($_SESSION['nome'])){
+																			echo '/carrinho';
+																		}else{
+																			echo '/login';
+																		}
+														?>">Carrinho</a></li>
 													</ul>
 											</div>
 										</div>

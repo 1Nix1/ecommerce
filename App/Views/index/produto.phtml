@@ -45,13 +45,9 @@
 					</div>
 					<div class="col-lg-4 col-12">
 						<div class="main-sidebar">
-							<h2><?= $this->view->produtos['nome'] ?></h2>
-							<div class="button-head">
-								<div class="product-action">
-									<a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Adicionar ao carrinho</span></a>			
-								</div>
-							</div>
+							<h2 class=""><?= $this->view->produtos['nome'] ?></h2>
 
+							<hr>
 
 							<h4 class="price">
 								<span class="product-price">
@@ -61,19 +57,49 @@
 									</bdi>
 								</span>
 							</h4>
+						
+							<div class="form-produto">
+								<form class="form-tamanho-camisa form-group row" method="post" action="/add_carrinho">
+									<input type="hidden" name="id_produto" value="<?= $_GET['id'] ?>">
+									<input type="hidden" name="valor_unit" value="<?= $this->view->produtos['valor'] ?>">
+									<?php 
+										if(isset($_GET['errorCampos']) && $_GET['errorCampos'] == 'true'){
+									?>
+									<p class="text-danger">Campos não preenchidos ou invalidos</p>
+									<?php } ?>
+									<div class="form-check form-check-inline">
+										<label class="form-check-label">
+											<input type="radio" id="PP" class="form-check-input" name="tamanho-camisa" value="PP"> PP
+										</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<label class="form-check-label">
+											<input type="radio" id="P" class="form-check-input" name="tamanho-camisa" value="P"> P
+										</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<label class="form-check-label">
+											<input type="radio" id="M" class="form-check-input" name="tamanho-camisa" value="M"> M
+										</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<label class="form-check-label">
+											<input type="radio" id="G" class="form-check-input" name="tamanho-camisa" value="G"> G
+										</label>
+									</div>
 
-							<form class="form-tamanro-camisa" action="">
-								<input type="radio" id="PP" class="tamanho-camisa" name="tamanho-camisa" value="PP">
-								<label for="PP">PP</label><br>
-								<input type="radio" id="P" class="tamanho-camisa" name="tamanho-camisa" value="P">
-								<label for="P">P</label><br>
-								<input type="radio" id="M" class="tamanho-camisa" name="tamanho-camisa" value="M">
-								<label for="M">M</label><br>
-								<input type="radio" id="G" class="tamanho-camisa" name="tamanho-camisa" value="G">
-								<label for="G">G</label><br>
+									<div class="form-group row">
+									<div class="col-6">
+										<label for="inputPassword6" class="col-form-label">Quantidade:</label>
+										<input class="form-control" type="number" name="quantidade" value="1" id="example-number-input">
+									</div>
+									</div>
+									
+									
 
-								<button type="submit" class="btn">Adicionar ao carrinho</button>
-							</form>
+									<button type="submit" class="btn">Adicionar ao carrinho</button>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>

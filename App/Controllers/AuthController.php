@@ -35,6 +35,7 @@ class AuthController extends Action {
         }
     }
 
+    
     //sair
     public function sair() {
         session_start();

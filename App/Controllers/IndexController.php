@@ -158,13 +158,9 @@ class IndexController extends Action {
             //receber os dados do formulario
             $usuario = Container::getModel('Usuario');
 
-            //junta nome e sobrenome
-            $nome = ucfirst($_POST['nome']);
-            $sobrenome = ucfirst($_POST['sobrenome']);
-            $nome_completo = $nome.' '.$sobrenome;
-
             //seta os vslores do objeto
-            $usuario->__set('nome', $nome_completo);
+            $usuario->__set('nome', $_POST['nome']);
+            $usuario->__set('nome', $_POST['sobrenome']);
             $usuario->__set('email', $_POST['email']);
             $usuario->__set('cpf', $_POST['cpf']);
             $usuario->__set('senha', md5($_POST['senha']));

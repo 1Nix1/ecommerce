@@ -1,0 +1,141 @@
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="bread-inner">
+						<ul class="bread-list">
+							<li><a href="/">Home<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="#">Minha conta</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Breadcrumbs -->
+
+    <!-- Shopping Cart -->
+	<div class="shopping-cart section">
+		<div class="container container-user">
+        
+			<header class="header shop header-user">
+				<div class="header-inner">
+					<div class="container">
+						<div class="cat-nav-head">
+							<div class="row">
+								<div class="col-lg-9 col-12">
+									<div class="menu-area">
+										<!-- Main Menu -->
+										<nav class="navbar navbar-expand-lg">
+											<div class="navbar-collapse">	
+												<div class="nav-inner">	
+													<ul class="nav main-menu menu navbar-nav">
+														<li><a href="/pagina_usuario">Minha conta</a></li>																			
+														<li><a href="/pedido_usuario">Meus pedidos</a></li>
+														<li class="active"><a href="/endereco_usuario">Endereços cadastrados</a></li>
+													</ul>
+												</div>
+											</div>
+										</nav>
+										<!--/ End Main Menu -->	
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</header>
+			<!--/ End Header Inner -->
+			<section class="pagina-usuario">
+				<div class="user-title">
+                    <div  class="endereco-title">
+					    <h4>Cadastrar novo indereço:</h4>
+                    </div>
+                    
+                    
+				</div>
+                
+                <div style="clear: both"></div>
+
+				<div class="div-form-endereco">
+					<div class="col-lg-8 col-12">
+						<div class="checkout-form">
+							<form class="row g-3 form-endereco" method="post" action="/cadastrar_endereco">
+								<div class="col-md-12">
+									<?php if($this->view->erroCadastro) { ?>
+										<small class="form-text text-danger">Campos obrigatórios não preenchidos.</small>
+									<?php } ?>
+								</div>
+								<div class="col-md-6 item-form-endereco">
+									<label for="nome">Nome<span>*</span></label>
+									<input type="text" class="form-control" id="nome" name="nome" value="<?= $this->view->endereco['nome'] ?>" placeholder="Nome" required="required">
+								</div>
+								<div class="col-md-6 item-form-endereco">
+									<label for="sobrenome">Sobrenome<span>*</span></label>
+									<input type="text" class="form-control" id="sobrenome" name="sobrenome" value="<?= $this->view->endereco['sobrenome'] ?>" placeholder="Sobrenome" required="required">
+								</div>
+
+								<div class="col-md-6 item-form-endereco">
+									<label for="telefone">Telefone<span>*</span></label>
+									<input type="text" class="form-control" id="telefone" name="telefone" value="<?= $this->view->endereco['telefone'] ?>" placeholder="Telefone" required="required">
+								</div>
+								<div class="col-md-6 item-form-endereco">
+									<label for="cep">CEP<span>*</span></label>
+									<input type="text" class="form-control" id="cep" name="cep" value="<?= $this->view->endereco['cep'] ?>" placeholder="CEP" required="required">
+								</div>
+
+								<div class="col-md-6 item-form-endereco">
+									<label for="cidade">Cidade<span>*</span></label>
+									<input type="text" class="form-control" id="cidade" name="cidade" value="<?= $this->view->endereco['cidade'] ?>" placeholder="Cidade" required="required">
+								</div>
+								<div class="col-md-6 item-form-endereco">
+									<label for="estado" class="form-label">Estado<span>*</span></label><br>
+									<select type="text" class="form-select form-select-sm" id="estado" name="estado" required="required">
+										<option desable value="">---</option>
+										<?php foreach($this->view->estado as $id_item => $item){ 
+										?>	
+										<option value="<?= $item['id'] ?>"><?= $item['nome'] ?></option>
+										<?php } ?>
+									</select>
+								</div>
+
+								<div class="col-md-6 item-form-endereco">
+									<label for="rua">Rua<span>*</span></label>
+									<input type="text" class="form-control" id="rua" name="rua" value="<?= $this->view->endereco['rua'] ?>" placeholder="Rua" required="required">
+								</div>
+								<div class="col-md-6 item-form-endereco">
+									<label for="bairro">Bairro</label>
+									<input type="text" class="form-control" id="bairro" name="bairro" value="<?= $this->view->endereco['bairro'] ?>" placeholder="Bairro" required="required">
+								</div>
+
+								<div class="col-md-6 item-form-endereco">
+									<label for="numero">Número<span>*</span></label>
+									<input type="text" class="form-control" id="numero" name="numero" value="<?= $this->view->endereco['numero'] ?>" placeholder="Número" required="required">
+								</div>
+								<div class="col-md-6 item-form-endereco">
+									<label for="complemento">Complemento</label>
+									<input type="text" class="form-control" id="complemento" name="complemento" value="<?= $this->view->endereco['complemento'] ?>" placeholder="Complemento">
+								</div>
+
+								<div class="col-md-6 item-form-endereco">
+									<label for="pais" class="form-label">País<span>*</span></label><br>
+									<select type="text" class="form-select form-select-sm" id="pais" name="pais" required="required">
+										<option desable value="">---</option>
+										<?php foreach($this->view->pais as $id_item => $item){ 
+										?>
+										<option value="<?= $item['id'] ?>"><?= $item['nome'] ?></option>
+										<?php } ?>
+									</select>
+								</div>
+								<div class="col-md-12 item-form-endereco">
+									<button type="submit" class="btn">Enviar</button>
+								</div>
+								
+							</form>
+						</div>
+					</div>	
+				</div>
+			</section>
+        </div>
+    </div>
