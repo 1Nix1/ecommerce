@@ -50,7 +50,7 @@
 			<section class="pagina-usuario">
 				<div class="user-title">
                     <div  class="endereco-title">
-					    <h4>Cadastrar novo indereço:</h4>
+					    <h4>Editar indereço:</h4>
                     </div>
                     
                     
@@ -61,12 +61,13 @@
 				<div class="div-form-endereco">
 					<div class="col-lg-8 col-12">
 						<div class="checkout-form">
-							<form class="row g-3 form-endereco" method="post" action="/cadastrar_endereco">
+							<form class="row g-3 form-endereco" method="post" action="/edita_endereco">
 								<div class="col-md-12">
 									<?php if($this->view->erroCadastro) { ?>
 										<small class="form-text text-danger">Campos obrigatórios não preenchidos.</small>
 									<?php } ?>
 								</div>
+								<input type="hidden" id="id" name="id" value="<?= $this->view->endereco['id'] ?>">
 								<div class="col-md-6 item-form-endereco">
 									<label for="nome">Nome<span>*</span></label>
 									<input type="text" class="form-control" id="nome" name="nome" value="<?= $this->view->endereco['nome'] ?>" placeholder="Nome" required="required">
@@ -95,7 +96,7 @@
 										<option desable value="">---</option>
 										<?php foreach($this->view->estado as $id_item => $item){ 
 										?>	
-										<option value="<?= $item['id'] ?>" <?php if($this->view->endereco['estado'] == $item['id']){ ?> selected <?php } ?>><?= $item['nome'] ?></option>
+										<option value="<?= $item['id'] ?>" <?php if($this->view->endereco['id_estado'] == $item['id']){ ?> selected <?php } ?>><?= $item['nome'] ?></option>
 										<?php } ?>
 									</select>
 								</div>
@@ -117,17 +118,26 @@
 									<label for="complemento">Complemento</label>
 									<input type="text" class="form-control" id="complemento" name="complemento" value="<?= $this->view->endereco['complemento'] ?>" placeholder="Complemento">
 								</div>
-
+											
 								<div class="col-md-6 item-form-endereco">
 									<label for="pais" class="form-label">País<span>*</span></label><br>
 									<select type="text" class="form-select form-select-sm" id="pais" name="pais" required="required">
 										<option desable value="">---</option>
 										<?php foreach($this->view->pais as $id_item => $item){ 
 										?>
-										<option value="<?= $item['id'] ?>" <?php if($this->view->endereco['pais'] == $item['id']){ ?> selected <?php } ?>><?= $item['nome'] ?></option>
+										<option value="<?= $item['id'] ?>" <?php if($this->view->endereco['id_pais'] == $item['id']){ ?> selected <?php } ?>><?= $item['nome'] ?></option>
 										<?php } ?>
 									</select>
 								</div>
+								<!--
+								<div class="col-md-6 item-form-endereco">
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+										<label class="form-check-label" for="flexCheckDefault">
+											Definir como padrão?
+										</label>
+									</div>
+								</div>-->
 								<div class="col-md-12 item-form-endereco">
 									<button type="submit" class="btn">Enviar</button>
 								</div>

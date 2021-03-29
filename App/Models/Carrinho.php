@@ -11,6 +11,7 @@ class Carrinho extends Model {
     private $tamanho;
     private $quantidade;
     private $transportadora;
+    private $endereco;
     private $valor_unit;
     private $data;
 
@@ -22,19 +23,53 @@ class Carrinho extends Model {
         $this->$atributo = $valor;
     }
 
-    public function getAll(){
+    public function getForPedido(){
         $query = "
-        SELECT 
-            id, 
-            id_produto,
-            id_usuario,
-            data_hora
+        SELECT i.id, 
+                i.id_usuario,
+                i.transportadora, 
+                i.endereco,
+                SUM(i.total + t.valor) AS total 
         FROM 
-            itens_carrinho
-        WHERE
+            itens_carrinho AS i 
+        INNER JOIN 
+            transportadoras AS t 
+        ON 
+            i.transportadora = t.id 
+        WHERE 
+            id_usuario = :id_usuario 
+        GROUP BY i.id_usuario
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id_usuario', $this->__get('id_usuario'));
+            $stmt->execute();
+
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (Exception $e){
+            return false;
+        }
+    }
+
+    public function getForItensPedido(){
+        $query = "
+        SELECT i.id, 
+                i.id_produtos,
+                i.id_usuario,
+                i.tamanho,
+                i.quantidade, 
+                i.valor_unit,
+                i.total as sub_total
+        FROM 
+            itens_carrinho AS i 
+        INNER JOIN 
+            transportadoras AS t 
+        ON 
+            i.transportadora = t.id 
+        WHERE 
             id_usuario = :id_usuario
-        ORDER BY 
-            id 
+        ORDER BY i.id
         ";
 
         try{
@@ -57,6 +92,7 @@ class Carrinho extends Model {
             i.tamanho, 
             i.quantidade, 
             i.transportadora,
+            i.endereco,
             i.total, 
             i.data_hora, 
             p.imagem, 
@@ -127,6 +163,20 @@ class Carrinho extends Model {
             return false;
         }
 
+    }
+
+    public function updateEndereco(){
+        $query = "UPDATE itens_carrinho SET endereco = :endereco WHERE id_usuario = :id_usuario";
+
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':endereco', $this->__get('endereco'));
+            $stmt->bindValue(':id_usuario', $this->__get('id_usuario'));
+            $stmt->execute();
+            return $this;
+        }catch(Exception $e){
+            return false;
+        }
     }
 
     public function totalCarrinho(){

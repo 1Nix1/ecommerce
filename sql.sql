@@ -145,7 +145,6 @@ SELECT SUM(i.total) AS total_carrinho, t.valor AS frete, SUM(i.total) + t.valor 
 CALL add_carrinho (id_produto, id_usuario, tamanho, quantidade, transportadora, valor_unit) 
 
 /*Insert endereço*/
-
 DELIMITER $$
 CREATE PROCEDURE add_endereco (IN id_usuario int, IN nome varchar(250), IN sobrenome varchar(250), IN telefone varchar(15), IN cep varchar(20), IN cidade varchar(150), IN id_estado int, IN rua varchar(250), IN bairro varchar(250), IN numero int, IN complemento varchar(250), IN id_pais int) 
 BEGIN 
@@ -184,6 +183,27 @@ END $$
 DELIMITER ;
 
 CALL add_endereco (6, 'Thiago', 'Augusto', '986539475', '86200000', 'Ibiporã', 1, 'Rua das amoreiras', 'Centro', 1580, 'Casa azul', 'Brasil')
+
+/*add pedido*/
+
+DELIMITER $$
+CREATE PROCEDURE add_pedido (IN id_usuario int) 
+BEGIN 
+	DECLARE id_usuario INT;
+    DECLARE endereco INT;
+    DECLARE total DOUBLE(16,2);
+    DECLARE id_transportadora INT;
+    DECLARE valor_t DOUBLE(16,2);
+	SET FOREIGN_KEY_CHECKS = OFF;
+    SELECT id_usuario = id_usuario, endereco = endereco, total = total, id_transportadora = transportadora FROM itens_carrinho WHERE id_usuario = id_usuario GROUP BY id_usuario limit 1;
+    SELECT valor_t = valor from transportadoras WHERE id = id_transportadora;
+
+    INSERT INTO pedidos  (id_usuario, id_endereco, id_transportadora, total, status) VALUES (@id_usuario, @endereco, @id_transportadora, @total + @valor_t, 'pago');
+	SET FOREIGN_KEY_CHECKS = ON;
+END $$
+DELIMITER ;
+CALL add_pedido(6)
+SET FOREIGN_KEY_CHECKS = OFF;
 
 ALTER TABLE enderecos ADD CONSTRAINT fk_id_pais FOREIGN KEY (id_pais) REFERENCES pais(id)
 

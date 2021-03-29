@@ -39,6 +39,7 @@
 						<tbody>
 							<?php foreach($this->view->itens as $id_item => $item){ 
 								$trasportadora = $item['transportadora'];
+								$endereco = $item['endereco'];
 								?>
 
 							<tr>
@@ -100,47 +101,54 @@
 									<div class="left endereco">
 										<div class="transportadora">
 											<form action="#" target="_blank">
+
 												<label> Selecione o endereço de entrega: </label><br>
-												<select id="transportadoras" onchange="location = this.value;">
-												<?php foreach($this->view->transportadoras as $id_item => $item){ 
-													if($item['id'] == $trasportadora){
+												<select id="endereco" onchange="location = this.value;">
+												<option selected disabled value="">---</option>
+												<?php foreach($this->view->enderecos as $id_item => $item){ 
+													if($item['id'] == $endereco){
 												?>	
-													<option selected value="/transportadora?id=<?= $item['id']; ?>">
+													<option selected value="/endereco?id=<?= $item['id']; ?>">
 													<?php 
+														$id_endereco = $item['id'];
 														echo '<pre>';
-														print_r($item['nome'].' - '.$item['tempo_entrega']. ' - R$'. $item['valor']);
+														print_r($item['rua'].', '.$item['numero']. ' - '. $item['bairro'] . ', ' . $item['cidade'] . ' - ' . $item['estado']);
 														echo '</pre>';
 													?>
 													</option>
 													
 												<?php } else { ?>
-
-													<option value="/transportadora?id=<?= $item['id']; ?>">
+													<option value="/endereco?id=<?= $item['id']; ?>">
 													<?php 
 														echo '<pre>';
-														print_r($item['nome'].' - '.$item['tempo_entrega']. ' - R$'. $item['valor']);
+														print_r($item['rua'].', '.$item['numero']. ' - '. $item['bairro'] . ', ' . $item['cidade'] . ' - ' . $item['estado']);
 														echo '</pre>';
 													?>
 													</option>
 												
 												<?php }} ?>
 												</select>
+												
 											</form>
 										</div>
+										<div class="col-lg-12 col-md-6 col-12">
+											<?php if(isset($_GET['empty_endereco']) && $_GET['empty_endereco'] == 'true') { ?>
+												<small class="form-text text-danger"> Por favor selecione o endereço.</small>
+											<?php } ?>
+											</div>
 									</div>
 								</div>
 								<div class="col-lg-4 col-md-7 col-12">
 									<div class="right">
-										<?php foreach($this->view->total_carrinho as $id_item => $item){ 
-											?>
+										<?php foreach($this->view->total_carrinho as $id_item => $item){ ?>
 										<ul>
-											<li>Total carrinho<span>$<?= $item['total_carrinho'] ?></span></li>
-											<li>Frete<span>$<?= $item['frete'] ?></span></li>
-											<li class="last">Total da compra<span>$<?= $item['total'] ?></span></li>
+											<li>Total carrinho<span>R$ <?= $item['total_carrinho'] ?></span></li>
+											<li>Frete<span>R$ <?= $item['frete'] ?></span></li>
+											<li class="last">Total da compra<span>R$ <?= $item['total'] ?></span></li>
 										</ul>
 										<?php } ?>
 										<div class="button5">
-											<a href="#" class="btn">Finalizar compra</a>
+											<a href="/confirma_endereco?id_endereco=<?php if(isset($id_endereco)){ echo $id_endereco; }else{ echo ''; } ?>" class="btn">Finalizar compra</a>
 											<a href="/" class="btn">Voltar a comprar</a>
 										</div>
 									</div>

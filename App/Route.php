@@ -92,6 +92,12 @@ class Route extends Bootstrap {
             'action' => 'addFrete'
         );
 
+        $routes['endereco'] = array(
+            'route' => '/endereco',
+            'controller' => 'AppController',
+            'action' => 'addEnderecoCarrinho'
+        );
+
         $routes['pagina_usuario'] = array(
             'route' => '/pagina_usuario',
             'controller' => 'AppController',
@@ -120,6 +126,42 @@ class Route extends Bootstrap {
             'route' => '/cadastrar_endereco',
             'controller' => 'AppController',
             'action' => 'cadastrarEndereco'
+        );
+
+        $routes['excluir_endereco'] = array(
+            'route' => '/excluir_endereco',
+            'controller' => 'AppController',
+            'action' => 'excluirEndereco'
+        );
+
+        $routes['editar_endereco'] = array(
+            'route' => '/editar_endereco',
+            'controller' => 'AppController',
+            'action' => 'editarEndereco'
+        );
+
+        $routes['edita_endereco'] = array(
+            'route' => '/edita_endereco',
+            'controller' => 'AppController',
+            'action' => 'editaEndereco'
+        );
+
+        $routes['confirma_endereco'] = array(
+            'route' => '/confirma_endereco',
+            'controller' => 'AppController',
+            'action' => 'confirmaEndereco'
+        );
+
+        $routes['dados_cartao'] = array(
+            'route' => '/dados_cartao',
+            'controller' => 'AppController',
+            'action' => 'dadosCartao'
+        );
+        
+        $routes['gera_pedido'] = array(
+            'route' => '/gera_pedido',
+            'controller' => 'AppController',
+            'action' => 'geraPedido'
         );
 
         
