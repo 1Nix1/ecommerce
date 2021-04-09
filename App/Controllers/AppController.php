@@ -435,6 +435,7 @@ class AppController extends Action {
         $usuario = Container::getModel('Usuario');
         $usuario->authLogin();
 
+        //$itensPedido = Container::getModel('ItensPedido');
         $carrinho = Container::getModel('Carrinho');
         $pedido = Container::getModel('Pedido');
         
@@ -445,24 +446,56 @@ class AppController extends Action {
         $this->view->itens_pedido = $carrinho->getForItensPedido();
         
         foreach($this->view->itens as $id_item => $item){
-            echo '<pre>';
-            print_r($item);
-            echo '</pre>';
             $pedido->__set('id_usuario', $_SESSION['id']);
             $pedido->__set('id_endereco', $item['endereco']);
             $pedido->__set('id_transportadora', $item['transportadora']);
             $pedido->__set('total', $item['total']);
         }
-        //$pedido->geraPedido();
+        $pedido->geraPedido();
+        
+        //Gera o itens pedido
+        $id_pedido = $this->geraItensPedido();
+
+        //altera o status do pedido para pago
+        $pedido->__set('id', $id_pedido);
+        $pedido->alterStatusPago();
+
+        //Após a compra, remove os itens do carrinho do usuario
+        $this->removeItensCarrinho($_SESSION['id']);
+
+        header('Location: /');
+    }
+
+    public function geraItensPedido(){
+
+        $itensPedido = Container::getModel('ItensPedido');
+        $carrinho = Container::getModel('Carrinho');
+
+        
+        $carrinho->__set('id_usuario', $_SESSION['id']);
+
+        //Busca itens carrinho
+        $this->view->itens = $carrinho->getForPedido();
+        $this->view->itens_pedido = $carrinho->getForItensPedido();
 
         foreach($this->view->itens_pedido as $id_item => $item){
-            echo '<pre>';
-            print_r($item);
-            echo '</pre>';
-            $pedido->__set('id_usuario', $_SESSION['id']);
-            $pedido->__set('id_endereco', $item['endereco']);
-            $pedido->__set('id_transportadora', $item['transportadora']);
+            $itensPedido->__set('id_pedido', $item['id_pedido']);
+            $itensPedido->__set('id_produto', $item['id_produtos']);
+            $itensPedido->__set('id_usuario', $_SESSION['id']);
+            $itensPedido->__set('tamanho', $item['tamanho']);
+            $itensPedido->__set('quantidade', $item['quantidade']);
+            $itensPedido->__set('valor_unit', $item['valor_unit']);
+            $itensPedido->__set('total', $item['sub_total']);
 
+            $itensPedido->geraItensPedido();
         }
+
+        return $item['id_pedido'];
+    }
+
+    public function removeItensCarrinho($id_usuario){
+        $carrinho = Container::getModel('Carrinho');
+        $carrinho->__set('id_usuario', $id_usuario);
+        $carrinho->removeAllItens();
     }
 }

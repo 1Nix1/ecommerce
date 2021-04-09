@@ -57,18 +57,23 @@ class Carrinho extends Model {
         SELECT i.id, 
                 i.id_produtos,
                 i.id_usuario,
+                p.id as id_pedido,
                 i.tamanho,
                 i.quantidade, 
                 i.valor_unit,
                 i.total as sub_total
         FROM 
-            itens_carrinho AS i 
+            itens_carrinho AS i
+        INNER JOIN
+            pedidos AS p
+        ON
+            p.id_usuario = i.id_usuario AND p.status = ''
         INNER JOIN 
             transportadoras AS t 
         ON 
             i.transportadora = t.id 
         WHERE 
-            id_usuario = :id_usuario
+            i.id_usuario = :id_usuario
         ORDER BY i.id
         ";
 
@@ -142,6 +147,19 @@ class Carrinho extends Model {
         try{
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->bindValue(':id_usuario', $this->__get('id_usuario'));
+            $stmt->execute();
+            return true;
+        }catch(Exception $e){
+            return false;
+        }
+    }
+
+    public function removeAllItens(){
+        $query = "DELETE FROM itens_carrinho WHERE id_usuario = :id_usuario";
+
+        try{
+            $stmt = $this->db->prepare($query);
             $stmt->bindValue(':id_usuario', $this->__get('id_usuario'));
             $stmt->execute();
             return true;

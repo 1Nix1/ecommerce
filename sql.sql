@@ -243,3 +243,15 @@ SELECT e.id as id,
             e.id_usuario LIKE 6 
         ORDER BY e.id
 
+
+
+/*adiciona pedido*/
+DELIMITER $$
+CREATE PROCEDURE add_pedido (IN id_usuario int, IN id_endereco int, IN id_transportadora int, IN total DOUBLE(16,2)) 
+BEGIN 
+	SET  @id = (SELECT CASE WHEN MAX(id) IS NULL THEN 1 ELSE MAX(id)+1 END FROM pedidos);
+
+    INSERT INTO pedidos (id, id_usuario, id_endereco, id_transportadora, total, status) VALUES (@id, id_usuario, id_endereco, id_transportadora, total, '');
+END $$
+DELIMITER ;
+call add_pedido (6, 11, 1, 756.20)

@@ -43,18 +43,26 @@ class Pedido extends Model {
 
     //gera pedido
     public function geraPedido(){
-        $query = "INSERT INTO pedidos (id, id_usuario, id_endereco, id_transportadora, total, estatus) VALUES (NULL, :id_usuario, :id_endereco, :id_transportadora, :total, :status)";
+        $query = "call add_pedido (:id_usuario, :id_endereco, :id_transportadora, :total)";
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':id_usuario', $this->__get('id_usuario'));
         $stmt->bindValue(':id_endereco', $this->__get('id_endereco'));
         $stmt->bindValue(':id_transportadora', $this->__get('id_transportadora'));
         $stmt->bindValue(':total', $this->__get('total'));
-        $stmt->bindValue(':status', 'pago');
         $stmt->execute();
         return $this;
+    }
 
+    //Muda o status para pago
+    public function alterStatusPago(){
+        $query = "UPDATE `pedidos` SET `status` = :status WHERE `pedidos`.`id` = :id";
 
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':status', 'pago');
+        $stmt->bindValue(':id', $this->__get('id'));
+        $stmt->execute();
+        return $this;
     }
 
     
