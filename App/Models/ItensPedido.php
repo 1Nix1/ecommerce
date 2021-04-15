@@ -28,15 +28,33 @@ class ItensPedido extends Model {
     public function getAll() {
         $query = "
         SELECT 
-            id, 
-            nome
+            i.id, 
+            i.id_pedido,
+            i.id_produto,
+            p.nome,
+            i.id_usuario,
+            i.tamanho,
+            i.quantidade,
+            i.valor_unit,
+            i.total,
+            i.data
         FROM 
-            pais
+            itens_pedido as i
+        INNER JOIN
+            produtos as p
+        ON
+            p.id = i.id_produto
+        WHERE
+        	i.id_usuario = :id_usuario
+        AND
+            i.id_pedido = :id_pedido
         ORDER BY 
             id 
         ";
 
         $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id_usuario', $this->__get('id_usuario'));
+        $stmt->bindValue(':id_pedido', $this->__get('id_pedido'));
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);

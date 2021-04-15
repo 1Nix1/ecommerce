@@ -24,6 +24,8 @@ class AuthController extends Action {
                 session_start();
                 $_SESSION['id'] = $usuario->__get('id');
                 $_SESSION['nome'] = $usuario->__get('nome');
+                $_SESSION['sobrenome'] = $usuario->__get('sobrenome');
+                $_SESSION['email'] = $usuario->__get('email');
 
                 header('Location: /');
             } else {

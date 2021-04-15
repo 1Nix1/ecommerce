@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 //Recursos framework
+
+use App\Models\Usuario;
 use MF\Controller\Action;
 use MF\Model\Container;
 
@@ -25,6 +27,8 @@ class AppController extends Action {
         $carrinho->__set('id_usuario', $_SESSION['id']);
         $endereco->__set('id_usuario', $_SESSION['id']);
 
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
         //Buscar categorias
         $this->view->categorias = $categoria->getAll();       
         //Buscar subcategorias
@@ -65,9 +69,6 @@ class AppController extends Action {
         } else {
             header('Location: /produto?id='.$_POST['id_produto']);
         }
-            
-        
-
 
     }
 
@@ -124,16 +125,19 @@ class AppController extends Action {
         $usuario = Container::getModel('Usuario');
         $usuario->authLogin();
         //Inicio buscar produtos
-        $produto = Container::getModel('Produto');
+        $carrinho = Container::getModel('Carrinho');
         $categoria = Container::getModel('Categoria');
         $subcategoria = Container::getModel('Subcategoria');
 
-        
+        $carrinho->__set('id_usuario', $_SESSION['id']);
 
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
         //Buscar categorias
         $this->view->categorias = $categoria->getAll();       
         //Buscar subcategorias
         $this->view->subcategorias = $subcategoria->getAll();
+
         $this->render('pagina_usuario');
     }
 
@@ -142,18 +146,53 @@ class AppController extends Action {
 
         $usuario = Container::getModel('Usuario');
         $usuario->authLogin();
+
+        $carrinho = Container::getModel('Carrinho');
+        $pedido = Container::getModel('Pedido');
         //Inicio buscar produtos
-        $produto = Container::getModel('Produto');
         $categoria = Container::getModel('Categoria');
         $subcategoria = Container::getModel('Subcategoria');
 
-        
+        $carrinho->__set('id_usuario', $_SESSION['id']);
+        $pedido->__set('id_usuario', $_SESSION['id']);
 
+        $this->view->getPedido = $pedido->getAll();
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
         //Buscar categorias
         $this->view->categorias = $categoria->getAll();       
         //Buscar subcategorias
         $this->view->subcategorias = $subcategoria->getAll();
+
         $this->render('pedido_usuario');
+    }
+
+    public function itensPedido(){
+        session_start();
+
+        $usuario = Container::getModel('Usuario');
+        $usuario->authLogin();
+
+        $carrinho = Container::getModel('Carrinho');
+        $itens_pedido = Container::getModel('ItensPedido');
+        //Inicio buscar produtos
+        $categoria = Container::getModel('Categoria');
+        $subcategoria = Container::getModel('Subcategoria');
+
+        $carrinho->__set('id_usuario', $_SESSION['id']);
+        $itens_pedido->__set('id_usuario', $_SESSION['id']);
+        $itens_pedido->__set('id_pedido', $_GET['pedido']);
+
+        //itens do pedido
+        $this->view->itens_pedido = $itens_pedido->getAll();
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
+        //Buscar categorias
+        $this->view->categorias = $categoria->getAll();       
+        //Buscar subcategorias
+        $this->view->subcategorias = $subcategoria->getAll();
+
+        $this->render('itens_pedido');
     }
 
     public function enderecoUsuario(){
@@ -162,19 +201,147 @@ class AppController extends Action {
         $usuario = Container::getModel('Usuario');
         $usuario->authLogin();
 
+        $carrinho = Container::getModel('Carrinho');
         $categoria = Container::getModel('Categoria');
         $subcategoria = Container::getModel('Subcategoria');
         $endereco = Container::getModel('Endereco');
 
         $endereco->__set('id_usuario', $_SESSION['id']);
+        $carrinho->__set('id_usuario', $_SESSION['id']);
 
         $this->view->enderecos = $endereco->getAll();
 
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
         //Buscar categorias
         $this->view->categorias = $categoria->getAll();       
         //Buscar subcategorias
         $this->view->subcategorias = $subcategoria->getAll();
         $this->render('endereco_usuario');
+    }
+
+    public function editaUsuario() {
+        session_start();
+
+        $usuario = Container::getModel('Usuario');
+        $usuario->authLogin();
+
+        $categoria = Container::getModel('Categoria');
+        $subcategoria = Container::getModel('Subcategoria');
+        $carrinho = Container::getModel('Carrinho');
+        $carrinho->__set('id_usuario', $_SESSION['id']);
+        $usuario->__set('id', $_SESSION['id']);
+
+        $this->view->getEditUser = $usuario->getEditUser();
+
+        $this->view->usuario = array(
+            'nome' => $this->view->getEditUser['nome'],
+            'sobrenome' => $this->view->getEditUser['sobrenome'],
+            'email' => $this->view->getEditUser['email'],
+            'cpf' => $this->view->getEditUser['cpf']
+        );
+
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
+        //Buscar categorias
+        $this->view->categorias = $categoria->getAll();       
+        //Buscar subcategorias
+        $this->view->subcategorias = $subcategoria->getAll();
+        if(isset($_GET['erro']) && $_GET['erro'] = 'true'){
+            //Verifica se á algum erro no cadastro
+            $this->view->erroCadastro = true;
+        }
+        $this->render('edita_usuario');
+    }
+
+    public function editarUsuario(){
+        session_start();
+
+        $usuario = Container::getModel('Usuario');
+        $usuario->authLogin();
+        
+        if($_POST['nome'] == '' || $_POST['sobrenome'] == '' || $_POST['email'] == '' || $_POST['cpf'] == ''){
+            header('Location: /edita_usuario?erro=true');
+        }
+        $usuario->__set('id', $_SESSION['id']);
+        $usuario->__set('nome', $_POST['nome']);
+        $usuario->__set('sobrenome', $_POST['sobrenome']);
+        $usuario->__set('email', $_POST['email']);
+        $usuario->__set('cpf', $_POST['cpf']);
+
+        $retorno = $usuario->updateUsuario();
+
+        $_SESSION['nome'] = $usuario->__get('nome');
+        $_SESSION['sobrenome'] = $usuario->__get('sobrenome');
+        $_SESSION['email'] = $usuario->__get('email');    
+
+        header('Location: /pagina_usuario');
+    }
+
+    public function mudarSenha(){
+        session_start();
+
+        $usuario = Container::getModel('Usuario');
+        $usuario->authLogin();
+
+        $categoria = Container::getModel('Categoria');
+        $subcategoria = Container::getModel('Subcategoria');
+        $carrinho = Container::getModel('Carrinho');
+        $carrinho->__set('id_usuario', $_SESSION['id']);
+        $usuario->__set('id', $_SESSION['id']);
+
+        if(isset($_GET['erro']) && $_GET['erro'] == 'true'){
+            $this->view->alteraSenha = 'erro';
+        } else if(isset($_GET['erro']) && $_GET['erro'] == 'conf-senha') {
+            $this->view->alteraSenha = 'conf-senha';
+        } else {
+            $this->view->alteraSenha = '';
+        }
+
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
+        //Buscar categorias
+        $this->view->categorias = $categoria->getAll();       
+        //Buscar subcategorias
+        $this->view->subcategorias = $subcategoria->getAll();
+        $this->render('mudar_senha');
+    }
+
+    public function mudaSenha(){
+        
+        session_start(); 
+        
+        $usuario = Container::getModel('Usuario');
+
+        $usuario->__set('id', $_SESSION['id']);
+        $usuario->__set('senha', $_POST['senha']);
+        $usuario->__set('conf_senha', $_POST['conf-senha']);
+
+        echo $usuario->validaSenha();
+        if($usuario->validaSenha() == 'senha-invalida'){
+
+            header('Location: /mudar_senha?erro=true');
+
+        } else if($usuario->validaSenha() == 'senhas-diferentes') {
+
+            header('Location: /mudar_senha?erro=conf-senha');
+
+        } else {
+            $usuario->updateSenha();
+            echo 'alert("Senha alterada com sucesso!!")';
+            header('Location: /pagina_usuario');
+        }
+
+        /*if($_POST['senha'] != $_POST['conf-senha']){
+            header('Location: /mudar_senha?erro=conf-senha');
+        }
+
+        if(strlen($_POST['senha']) < 4){
+            header('Location: /mudar_senha?erro=true');
+        }*/
+
+        
+
     }
 
     public function addNewEndereco(){
@@ -183,6 +350,7 @@ class AppController extends Action {
         $usuario = Container::getModel('Usuario');
         $usuario->authLogin();
 
+        $carrinho = Container::getModel('Carrinho');
         $estado = Container::getModel('Estado');
         $pais = Container::getModel('Pais');
         $categoria = Container::getModel('Categoria');
@@ -202,7 +370,10 @@ class AppController extends Action {
             'pais' => ''
         );
 
+        $carrinho->__set('id_usuario', $_SESSION['id']);
 
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
         //Buscar categorias
         $this->view->categorias = $categoria->getAll();       
         //Buscar subcategorias
@@ -222,7 +393,11 @@ class AppController extends Action {
         $usuario = Container::getModel('Usuario');
         $usuario->authLogin();
 
+        $carrinho = Container::getModel('Carrinho');
+        $estado = Container::getModel('Estado');
+        $pais = Container::getModel('Pais');
         $endereco = Container::getModel('Endereco');
+
         if($_POST['nome'] == '' || $_POST['sobrenome'] == '' || $_POST['telefone'] == '' || $_POST['cep'] == '' || $_POST['cidade'] == '' || $_POST['estado'] == '' || $_POST['rua'] == '' || $_POST['bairro'] == '' || $_POST['numero'] == '' || $_POST['pais'] == ''){
             $this->view->endereco = array(
                 'nome' => $_POST['nome'],
@@ -238,9 +413,10 @@ class AppController extends Action {
                 'pais' => $_POST['pais']
             );
 
-            $estado = Container::getModel('Estado');
-            $pais = Container::getModel('Pais');
+            $carrinho->__set('id_usuario', $_SESSION['id']);
 
+            //quantidades de itens no carrinho
+            $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
             //Busca estado
             $this->view->estado = $estado->getAll();   
             //Busca pais
@@ -292,17 +468,22 @@ class AppController extends Action {
         $usuario = Container::getModel('Usuario');
         $usuario->authLogin();
 
+        $carrinho = Container::getModel('Carrinho');
+        $categoria = Container::getModel('Categoria');
+        $subcategoria = Container::getModel('Subcategoria');
         $estado = Container::getModel('Estado');
         $pais = Container::getModel('Pais');
 
         $endereco = Container::getModel('Endereco');
 
+        $carrinho->__set('id_usuario', $_SESSION['id']);
         $endereco->__set('id', $_GET['id_endereco']);
         $endereco->__set('id_usuario', $_SESSION['id']);
+        
 
         $this->view->enderecos = $endereco->getEdit();
-        
-        $this->view->endereco = array(
+
+        $this->view->valueEndereco = array(
             'id' => $this->view->enderecos['id'],
             'nome' => $this->view->enderecos['nome'],
             'sobrenome' => $this->view->enderecos['sobrenome'],
@@ -320,6 +501,12 @@ class AppController extends Action {
         );
         $this->view->erroCadastro = false;
 
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
+        //Buscar categorias
+        $this->view->categorias = $categoria->getAll();       
+        //Buscar subcategorias
+        $this->view->subcategorias = $subcategoria->getAll();
         //Busca estado
         $this->view->estado = $estado->getAll();   
         //Busca pais
@@ -334,7 +521,9 @@ class AppController extends Action {
         $usuario = Container::getModel('Usuario');
         $usuario->authLogin();
 
+        $carrinho = Container::getModel('Carrinho');
         $endereco = Container::getModel('Endereco');
+
         if($_POST['id'] == '' || $_POST['nome'] == '' || $_POST['sobrenome'] == '' || $_POST['telefone'] == '' || $_POST['cep'] == '' || $_POST['cidade'] == '' || $_POST['estado'] == '' || $_POST['rua'] == '' || $_POST['bairro'] == '' || $_POST['numero'] == '' || $_POST['pais'] == ''){
             $this->view->endereco = array(
                 'id' => $_POST['id'],
@@ -354,6 +543,8 @@ class AppController extends Action {
             $estado = Container::getModel('Estado');
             $pais = Container::getModel('Pais');
 
+            //quantidades de itens no carrinho
+            $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
             //Busca estado
             $this->view->estado = $estado->getAll();   
             //Busca pais
@@ -415,6 +606,8 @@ class AppController extends Action {
 
         $carrinho->__set('id_usuario', $_SESSION['id']);
 
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
         //Buscar categorias
         $this->view->categorias = $categoria->getAll();       
         //Buscar subcategorias

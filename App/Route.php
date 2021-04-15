@@ -32,6 +32,30 @@ class Route extends Bootstrap {
             'action' => 'login'
         );
 
+        $routes['edita_usuario'] = array(
+            'route' => '/edita_usuario',
+            'controller' => 'AppController',
+            'action' => 'editaUsuario'
+        );
+
+        $routes['editar_usuario'] = array(
+            'route' => '/editar_usuario',
+            'controller' => 'AppController',
+            'action' => 'editarUsuario'
+        );
+
+        $routes['mudar_senha'] = array(
+            'route' => '/mudar_senha',
+            'controller' => 'AppController',
+            'action' => 'mudarSenha'
+        );
+
+        $routes['muda_senha'] = array(
+            'route' => '/muda_senha',
+            'controller' => 'AppController',
+            'action' => 'mudaSenha'
+        );
+
         $routes['categoria'] = array(
             'route' => '/categoria',
             'controller' => 'IndexController',
@@ -108,6 +132,12 @@ class Route extends Bootstrap {
             'route' => '/pedido_usuario',
             'controller' => 'AppController',
             'action' => 'pedidoUsuario'
+        );
+
+        $routes['itens_pedido'] = array(
+            'route' => '/itens_pedido',
+            'controller' => 'AppController',
+            'action' => 'itensPedido'
         );
 
         $routes['endereco_usuario'] = array(

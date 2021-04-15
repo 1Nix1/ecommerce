@@ -14,6 +14,7 @@ class IndexController extends Action {
 
         //Inicio buscar produtos
         $produto = Container::getModel('Produto');
+        $carrinho = Container::getModel('Carrinho');
         $categoria = Container::getModel('Categoria');
         $subcategoria = Container::getModel('Subcategoria');
 
@@ -29,6 +30,12 @@ class IndexController extends Action {
 
         $this->view->total_de_paginas = ceil($total_produtos['total'] / $total_registros_pagina);
 
+        if(isset($_SESSION['id'])){
+            $carrinho->__set('id_usuario', $_SESSION['id']);
+        }
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
+        //carrega produtos
         $this->view->produtos = $produtos;
         //Buscar categorias
         $this->view->categorias = $categoria->getAll();       
@@ -46,6 +53,7 @@ class IndexController extends Action {
 
         //Inicio buscar produtos
         $produto = Container::getModel('Produto');
+        $carrinho = Container::getModel('Carrinho');
         $categoria = Container::getModel('Categoria');
         $subcategoria = Container::getModel('Subcategoria');
 
@@ -72,6 +80,9 @@ class IndexController extends Action {
 
         $this->view->total_de_paginas = ceil($total_produtos['total'] / $total_registros_pagina);
 
+        $carrinho->__set('id_usuario', $_SESSION['id']);
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
         $this->view->produtos = $produtos;
         //Buscar categorias
         $this->view->categorias = $categoria->getAll();       
@@ -90,6 +101,7 @@ class IndexController extends Action {
 
         //Inicio buscar produtos
         $produto = Container::getModel('Produto');
+        $carrinho = Container::getModel('Carrinho');
         $categoria = Container::getModel('Categoria');
         $subcategoria = Container::getModel('Subcategoria');
 
@@ -107,6 +119,10 @@ class IndexController extends Action {
 
         $this->view->total_de_paginas = ceil($total_produtos['total'] / $total_registros_pagina);
 
+        $carrinho->__set('id_usuario', $_SESSION['id']);
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
+        //carrega produtos
         $this->view->produtos = $produtos;
         //Buscar categorias
         $this->view->categorias = $categoria->getAll();
@@ -121,6 +137,7 @@ class IndexController extends Action {
 
         session_start();
 
+        $carrinho = Container::getModel('Carrinho');
         $categoria = Container::getModel('Categoria');
         $subcategoria = Container::getModel('Subcategoria');
 
@@ -136,6 +153,11 @@ class IndexController extends Action {
 
             $this->view->erroCadastro = false;
 
+            if(isset($_SESSION['id'])){
+                $carrinho->__set('id_usuario', $_SESSION['id']);
+            }
+            //quantidades de itens no carrinho
+            $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
             //Buscar categorias
             $this->view->categorias = $categoria->getAll();
             //Buscar subcategorias
@@ -196,9 +218,15 @@ class IndexController extends Action {
     public function login() {
         session_start();
 
+        $carrinho = Container::getModel('Carrinho');
         $categoria = Container::getModel('Categoria');
         $subcategoria = Container::getModel('Subcategoria');
 
+        if(isset($_SESSION['id'])){
+            $carrinho->__set('id_usuario', $_SESSION['id']);
+        }
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
         //Buscar categorias
         $this->view->categorias = $categoria->getAll();
         //Buscar subcategorias
@@ -217,6 +245,7 @@ class IndexController extends Action {
         session_start();
 
         $categoria = Container::getModel('Categoria');
+        $carrinho = Container::getModel('Carrinho');
         $subcategoria = Container::getModel('Subcategoria');
         $produto = Container::getModel('Produto');
 
@@ -230,10 +259,13 @@ class IndexController extends Action {
         $this->view->produtos = $produto->getProdutoPorId();
 
         $categoria->__set('id', $this->view->produtos['id_categoria']);
-
+        $carrinho->__set('id_usuario', $_SESSION['id']);
+        
         //retorna a categoria do produto
         $this->view->categorias_especifica = $categoria->getCategoria();
 
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
         //Buscar categorias
         $this->view->categorias = $categoria->getAll();
         //Buscar subcategorias

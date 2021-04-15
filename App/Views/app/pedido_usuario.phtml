@@ -33,7 +33,7 @@
 													<ul class="nav main-menu menu navbar-nav">
 														<li><a href="/pagina_usuario">Minha conta</a></li>																			
 														<li class="active"><a href="/pedido_usuario">Meus pedidos</a></li>
-														<li><a href="/endereco_usuario">Endereços cadasthados</a></li>
+														<li><a href="/endereco_usuario">Endereços cadastrados</a></li>
 													</ul>
 												</div>
 											</div>
@@ -51,7 +51,7 @@
 				<div class="user-title">
 					<h4>Pedidos:</h4>
 				</div>
-
+				
 				<div class="table-pedido-usuario">
 					<table>
 						<tr>
@@ -62,14 +62,23 @@
 							<th>Status</th>
 							<th>Ação</th>
 						</tr>
+						
+						<?php foreach($this->view->getPedido as $id_item => $item){ 
+							$date = new DateTime($item['data']);
+							$data = $date->format('d/m/Y');
+						?>	
+						
 						<tr>
-							<td>195252</td>
-							<td>15/04/2000</td>
-							<td>Thiago</td>
-							<td>59,90</td>
-							<td>Entregue</td>
-							<td>Ver pedido</td>
+							<td><?= $item['id'] ?></td>
+							<td><?= $data ?></td>
+							<td><?= $item['nome'].' '.$item['sobrenome'] ?></td>
+							<td><?= $item['total'] ?></td>
+							<td><?= $item['status'] ?></td>
+							<td><a href="/itens_pedido?pedido=<?= $item['id'] ?>"><?= 'Ver pedido' ?></a></td>
+							
 						</tr>
+						
+						<?php } ?>	
 					</table>
 				</div>
 

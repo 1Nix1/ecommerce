@@ -217,4 +217,22 @@ class Carrinho extends Model {
             return false;
         }
     }
+
+    public function contaItensCarrinho(){
+        $query = "
+        SELECT 
+            count(id)
+        FROM 
+            itens_carrinho 
+        WHERE 
+            id_usuario = :id_usuario
+        ORDER BY id
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id_usuario', $this->__get('id_usuario'));
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
 }

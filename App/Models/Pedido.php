@@ -26,15 +26,26 @@ class Pedido extends Model {
     public function getAll() {
         $query = "
         SELECT 
-            id, 
-            nome
+            p.id, 
+            p.data,
+            e.nome,
+            e.sobrenome,
+            p.total,
+            p.status
         FROM 
-            pais
+            pedidos as p
+        INNER JOIN
+        	enderecos as e
+        ON
+        	e.id = p.id_endereco
+       	WHERE
+        	p.id_usuario = :id_usuario
         ORDER BY 
-            id 
+            p.id 
         ";
 
         $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id_usuario', $this->__get('id_usuario'));
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);

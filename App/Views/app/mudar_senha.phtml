@@ -1,0 +1,62 @@
+		<!-- Breadcrumbs -->
+		<div class="breadcrumbs">
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="bread-inner">
+							<ul class="bread-list">
+								<li><a href="/">Home<i class="ti-arrow-right"></i></a></li>
+								<li class="active"><a href="#">Logar</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End Breadcrumbs -->
+				
+		<!-- Start Checkout -->
+		<section class="shop checkout section">
+			<div class="container">
+				<div class="row"> 
+					<div class="col-lg-8 col-12">
+						<div class="checkout-form">
+							<h2>Alterar senha</h2><br>
+							<!-- Form -->
+							<form class="form" action="/muda_senha" method="post">
+								<?php if($this->view->alteraSenha == 'erro') { ?>
+								<div class="row ml-0">
+									<span class="text text-danger">*Senha invalida</span>
+								</div>
+								<?php } else if($this->view->alteraSenha == 'conf-senha') { ?>
+									<div class="row ml-0">
+									<span class="text text-danger">*Senhas diferentes</span>
+								</div>
+								<?php } ?>
+								<div class="row">
+									<div class="col-lg-9 col-md-9 col-12">
+										<div class="form-group">
+											<label>Nova senha<span>*</span></label>
+											<input type="password" name="senha" placeholder="Senha" required="required">
+										</div>
+									</div>
+									<div class="col-lg-9 col-md-9 col-12">
+										<div class="form-group">
+											<label>Confirmar nova senha<span>*</span></label>
+											<input type="password" name="conf-senha" placeholder="Confirmar senha" required="required">
+										</div>				
+									</div>
+									<div class="col-md-12 item-form-endereco">
+                                        <button type="submit" class="btn" style="background-color: #f7941d">Enviar</button>
+                                        <a href="/pagina_usuario" class="btn">Cancelar</a>
+									</div>	
+								</div>
+							</form>
+							<!--/ End Form -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--/ End Checkout -->
+		

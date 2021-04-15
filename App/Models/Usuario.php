@@ -66,6 +66,21 @@ class Usuario extends Model {
         return $valido;
     }
 
+    //valida se o cadastro pode ser feito
+    public function validaSenha() {
+        $valido = '';
+
+        if(strlen($this->__get('senha')) < 4){
+            $valido = 'senha-invalida';
+        }
+
+        if($this->__get('senha') != $this->__get('conf_senha')){
+            $valido = 'senhas-diferentes';
+        }
+
+        return $valido;
+    }
+
     public function validaCPF($cpf) {
  
         // Extrai somente os números
@@ -96,7 +111,7 @@ class Usuario extends Model {
 
     //recuperar um usuário por e-mail
     public function getUsuarioPorEmail() {
-        $query = "SELECT nome, email FROM usuarios WHERE email = :email";
+        $query = "SELECT nome, sobrenome, email FROM usuarios WHERE email = :email";
         try{
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':email', $this->__get('email'));
@@ -109,10 +124,46 @@ class Usuario extends Model {
         
     }
 
+    public function getEditUser(){
+        $query = "SELECT nome, sobrenome, email, cpf FROM usuarios WHERE id = :id";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $this->__get('id'));
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        
+    }
+
+    public function updateUsuario(){
+        $query = "UPDATE `usuarios` SET `nome` = :nome, `sobrenome` = :sobrenome, `email` = :email, `cpf` = :cpf WHERE `usuarios`.`id` = :id";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $this->__get('id'));
+        $stmt->bindValue(':nome', $this->__get('nome'));
+        $stmt->bindValue(':sobrenome', $this->__get('sobrenome'));
+        $stmt->bindValue(':email', $this->__get('email'));
+        $stmt->bindValue(':cpf', $this->__get('cpf'));
+        $stmt->execute();
+
+        return $this;
+    }
+
+    public function updateSenha(){
+        $query = "UPDATE `usuarios` SET `senha` = :senha WHERE `usuarios`.`id` = :id";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $this->__get('id'));
+        $stmt->bindValue(':senha', md5($this->__get('senha')));
+        $stmt->execute();
+
+        return $this;
+    }
+
     //Autenticar usuario
     public function autenticar() {
 
-        $query = "SELECT id, nome, email FROM usuarios WHERE email = :email and senha = :senha";
+        $query = "SELECT id, nome, sobrenome, email FROM usuarios WHERE email = :email and senha = :senha";
         try{
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':email', $this->__get('email'));
@@ -124,6 +175,8 @@ class Usuario extends Model {
             if(is_array($usuario) && $usuario['id'] != '' && $usuario['nome'] != ''){
                 $this->__set('id', $usuario['id']);
                 $this->__set('nome', $usuario['nome']);
+                $this->__set('sobrenome', $usuario['sobrenome']);
+                $this->__set('email', $usuario['email']);
             }
 
             return $this;

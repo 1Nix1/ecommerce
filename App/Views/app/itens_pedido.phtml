@@ -1,5 +1,5 @@
 <!-- Breadcrumbs -->
-    <div class="breadcrumbs">
+<div class="breadcrumbs">
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
@@ -31,9 +31,9 @@
 											<div class="navbar-collapse">	
 												<div class="nav-inner">	
 													<ul class="nav main-menu menu navbar-nav">
-														<li class="active"><a href="/pagina_usuario">Minha conta</a></li>																			
-														<li><a href="/pedido_usuario">Meus pedidos</a></li>
-														<li><a href="/endereco_usuario">Endereços cadastrados</a></li>
+														<li><a href="/pagina_usuario">Minha conta</a></li>																			
+														<li class="active"><a href="/pedido_usuario">Meus pedidos</a></li>
+														<li><a href="/endereco_usuario">Endereços cadasthados</a></li>
 													</ul>
 												</div>
 											</div>
@@ -49,30 +49,36 @@
 			<!--/ End Header Inner -->
 			<section class="pagina-usuario">
 				<div class="user-title">
-					<h4>Detalhes da conta:</h4>
+					<h4>Itens do pedidos:</h4>
+				</div>
+				
+				<div class="table-pedido-usuario">
+					<table>
+						<tr>
+							<th>Nome</th>
+							<th>Tamanho</th>
+							<th>Quantidade</th>
+							<th>Valor unitário</th>
+							<th>Total</th>
+						</tr>
+						
+						<?php foreach($this->view->itens_pedido as $id_item => $item){ ?>
+                        
+						<tr>
+							<td><?= $item['nome'] ?></td>
+							<td><?= $item['tamanho'] ?></td>
+							<td><?= $item['quantidade'] ?></td>
+							<td><?= $item['valor_unit'] ?></td>
+							<td><?= $item['total'] ?></td>
+							<td><a href="/itens_pedido"><?= 'Ver pedido' ?></a></td>
+							
+						</tr>
+						
+						<?php } ?>	
+					</table>
 				</div>
 
-				<div class="user-info">
-					<p><?= $_SESSION['nome'].' '.$_SESSION['sobrenome'] ?></p>
-					<p><?= $_SESSION['email'] ?></p>
-					<div class="bnt-user">
-						<a href="/edita_usuario" class="bnt-user-edit">Editar</a>
-						<a href="/mudar_senha" class="bnt-user-edit-senha">Mudar senha</a>
-					</div>
-					<div style="clear: both"></div>
-				</div>
-
-				<!--<div class="user-info">
-					<h5>Endereço padrão:</h5>
-					<p>Thiago Augusto</p>
-					<p>Rua santo violin</p>
-					<p>Eldorado</p>
-					<p>343</p>
-					<p>Casa verde</p>
-					<p>Ibiporã, Parana, 86200-000</p>
-					<p>Brasil</p>
-					<p>Telelefone: (43)9996-50307</p>
-				</div>-->
+				
 				
 			</section>
 

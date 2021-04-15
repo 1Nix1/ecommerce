@@ -143,7 +143,19 @@
 										}else{
 											echo '/login';
 										}
-									?>" class="single-icon"><i class="ti-bag"></i> <span class="total-count">1</span></a>
+									?>" class="single-icon"><i class="ti-bag"></i>
+										<?php
+											foreach($this->view->quantidadeItensCarrinho as $idx => $quantidadeItensCarrinho) {
+												if($quantidadeItensCarrinho != 0){
+										?>
+										<span class="total-count">
+											<?= $quantidadeItensCarrinho; ?>		
+										</span>
+										<?php
+												}
+											}
+										?>
+									</a>
 								</div>
 							</div>
 						</div>

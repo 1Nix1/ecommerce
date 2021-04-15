@@ -1,0 +1,96 @@
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="bread-inner">
+						<ul class="bread-list">
+							<li><a href="/">Home<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="#">Minha conta</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Breadcrumbs -->
+
+    <!-- Shopping Cart -->
+	<div class="shopping-cart section">
+		<div class="container container-user">
+        
+			<header class="header shop header-user">
+				<div class="header-inner">
+					<div class="container">
+						<div class="cat-nav-head">
+							<div class="row">
+								<div class="col-lg-9 col-12">
+									<div class="menu-area">
+										<!-- Main Menu -->
+										<nav class="navbar navbar-expand-lg">
+											<div class="navbar-collapse">	
+												<div class="nav-inner">	
+													<ul class="nav main-menu menu navbar-nav">
+														<li class="active"><a href="/pagina_usuario">Minha conta</a></li>																			
+														<li><a href="/pedido_usuario">Meus pedidos</a></li>
+														<li><a href="/endereco_usuario">Endereços cadastrados</a></li>
+													</ul>
+												</div>
+											</div>
+										</nav>
+										<!--/ End Main Menu -->	
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</header>
+			<!--/ End Header Inner -->
+			<section class="pagina-usuario">
+				<div class="user-title">
+                    <div  class="endereco-title">
+					    <h4>Editar usuario:</h4>
+                    </div>
+                    
+                    
+				</div>
+                
+                <div style="clear: both"></div>
+
+				<div class="div-form-endereco">
+					<div class="col-lg-8 col-12">
+						<div class="checkout-form">
+							<form class="row g-3 form-endereco" method="post" action="/editar_usuario">
+								<div class="col-md-12">
+									<?php if(isset($this->view->erroCadastro)) { ?>
+										<small class="form-text text-danger">Campos obrigatórios não preenchidos.</small>
+									<?php } ?>
+								</div>
+								<div class="col-md-6 item-form-endereco">
+									<label for="nome">Nome<span>*</span></label>
+									<input type="text" class="form-control" id="nome" name="nome" value="<?= $this->view->usuario['nome'] ?>" placeholder="Nome" required="required">
+								</div>
+								<div class="col-md-6 item-form-endereco">
+									<label for="sobrenome">Sobrenome<span>*</span></label>
+									<input type="text" class="form-control" id="sobrenome" name="sobrenome" value="<?= $this->view->usuario['sobrenome'] ?>" placeholder="Sobrenome" required="required">
+								</div>
+                                <div class="col-md-6 item-form-endereco">
+									<label for="cpf">cpf<span>*</span></label>
+									<input type="text" class="form-control" id="cpf" name="cpf" value="<?= $this->view->usuario['cpf'] ?>" placeholder="Cpf" required="required">
+								</div>
+								<div class="col-md-12 item-form-endereco">
+									<label for="email">E-mail<span>*</span></label>
+									<input type="email" class="form-control" id="email" name="email" value="<?= $this->view->usuario['email'] ?>" placeholder="E-mail" required="required">
+								</div>
+								<div class="col-md-12 item-form-endereco">
+									<button type="submit" class="btn" style="background-color: #f7941d">Enviar</button>
+									<a href="/pagina_usuario" class="btn">Cancelar</a>
+								</div>
+							</form>
+						</div>
+					</div>	
+				</div>
+			</section>
+        </div>
+    </div>

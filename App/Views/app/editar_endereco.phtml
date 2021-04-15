@@ -67,28 +67,28 @@
 										<small class="form-text text-danger">Campos obrigatórios não preenchidos.</small>
 									<?php } ?>
 								</div>
-								<input type="hidden" id="id" name="id" value="<?= $this->view->endereco['id'] ?>">
+								<input type="hidden" id="id" name="id" value="<?= $this->view->valueEndereco['id'] ?>">
 								<div class="col-md-6 item-form-endereco">
 									<label for="nome">Nome<span>*</span></label>
-									<input type="text" class="form-control" id="nome" name="nome" value="<?= $this->view->endereco['nome'] ?>" placeholder="Nome" required="required">
+									<input type="text" class="form-control" id="nome" name="nome" value="<?= $this->view->valueEndereco['nome'] ?>" placeholder="Nome" required="required">
 								</div>
 								<div class="col-md-6 item-form-endereco">
 									<label for="sobrenome">Sobrenome<span>*</span></label>
-									<input type="text" class="form-control" id="sobrenome" name="sobrenome" value="<?= $this->view->endereco['sobrenome'] ?>" placeholder="Sobrenome" required="required">
+									<input type="text" class="form-control" id="sobrenome" name="sobrenome" value="<?= $this->view->valueEndereco['sobrenome'] ?>" placeholder="Sobrenome" required="required">
 								</div>
 
 								<div class="col-md-6 item-form-endereco">
 									<label for="telefone">Telefone<span>*</span></label>
-									<input type="text" class="form-control" id="telefone" name="telefone" value="<?= $this->view->endereco['telefone'] ?>" placeholder="Telefone" required="required">
+									<input type="text" class="form-control" id="telefone" name="telefone" value="<?= $this->view->valueEndereco['telefone'] ?>" placeholder="Telefone" required="required">
 								</div>
 								<div class="col-md-6 item-form-endereco">
 									<label for="cep">CEP<span>*</span></label>
-									<input type="text" class="form-control" id="cep" name="cep" value="<?= $this->view->endereco['cep'] ?>" placeholder="CEP" required="required">
+									<input type="text" class="form-control" id="cep" name="cep" value="<?= $this->view->valueEndereco['cep'] ?>" placeholder="CEP" required="required">
 								</div>
 
 								<div class="col-md-6 item-form-endereco">
 									<label for="cidade">Cidade<span>*</span></label>
-									<input type="text" class="form-control" id="cidade" name="cidade" value="<?= $this->view->endereco['cidade'] ?>" placeholder="Cidade" required="required">
+									<input type="text" class="form-control" id="cidade" name="cidade" value="<?= $this->view->valueEndereco['cidade'] ?>" placeholder="Cidade" required="required">
 								</div>
 								<div class="col-md-6 item-form-endereco">
 									<label for="estado" class="form-label">Estado<span>*</span></label><br>
@@ -96,27 +96,27 @@
 										<option desable value="">---</option>
 										<?php foreach($this->view->estado as $id_item => $item){ 
 										?>	
-										<option value="<?= $item['id'] ?>" <?php if($this->view->endereco['id_estado'] == $item['id']){ ?> selected <?php } ?>><?= $item['nome'] ?></option>
+										<option value="<?= $item['id'] ?>" <?php if($this->view->valueEndereco['id_estado'] == $item['id']){ ?> selected <?php } ?>><?= $item['nome'] ?></option>
 										<?php } ?>
 									</select>
 								</div>
 
 								<div class="col-md-6 item-form-endereco">
 									<label for="rua">Rua<span>*</span></label>
-									<input type="text" class="form-control" id="rua" name="rua" value="<?= $this->view->endereco['rua'] ?>" placeholder="Rua" required="required">
+									<input type="text" class="form-control" id="rua" name="rua" value="<?= $this->view->valueEndereco['rua'] ?>" placeholder="Rua" required="required">
 								</div>
 								<div class="col-md-6 item-form-endereco">
 									<label for="bairro">Bairro</label>
-									<input type="text" class="form-control" id="bairro" name="bairro" value="<?= $this->view->endereco['bairro'] ?>" placeholder="Bairro" required="required">
+									<input type="text" class="form-control" id="bairro" name="bairro" value="<?= $this->view->valueEndereco['bairro'] ?>" placeholder="Bairro" required="required">
 								</div>
 
 								<div class="col-md-6 item-form-endereco">
 									<label for="numero">Número<span>*</span></label>
-									<input type="text" class="form-control" id="numero" name="numero" value="<?= $this->view->endereco['numero'] ?>" placeholder="Número" required="required">
+									<input type="text" class="form-control" id="numero" name="numero" value="<?= $this->view->valueEndereco['numero'] ?>" placeholder="Número" required="required">
 								</div>
 								<div class="col-md-6 item-form-endereco">
 									<label for="complemento">Complemento</label>
-									<input type="text" class="form-control" id="complemento" name="complemento" value="<?= $this->view->endereco['complemento'] ?>" placeholder="Complemento">
+									<input type="text" class="form-control" id="complemento" name="complemento" value="<?= $this->view->valueEndereco['complemento'] ?>" placeholder="Complemento">
 								</div>
 											
 								<div class="col-md-6 item-form-endereco">
@@ -125,7 +125,7 @@
 										<option desable value="">---</option>
 										<?php foreach($this->view->pais as $id_item => $item){ 
 										?>
-										<option value="<?= $item['id'] ?>" <?php if($this->view->endereco['id_pais'] == $item['id']){ ?> selected <?php } ?>><?= $item['nome'] ?></option>
+										<option value="<?= $item['id'] ?>" <?php if($this->view->valueEndereco['id_pais'] == $item['id']){ ?> selected <?php } ?>><?= $item['nome'] ?></option>
 										<?php } ?>
 									</select>
 								</div>
@@ -139,8 +139,10 @@
 									</div>
 								</div>-->
 								<div class="col-md-12 item-form-endereco">
-									<button type="submit" class="btn">Enviar</button>
+									<button type="submit" class="btn" style="background-color: #f7941d">Enviar</button>
+									<a href="/endereco_usuario" class="btn">Cancelar</a>
 								</div>
+								
 								
 							</form>
 						</div>

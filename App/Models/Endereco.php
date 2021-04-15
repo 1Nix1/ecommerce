@@ -100,7 +100,7 @@ class Endereco extends Model {
             AND
                 e.id LIKE :id
             AND
-                status = 'ativo'
+                e.status = 'ativo'
             ORDER BY e.id
         ";
 
