@@ -4,9 +4,11 @@ namespace App;
 
 use MF\Init\Bootstrap;
 
-class Route extends Bootstrap {
+class Route extends Bootstrap
+{
 
-    protected function initRoutes() {
+    protected function initRoutes()
+    {
 
         $routes['home'] = array(
             'route' => '/',
@@ -109,7 +111,7 @@ class Route extends Bootstrap {
             'controller' => 'AppController',
             'action' => 'removeItem'
         );
-        
+
         $routes['transportadora'] = array(
             'route' => '/transportadora',
             'controller' => 'AppController',
@@ -145,7 +147,7 @@ class Route extends Bootstrap {
             'controller' => 'AppController',
             'action' => 'enderecoUsuario'
         );
-        
+
         $routes['add_new_endereco'] = array(
             'route' => '/add_new_endereco',
             'controller' => 'AppController',
@@ -187,15 +189,104 @@ class Route extends Bootstrap {
             'controller' => 'AppController',
             'action' => 'dadosCartao'
         );
-        
+
         $routes['gera_pedido'] = array(
             'route' => '/gera_pedido',
             'controller' => 'AppController',
             'action' => 'geraPedido'
         );
 
+        //Admin
+        $routes['dashboard'] = array(
+            'route' => '/admin/dashboard',
+            'controller' => 'AdminController',
+            'action' => 'dashboard'
+        );
         
+        $routes['login_admin'] = array(
+            'route' => '/admin/login_admin',
+            'controller' => 'AdminController',
+            'action' => 'loginAdmin'
+        );
+
+        $routes['logar_admin'] = array(
+            'route' => '/admin/logar_admin',
+            'controller' => 'AuthController',
+            'action' => 'logarAdmin'
+        );
+
+        $routes['sair_admin'] = array(
+            'route' => '/admin/sair',
+            'controller' => 'AuthController',
+            'action' => 'sairAdmin'
+        );
+
+        $routes['produtos_admin'] = array(
+            'route' => '/admin/produtos',
+            'controller' => 'AdminController',
+            'action' => 'produtosAdmin'
+        );
+
+        $routes['novo_produtos_admin'] = array(
+            'route' => '/admin/novo_produtos',
+            'controller' => 'AdminController',
+            'action' => 'novoProdutoAdmin'
+        );
+        
+        $routes['cadastra_produto_admin'] = array(
+            'route' => '/admin/cadastra_produto',
+            'controller' => 'AdminController',
+            'action' => 'cadastraProdutoAdmin'
+        );
+        
+        $routes['excluir_produto_admin'] = array(
+            'route' => '/admin/excluir_produto',
+            'controller' => 'AdminController',
+            'action' => 'excluiProduto'
+        );
+        
+        $routes['editar_produto_admin'] = array(
+            'route' => '/admin/editar_produto',
+            'controller' => 'AdminController',
+            'action' => 'editarProduto'
+        );
+
+        $routes['edita_produto_admin'] = array(
+            'route' => '/admin/edita_produto',
+            'controller' => 'AdminController',
+            'action' => 'editaProduto'
+        );
+
+        $routes['categorias_admin'] = array(
+            'route' => '/admin/categorias',
+            'controller' => 'AdminController',
+            'action' => 'categoriasAdmin'
+        );
+        
+        $routes['nova_categoria_admin'] = array(
+            'route' => '/admin/nova_categoria',
+            'controller' => 'AdminController',
+            'action' => 'novaCategoria'
+        );
+        
+        $routes['cadastra_categoria_admin'] = array(
+            'route' => '/admin/cadastra_categoria',
+            'controller' => 'AdminController',
+            'action' => 'cadastraCategoria'
+        );
+
+        $routes['editar_categoria_admin'] = array(
+            'route' => '/admin/editar_categoria',
+            'controller' => 'AdminController',
+            'action' => 'editarCategoria'
+        );
+
+        $routes['edita_categoria_admin'] = array(
+            'route' => '/admin/edita_categoria',
+            'controller' => 'AdminController',
+            'action' => 'editaCategoria'
+        );
 
         $this->setRoutes($routes);
-    }   
+    }
 }

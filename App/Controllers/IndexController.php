@@ -6,10 +6,12 @@ namespace App\Controllers;
 use MF\Controller\Action;
 use MF\Model\Container;
 
-class IndexController extends Action {
+class IndexController extends Action
+{
 
-    public function index() {
-        
+    public function index()
+    {
+
         session_start();
 
         //Inicio buscar produtos
@@ -30,7 +32,7 @@ class IndexController extends Action {
 
         $this->view->total_de_paginas = ceil($total_produtos['total'] / $total_registros_pagina);
 
-        if(isset($_SESSION['id'])){
+        if (isset($_SESSION['id'])) {
             $carrinho->__set('id_usuario', $_SESSION['id']);
         }
         //quantidades de itens no carrinho
@@ -38,14 +40,15 @@ class IndexController extends Action {
         //carrega produtos
         $this->view->produtos = $produtos;
         //Buscar categorias
-        $this->view->categorias = $categoria->getAll();       
+        $this->view->categorias = $categoria->getAll();
         //Buscar subcategorias
         $this->view->subcategorias = $subcategoria->getAll();
 
         $this->render('index');
     }
 
-    public function categoria() {
+    public function categoria()
+    {
 
         session_start();
         $id_categoria = isset($_GET['categoria']) ? $_GET['categoria'] : '';
@@ -63,36 +66,37 @@ class IndexController extends Action {
         $deslocamento = ($pagina - 1) * $total_registros_pagina;
         $this->view->pagina_ativa = $pagina;
 
-        if(isset($_GET['categoria']) && isset($_GET['subcategoria'])){
-            
+        if (isset($_GET['categoria']) && isset($_GET['subcategoria'])) {
+
             $produto->__set('categoria', $id_categoria);
             $produto->__set('subcategoria', $id_subcategoria);
             $produtos = $produto->getPorSubcategoria($total_registros_pagina, $deslocamento);
             $total_produtos = $produto->getTotalPorSubcategoria();
-            
-        } else if(isset($_GET['categoria'])) {
+        } else if (isset($_GET['categoria'])) {
 
             $produto->__set('categoria', $id_categoria);
             $produtos = $produto->getPorCategoria($total_registros_pagina, $deslocamento);
             $total_produtos = $produto->getTotalPorCategoria();
         }
-        
+
 
         $this->view->total_de_paginas = ceil($total_produtos['total'] / $total_registros_pagina);
 
         $carrinho->__set('id_usuario', $_SESSION['id']);
         //quantidades de itens no carrinho
         $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
+        
         $this->view->produtos = $produtos;
         //Buscar categorias
-        $this->view->categorias = $categoria->getAll();       
+        $this->view->categorias = $categoria->getAll();
         //Buscar subcategorias
         $this->view->subcategorias = $subcategoria->getAll();
 
         $this->render('index');
     }
 
-    public function search() {
+    public function search()
+    {
 
         session_start();
 
@@ -130,10 +134,10 @@ class IndexController extends Action {
         $this->view->subcategorias = $subcategoria->getAll();
 
         $this->render('index');
-
     }
 
-    public function inscreverse() {
+    public function inscreverse()
+    {
 
         session_start();
 
@@ -141,7 +145,7 @@ class IndexController extends Action {
         $categoria = Container::getModel('Categoria');
         $subcategoria = Container::getModel('Subcategoria');
 
-        if(isset($_SESSION['id']) && isset($_SESSION['nome'])){
+        if (isset($_SESSION['id']) && isset($_SESSION['nome'])) {
             header('Location: /');
         } else {
             $this->view->usuario = array(
@@ -153,7 +157,7 @@ class IndexController extends Action {
 
             $this->view->erroCadastro = false;
 
-            if(isset($_SESSION['id'])){
+            if (isset($_SESSION['id'])) {
                 $carrinho->__set('id_usuario', $_SESSION['id']);
             }
             //quantidades de itens no carrinho
@@ -167,14 +171,15 @@ class IndexController extends Action {
         }
     }
 
-    public function registrar() {
+    public function registrar()
+    {
 
         session_start();
 
         $categoria = Container::getModel('Categoria');
         $subcategoria = Container::getModel('Subcategoria');
 
-        if(isset($_SESSION['id']) && isset($_SESSION['nome'])){
+        if (isset($_SESSION['id']) && isset($_SESSION['nome'])) {
             header('Location: /');
         } else {
             //receber os dados do formulario
@@ -193,12 +198,11 @@ class IndexController extends Action {
             //Buscar subcategorias
             $this->view->subcategorias = $subcategoria->getAll();
 
-            if($usuario->validaCadastro() && count($usuario->getUsuarioPorEmail()) == 0) {
+            if ($usuario->validaCadastro() && count($usuario->getUsuarioPorEmail()) == 0) {
 
                 $usuario->salvar();
 
                 $this->render('cadastro');
-                
             } else {
 
                 $this->view->usuario = array(
@@ -215,14 +219,15 @@ class IndexController extends Action {
         }
     }
 
-    public function login() {
+    public function login()
+    {
         session_start();
 
         $carrinho = Container::getModel('Carrinho');
         $categoria = Container::getModel('Categoria');
         $subcategoria = Container::getModel('Subcategoria');
 
-        if(isset($_SESSION['id'])){
+        if (isset($_SESSION['id'])) {
             $carrinho->__set('id_usuario', $_SESSION['id']);
         }
         //quantidades de itens no carrinho
@@ -232,16 +237,17 @@ class IndexController extends Action {
         //Buscar subcategorias
         $this->view->subcategorias = $subcategoria->getAll();
 
-        if(isset($_SESSION['id']) && isset($_SESSION['nome'])){
+        if (isset($_SESSION['id']) && isset($_SESSION['nome'])) {
             header('Location: /');
         } else {
             $this->view->login = isset($_GET['login']) ? $_GET['login'] : '';
-            
+
             $this->render('login');
         }
     }
 
-    public function produto() {
+    public function produto()
+    {
         session_start();
 
         $categoria = Container::getModel('Categoria');
@@ -249,18 +255,18 @@ class IndexController extends Action {
         $subcategoria = Container::getModel('Subcategoria');
         $produto = Container::getModel('Produto');
 
-        if(!$_GET['id']){
+        if (!$_GET['id']) {
             header('Location: /');
         }
-        
+
         $produto->__set('id', $_GET['id']);
-        
+
 
         $this->view->produtos = $produto->getProdutoPorId();
 
         $categoria->__set('id', $this->view->produtos['id_categoria']);
         $carrinho->__set('id_usuario', $_SESSION['id']);
-        
+
         //retorna a categoria do produto
         $this->view->categorias_especifica = $categoria->getCategoria();
 
@@ -273,4 +279,5 @@ class IndexController extends Action {
 
         $this->render('produto');
     }
+
 }

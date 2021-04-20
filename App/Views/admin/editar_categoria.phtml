@@ -1,0 +1,43 @@
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+            <h1 class="h3 mb-2 text-gray-800 clearfix">Cadastrar Produto</h1>
+
+            <?php
+            if (isset($this->view->campos_obrigatorios) && $this->view->campos_obrigatorios == 'true') {
+            ?>
+                <p class="text-danger">Campos obrigatorios não preenchidos</p>
+            <?php
+            } else if ($this->view->campos_obrigatorios == 'false') {
+            ?>
+                <p class="text-success">Editado com sucesso</p>
+            <?php
+            }
+            ?>
+            <form action="/admin/edita_categoria" method="POST">
+                <div class="form-row">
+                    <input name="id" type="hidden" value="<?= $this->view->getEditCategoria['id'] ?>">
+                    <div class="form-group col-md-3">
+                        <label for="nome">Nome</label>
+                        <input name="nome" type="text" value="<?= $this->view->getEditCategoria['nome'] ?>" class="form-control" id="nome-produto" placeholder="Nome" required>
+                    </div>
+                    <div class="form-group col-md-3">
+                    <p>Status</p>
+                    <div class="switch__container">
+                        <input id="switch-shadow" name="ativado" <?php echo $this->view->getEditCategoria['status'] == 'ativo' ? 'checked' : ''; ?> class="switch switch--shadow" type="checkbox" />
+                        <label for="switch-shadow"></label>
+                    </div>
+        </div>
+                </div>
+                <button type="submit" name="enviar-formulario" class="btn btn-primary mt-3">Salvar</button>
+                <a type="submit" href="/admin/categorias" class="btn btn-secondary mt-3">Cancelar</a>
+            </form>
+        </div>
+        <!-- End begin page content -->
+    </div>
+    <!-- End of Content Wrapper -->

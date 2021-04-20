@@ -14,6 +14,7 @@ class Produto extends Model {
     private $imagem;
     private $valor;
     private $quantidade;
+    private $status;
 
     public function __get($atributo) {
         return $this->$atributo;
@@ -25,9 +26,10 @@ class Produto extends Model {
 
     //recuperar
     public function getAll() {
-        $query = "SELECT id, nome, id_categoria, descricao, imagem, valor, quantidade FROM produtos ORDER BY id DESC";
+        $query = "SELECT id, nome, id_categoria, descricao, imagem, valor, quantidade FROM produtos WHERE status = :status ORDER BY id DESC";
 
         $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':status', 'ativo');
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -47,7 +49,9 @@ class Produto extends Model {
             valor, 
             quantidade 
         FROM 
-            produtos 
+            produtos
+        WHERE 
+            status = :status 
         ORDER BY 
             id DESC
         LIMIT
@@ -57,6 +61,7 @@ class Produto extends Model {
         ";
 
         $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':status', 'ativo');
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -69,9 +74,12 @@ class Produto extends Model {
             count(*) as total
         FROM 
             produtos
+        WHERE 
+            status = :status 
         ";
 
         $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':status', 'ativo');
         $stmt->execute();
 
         return $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -93,6 +101,8 @@ class Produto extends Model {
             produtos 
         WHERE
             id_categoria = :id_categoria
+        AND
+            status = :status 
         ORDER BY 
             id DESC
         LIMIT
@@ -103,6 +113,7 @@ class Produto extends Model {
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':id_categoria', $this->__get('categoria'));
+        $stmt->bindValue(':status', 'ativo');
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -117,10 +128,13 @@ class Produto extends Model {
             produtos
         WHERE
             id_categoria LIKE :id_categoria
+        AND
+            status = :status 
         ";
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':id_categoria', $this->__get('categoria'));
+        $stmt->bindValue(':status', 'ativo');
         $stmt->execute();
 
         return $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -144,6 +158,8 @@ class Produto extends Model {
             id_categoria = :id_categoria
         AND
             id_subcategoria = :id_subcategoria
+        AND
+            status = :status 
         ORDER BY 
             id DESC
         LIMIT
@@ -155,6 +171,7 @@ class Produto extends Model {
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':id_categoria', $this->__get('categoria'));
         $stmt->bindValue(':id_subcategoria', $this->__get('subcategoria'));
+        $stmt->bindValue(':status', 'ativo');
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -175,7 +192,10 @@ class Produto extends Model {
         FROM
             produtos
         WHERE
-            nome LIKE :nome ";
+            nome LIKE :nome
+        AND
+            status = :status  
+        ";
         if($this->__get('categoria') != ''){
             $query = $query."AND id_categoria LIKE :categoria ";
         }
@@ -184,6 +204,7 @@ class Produto extends Model {
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':nome', '%'.$this->__get('nome').'%');
+        $stmt->bindValue(':status', 'ativo');
         if($this->__get('categoria') != ''){
             $stmt->bindValue(':categoria', $this->__get('categoria'));
         }
@@ -201,6 +222,8 @@ class Produto extends Model {
             produtos
         WHERE
             nome LIKE :nome
+        AND
+            status = :status  
         ";
         if($this->__get('categoria') != ' '){
             $query = $query."AND id_categoria LIKE :categoria ";
@@ -208,6 +231,7 @@ class Produto extends Model {
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':nome', '%'.$this->__get('nome').'%');
+        $stmt->bindValue(':status', 'ativo');
         if($this->__get('categoria') != ' '){
             $stmt->bindValue(':categoria', $this->__get('categoria'));
         }
@@ -228,11 +252,14 @@ class Produto extends Model {
             id_categoria = :id_categoria
         AND
             id_subcategoria = :id_subcategoria
+        AND
+            status = :status  
         ";
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':id_categoria', $this->__get('categoria'));
         $stmt->bindValue(':id_subcategoria', $this->__get('subcategoria'));
+        $stmt->bindValue(':status', 'ativo');
         $stmt->execute();
 
         return $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -244,7 +271,8 @@ class Produto extends Model {
         SELECT 
             id, 
             nome, 
-            id_categoria, 
+            id_categoria,
+            id_subcategoria, 
             descricao, 
             imagem, 
             valor, 
@@ -253,13 +281,94 @@ class Produto extends Model {
             produtos 
         WHERE
             id = :id
+        AND
+            status = :status  
         ";
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':id', $this->__get('id'));
+        $stmt->bindValue(':status', 'ativo');
         $stmt->execute();
 
         return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function cadastraProduto(){
+        $query = "
+                INSERT INTO 
+                    `produtos` (`id`, 
+                                `nome`, 
+                                `id_categoria`, 
+                                `id_subcategoria`, 
+                                `descricao`, 
+                                `imagem`, 
+                                `valor`, 
+                                `quantidade`) 
+                VALUES (NULL, 
+                        :nome, 
+                        :categoria, 
+                        :subcategoria, 
+                        :descricao, 
+                        :imagem, 
+                        :valor, 
+                        :quantidade
+        )";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':nome', $this->__get('nome'));
+        $stmt->bindValue(':categoria', $this->__get('categoria'));
+        $stmt->bindValue(':subcategoria', $this->__get('subcategoria'));
+        $stmt->bindValue(':descricao', $this->__get('descricao'));
+        $stmt->bindValue(':imagem', $this->__get('imagem'));
+        $stmt->bindValue(':valor', $this->__get('valor'));
+        $stmt->bindValue(':quantidade', $this->__get('quantidade'));
+        $stmt->execute();
+
+        return $this;
+    }
+
+    public function excluiProduto(){
+        $query = "
+                UPDATE 
+                    `produtos` 
+                SET 
+                    `status` = :status 
+                WHERE 
+                    `produtos`.`id` = :id;";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $this->__get('id'));
+        $stmt->bindValue(':status', '');
+        $stmt->execute();
+        return $this;
+    }
+
+    public function editaProduto(){
+        $query = "
+                UPDATE 
+                    `produtos` 
+                SET 
+                    `nome` = :nome, 
+                    `id_categoria` = :categoria, 
+                    `id_subcategoria` = :subcategoria, 
+                    `descricao` = :descricao, 
+                    `imagem` = :imagem, 
+                    `valor` = :valor, 
+                    `quantidade` = :quantidade
+                WHERE 
+                    `produtos`.`id` = :id";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $this->__get('id'));
+        $stmt->bindValue(':nome', $this->__get('nome'));
+        $stmt->bindValue(':categoria', $this->__get('categoria'));
+        $stmt->bindValue(':subcategoria', $this->__get('subcategoria'));
+        $stmt->bindValue(':descricao', $this->__get('descricao'));
+        $stmt->bindValue(':imagem', $this->__get('imagem'));
+        $stmt->bindValue(':valor', $this->__get('valor'));
+        $stmt->bindValue(':quantidade', $this->__get('quantidade'));
+        $stmt->execute();
+        return $this;
     }
 
     

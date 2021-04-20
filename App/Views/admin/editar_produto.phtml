@@ -1,0 +1,84 @@
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+            <h1 class="h3 mb-2 text-gray-800 clearfix">Cadastrar Produto</h1>
+
+            <?php
+            if (isset($this->view->campos_obrigatorios) && $this->view->campos_obrigatorios == 'true') {
+            ?>
+                <p class="text-danger">Campos obrigatorios não preenchidos</p>
+            <?php
+            } else if ($this->view->campos_obrigatorios == 'false') {
+            ?>
+                <p class="text-success">Editado com sucesso</p>
+            <?php
+            }
+            ?>
+            <form action="/admin/edita_produto" method="POST" enctype="multipart/form-data">
+                <div class="form-row">
+                    <input type="hidden" name="id_produto" value="<?= $this->view->getEditProduto['id'] ?>" />
+                    <div class="form-group col-md-6">
+                        <label for="nome">Nome</label>
+                        <input name="nome" value="<?= $this->view->getEditProduto['nome'] ?>" type="text" class="form-control" id="nome-produto" placeholder="Nome" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="descricao">Descrição</label>
+                        <input name="descricao" value="<?= $this->view->getEditProduto['descricao'] ?>" type="text" class="form-control" id="descricao-produto" placeholder="Descrição">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="preco">Preço</label>
+                        <input name="preco" value="<?= $this->view->getEditProduto['valor'] ?>" type="text" class="form-control" id="preco-produto" placeholder="Preço" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="quantidade">Quantidade</label>
+                        <input name="quantidade" value="<?= $this->view->getEditProduto['quantidade'] ?>" type="text" class="form-control" id="quantidade-produto" placeholder="Quantidade" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <select name="categoria" class="custom-select resultado" required>
+                            <option selected>Categoria</option>
+                            <?php
+                            foreach ($this->view->categorias as $idx_sub => $categoria) {
+                            ?>
+                                <option value="<?= $categoria['id']; ?>" <?php if ($this->view->getEditProduto['id_categoria'] == $categoria['id']) {
+                                                                                echo 'selected';
+                                                                            } ?>><?= $categoria['nome']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <select name="subcategoria" class="custom-select resultado" required>
+                            <option selected>Subcategoria</option>
+                            <?php
+                            foreach ($this->view->subcategorias as $idx_sub => $subcategoria) {
+                            ?>
+                                <option value="<?= $subcategoria['id']; ?>" <?php if ($this->view->getEditProduto['id_subcategoria'] == $subcategoria['id']) {
+                                                                                echo 'selected';
+                                                                            } ?>><?= $subcategoria['nome']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="hidden" name="img-name" value="<?= $this->view->getEditProduto['imagem'] ?>" />
+                        <input name="arquivo" type="file" class="custom-file-input" id="file-produto">
+                        <label class="custom-file-label" for="file">Escolha um arquivo...</label>
+                    </div>
+                    <div class="form-group col-md-12 row justify-content-end preview-produto">
+                        <img class="default-img preview-produto-img" src="../img_produtos/<?= $this->view->getEditProduto['imagem'] ?>">
+                    </div>
+                </div>
+                <button type="submit" name="enviar-formulario" class="btn btn-primary mt-3">Salvar</button>
+                <a type="submit" href="/admin/produtos" class="btn btn-secondary mt-3">Cancelar</a>
+            </form>
+        </div>
+        <!-- End begin page content -->
+    </div>
+    <!-- End of Content Wrapper -->
