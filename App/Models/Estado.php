@@ -177,8 +177,5 @@ class Estado extends Model {
         $stmt->bindValue(':status', $this->__get('status'));
         $stmt->execute();           
     }
-
-    //UPDATE `estados` SET `status` = 'ativo' WHERE `estados`.`id` = 1;
-
     
 }

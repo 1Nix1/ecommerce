@@ -220,7 +220,7 @@ class Route extends Bootstrap
             'controller' => 'AuthController',
             'action' => 'sairAdmin'
         );
-
+        //PRODUTO
         $routes['produtos_admin'] = array(
             'route' => '/admin/produtos',
             'controller' => 'AdminController',
@@ -256,7 +256,7 @@ class Route extends Bootstrap
             'controller' => 'AdminController',
             'action' => 'editaProduto'
         );
-
+        //CATEGORIA
         $routes['categorias_admin'] = array(
             'route' => '/admin/categorias',
             'controller' => 'AdminController',
@@ -286,7 +286,7 @@ class Route extends Bootstrap
             'controller' => 'AdminController',
             'action' => 'editaCategoria'
         );
-
+        //SUBCATEGORIA
         $routes['subcategorias_admin'] = array(
             'route' => '/admin/subcategorias',
             'controller' => 'AdminController',
@@ -316,7 +316,7 @@ class Route extends Bootstrap
             'controller' => 'AdminController',
             'action' => 'editaSubcategoria'
         );
-
+        //PEDIDO
         $routes['pedidos_admin'] = array(
             'route' => '/admin/pedidos',
             'controller' => 'AdminController',
@@ -340,7 +340,7 @@ class Route extends Bootstrap
             'controller' => 'AdminController',
             'action' => 'editaPedido'
         );
-        
+        //ESTADO
         $routes['estados_admin'] = array(
             'route' => '/admin/estados',
             'controller' => 'AdminController',
@@ -369,6 +369,36 @@ class Route extends Bootstrap
             'route' => '/admin/edita_estado',
             'controller' => 'AdminController',
             'action' => 'editaEstado'
+        );
+        //PAIS
+        $routes['paises_admin'] = array(
+            'route' => '/admin/paises',
+            'controller' => 'AdminController',
+            'action' => 'paisesAdmin'
+        );
+        
+        $routes['novo_pais_admin'] = array(
+            'route' => '/admin/novo_pais',
+            'controller' => 'AdminController',
+            'action' => 'novoPais'
+        );
+        
+        $routes['cadastra_pais_admin'] = array(
+            'route' => '/admin/cadastra_pais',
+            'controller' => 'AdminController',
+            'action' => 'cadastraPais'
+        );
+        
+        $routes['editar_pais_admin'] = array(
+            'route' => '/admin/editar_pais',
+            'controller' => 'AdminController',
+            'action' => 'editarPais'
+        );
+
+        $routes['edita_pais_admin'] = array(
+            'route' => '/admin/edita_pais',
+            'controller' => 'AdminController',
+            'action' => 'editaPais'
         );
 
         $this->setRoutes($routes);

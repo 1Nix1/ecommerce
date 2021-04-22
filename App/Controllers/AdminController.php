@@ -605,6 +605,7 @@ class AdminController extends Action
         header('Location: /admin/editar_pedido?id_pedido='.$_POST['id'].'&id_usuario='.$_POST['id_usuario']);
     }
 
+    //ESTADOS
     public function estadosAdmin(){
         session_start();
         $usuario = Container::getModel('UsuarioAdmin');
@@ -728,5 +729,131 @@ class AdminController extends Action
         $estado->editaEstado();
 
         header('Location: /admin/editar_estado?campos_obrigatorios=false&id_estado='.$_POST['id']);
+    }
+
+    //PAISES
+    public function paisesAdmin(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $pais = Container::getModel('Pais');
+
+        //variaveis de páginação
+        $total_registros_pagina = 9;
+        $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+        $deslocamento = ($pagina - 1) * $total_registros_pagina;
+        $this->view->pagina_ativa = $pagina;
+
+        $paises = $pais->getPorPagina($total_registros_pagina, $deslocamento);
+        $total_paises = $pais->getTotal();
+
+        $this->view->total_de_paginas = ceil($total_paises['total'] / $total_registros_pagina);
+        $this->view->paises = $paises;
+
+        if(isset($_POST['pesquisa'])){
+            $pais->__set('nome', $_POST['pesquisa']);
+            $total_paises = $pais->getTotalPesquisa();
+            $this->view->paises = $pais->pesquisaPais($total_registros_pagina, $deslocamento);
+        }
+
+        $this->render('paises', 'layout_admin');
+    }
+
+    public function novoPais(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'true'){
+            $this->view->campos_obrigatorios = 'true';
+        } else if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'false') {
+            $this->view->campos_obrigatorios = 'false';
+        } else {
+            $this->view->campos_obrigatorios = '';
+        }
+
+        $this->render('novo_pais', 'layout_admin');
+    }
+
+    public function cadastraPais(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $pais = Container::getModel('Pais');
+
+        $status = '';
+
+        if(isset($_POST['ativado'])){
+            $status = 'ativo';
+        }
+
+        if(empty($_POST['nome']) || $_POST['nome'] == ''){
+            header('Location: /admin/novo_pais?campos_obrigatorios=true');
+            exit();
+        }
+
+        $pais->__set('nome', $_POST['nome']);
+        $pais->__set('status', $status);
+
+        $pais->cadastraPais();
+
+        header('Location: /admin/novo_pais?campos_obrigatorios=false');
+    }
+
+    public function editarPais(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $pais = Container::getModel('Pais');
+
+        $pais->__set('id', $_GET['id_pais']);
+
+        $this->view->getEditPais = $pais->getPais();
+
+        $this->view->edita_pais = array(
+            'id' => $this->view->getEditPais['id'],
+            'nome' => $this->view->getEditPais['nome'],
+            'status' => $this->view->getEditPais['status']
+        );
+
+        if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'true'){
+            $this->view->campos_obrigatorios = 'true';
+        } else if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'false') {
+            $this->view->campos_obrigatorios = 'false';
+        } else {
+            $this->view->campos_obrigatorios = '';
+        }
+
+        $this->render('editar_pais', 'layout_admin');
+    }
+
+    public function editaPais(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $pais = Container::getModel('Pais');
+
+        $status = '';
+
+        if(isset($_POST['ativado'])){
+            $status = 'ativo';
+        }
+
+        if($_POST['nome'] == ''){
+            header('Location: /admin/editar_pais?campos_obrigatorios=true&id_pais='.$_POST['id']);
+            exit();
+        }
+
+        $pais->__set('id', $_POST['id']);
+        $pais->__set('nome', $_POST['nome']);
+        $pais->__set('status', $status);
+
+        $pais->editaPais();
+
+        header('Location: /admin/editar_pais?campos_obrigatorios=false&id_pais='.$_POST['id']);
     }
 }
