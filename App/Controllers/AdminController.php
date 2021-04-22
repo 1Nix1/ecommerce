@@ -37,7 +37,7 @@ class AdminController extends Action
         $produto = Container::getModel('Produto');
 
         //variaveis de páginação
-        $total_registros_pagina = 12;
+        $total_registros_pagina = 9;
         $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
         $deslocamento = ($pagina - 1) * $total_registros_pagina;
         $this->view->pagina_ativa = $pagina;
@@ -269,7 +269,7 @@ class AdminController extends Action
         $categoria = Container::getModel('Categoria');
 
         //variaveis de páginação
-        $total_registros_pagina = 12;
+        $total_registros_pagina = 9;
         $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
         $deslocamento = ($pagina - 1) * $total_registros_pagina;
         $this->view->pagina_ativa = $pagina;
@@ -394,7 +394,7 @@ class AdminController extends Action
         $subcategoria = Container::getModel('Subcategoria');
 
         //variaveis de páginação
-        $total_registros_pagina = 12;
+        $total_registros_pagina = 9;
         $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
         $deslocamento = ($pagina - 1) * $total_registros_pagina;
         $this->view->pagina_ativa = $pagina;
@@ -531,7 +531,7 @@ class AdminController extends Action
         $pedido = Container::getModel('Pedido');
 
         //variaveis de páginação
-        $total_registros_pagina = 12;
+        $total_registros_pagina = 9;
         $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
         $deslocamento = ($pagina - 1) * $total_registros_pagina;
         $this->view->pagina_ativa = $pagina;
@@ -582,5 +582,151 @@ class AdminController extends Action
         $this->view->pedido = $pedido->getPedido();
 
         $this->render('editar_pedido', 'layout_admin');
+    }
+
+    public function editaPedido(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $pedido = Container::getModel('Pedido');
+
+        $status = 'pago';
+
+        if(isset($_POST['enviado'])){
+            $status = 'enviado';
+        }
+
+        $pedido->__set('id', $_POST['id']);
+        $pedido->__set('status', $status);
+        
+        $pedido->updatePedidoEnviado();
+
+        header('Location: /admin/editar_pedido?id_pedido='.$_POST['id'].'&id_usuario='.$_POST['id_usuario']);
+    }
+
+    public function estadosAdmin(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $estato = Container::getModel('Estado');
+
+        //variaveis de páginação
+        $total_registros_pagina = 9;
+        $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+        $deslocamento = ($pagina - 1) * $total_registros_pagina;
+        $this->view->pagina_ativa = $pagina;
+
+        $estatos = $estato->getPorPagina($total_registros_pagina, $deslocamento);
+        $total_estatos = $estato->getTotal();
+
+        $this->view->total_de_paginas = ceil($total_estatos['total'] / $total_registros_pagina);
+        $this->view->estatos = $estatos;
+
+        if(isset($_POST['pesquisa'])){
+            $estato->__set('nome', $_POST['pesquisa']);
+            $total_estatos = $estato->getTotalPesquisa();
+            $this->view->estatos = $estato->pesquisaEstado($total_registros_pagina, $deslocamento);
+        }
+
+        $this->render('estados', 'layout_admin');
+    }
+
+    public function novoEstado(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'true'){
+            $this->view->campos_obrigatorios = 'true';
+        } else if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'false') {
+            $this->view->campos_obrigatorios = 'false';
+        } else {
+            $this->view->campos_obrigatorios = '';
+        }
+
+        $this->render('novo_estado', 'layout_admin');
+    }
+
+    public function cadastraEstado(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $estado = Container::getModel('Estado');
+
+        $status = '';
+
+        if(isset($_POST['ativado'])){
+            $status = 'ativo';
+        }
+
+        if(empty($_POST['nome']) || $_POST['nome'] == ''){
+            header('Location: /admin/novo_estado?campos_obrigatorios=true');
+            exit();
+        }
+
+        $estado->__set('nome', mb_strtoupper($_POST['nome']));
+        $estado->__set('status', $status);
+
+        $estado->cadastraEstado();
+
+        header('Location: /admin/novo_estado?campos_obrigatorios=false');
+    }
+
+    public function editarEstado(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $estado = Container::getModel('Estado');
+
+        $estado->__set('id', $_GET['id_estado']);
+
+        $this->view->getEditEstado = $estado->getEstado();
+
+        $this->view->edita_estado = array(
+            'id' => $this->view->getEditEstado['id'],
+            'nome' => $this->view->getEditEstado['nome'],
+            'status' => $this->view->getEditEstado['status']
+        );
+
+        if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'true'){
+            $this->view->campos_obrigatorios = 'true';
+        } else if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'false') {
+            $this->view->campos_obrigatorios = 'false';
+        } else {
+            $this->view->campos_obrigatorios = '';
+        }
+
+        $this->render('editar_estado', 'layout_admin');
+    }
+
+    public function editaEstado(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $estado = Container::getModel('Estado');
+
+        $status = '';
+
+        if(isset($_POST['ativado'])){
+            $status = 'ativo';
+        }
+
+        if($_POST['nome'] == ''){
+            header('Location: /admin/editar_estado?campos_obrigatorios=true&id_estado='.$_POST['id']);
+            exit();
+        }
+
+        $estado->__set('id', $_POST['id']);
+        $estado->__set('nome', $_POST['nome']);
+        $estado->__set('status', $status);
+
+        $estado->editaEstado();
+
+        header('Location: /admin/editar_estado?campos_obrigatorios=false&id_estado='.$_POST['id']);
     }
 }

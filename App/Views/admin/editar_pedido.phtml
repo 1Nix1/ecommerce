@@ -8,8 +8,10 @@
         <div class="container-fluid">
             <h1 class="h3 mb-2 text-gray-800 clearfix">Contato</h1>
 
-            <form action="/admin/edita_subcategoria" method="POST">
+            <form action="/admin/edita_pedido" method="POST">
                 <div class="form-row">
+                    <input name="id" value="<?= $this->view->pedido['id'] ?>" type="hidden">
+                    <input name="id_usuario" value="<?= $this->view->pedido['id_usuario'] ?>" type="hidden">
                     <div class="form-group col-md-6">
                         <label for="email">Email</label>
                         <input name="email" value="<?= $this->view->pedido['email'] ?>" type="text" class="form-control" id="email" placeholder="Email" disabled>
@@ -22,7 +24,6 @@
                     <h1 class="h3 mb-2 text-gray-800 clearfix col-md-12">Endereço</h1>
 
                     <div class="form-group col-md-6">
-                        <input name="id" value="<?= $this->view->pedido['id'] ?>" type="hidden" required>
                         <label for="nome">Nome</label>
                         <input value="<?= $this->view->pedido['nome'] ?>" type="text" class="form-control" id="nome" placeholder="Nome" disabled>
                     </div>

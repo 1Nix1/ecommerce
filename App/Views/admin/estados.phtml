@@ -1,0 +1,150 @@
+<div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+            <!-- Sidebar Toggle (Topbar) -->
+            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                <i class="fa fa-bars"></i>
+            </button>
+
+            <!-- Topbar Navbar -->
+            <ul class="navbar-nav ml-auto">
+                <!-- Pesquisa -->
+                <form class="form-inline mr-auto w-100 navbar-search" method="POST" action="/admin/estados">
+                    <div class="input-group">
+                        <input name="pesquisa" type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="topbar-divider d-none d-sm-block"></div>
+
+            </ul>
+
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="col-sm-3 col-lg-2 text-right ng-scope float-right" style="margin-bottom: 10px;">
+                <a class="btn btn-primary btn-block btn-new ng-binding text-light" href="/admin/novo_estado">
+                    <span class="icon fa fa-plus"></span>
+                    Novo Registro
+                </a>
+            </div>
+
+            <h1 class="h3 mb-2 text-gray-800 clearfix"><a href="/admin/estados" class="titulo_pag_admin">Estados</a></h1>
+
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Tabela de estados</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table text-dark" id="dataTable" width="100%">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Nome</th>
+                                    <th>Status</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <?php foreach ($this->view->estatos as $id_produto => $estados) { ?>
+                                <tbody>
+                                    <tr class="text-center">
+                                        <td><?= $estados['nome'] ?></td>
+                                        <td><?php echo $estados['status'] != '' ? $estados['status'] :  'inativo'; ?></td>
+                                        <td class="text-right btn-column ng-scope" style="width: 10%;">
+                                            <div class="btn btn-group float-rigth">
+                                                <a href="/admin/editar_estado?id_estado=<?= $estados['id'] ?>" id="edita" class="btn btn-primary">
+                                                    <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            <?php } ?>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 row justify-content-end">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="?pagina=1
+								<?php
+                                if (isset($_GET['categoria']) && isset($_GET['subcategoria'])) {
+                                    echo '&categoria=' . $_GET['categoria'] . '&subcategoria=' . $_GET['subcategoria'];
+                                } else if (isset($_GET['pesquisa']) && isset($_GET['categoria']) && $_GET['categoria'] != ' ') {
+                                    echo '&pesquisa=' . $_GET['pesquisa'] . '&categoria=' . $_GET['categoria'];
+                                } else if (isset($_GET['categoria']) && $_GET['categoria'] != ' ') {
+                                    echo '&categoria=' . $_GET['categoria'];
+                                } else if (isset($_GET['pesquisa'])) {
+                                    echo '&pesquisa=' . $_GET['pesquisa'] . '&categoria=' . '+';
+                                }
+                                ?>">Previous</a></li>
+                        <?php for ($i = 1; $i <= $this->view->total_de_paginas; $i++) { ?>
+                            <li class="page-item"><a class="page-link" style="background-color: <?= $this->view->pagina_ativa == $i ? '#F7941D' : '' ?>; color: <?= $this->view->pagina_ativa == $i ? '#FFF' : '' ?>;" href="?pagina=<?= $i ?>
+								<?php
+                                if (isset($_GET['categoria']) && isset($_GET['subcategoria'])) {
+                                    echo '&categoria=' . $_GET['categoria'] . '&subcategoria=' . $_GET['subcategoria'];
+                                } else if (isset($_GET['pesquisa']) && isset($_GET['categoria']) && $_GET['categoria']  != ' ') {
+                                    echo '&pesquisa=' . $_GET['pesquisa'] . '&categoria=' . $_GET['categoria'];
+                                } else if (isset($_GET['categoria']) && $_GET['categoria'] != ' ') {
+                                    echo '&categoria=' . $_GET['categoria'];
+                                } else if (isset($_GET['pesquisa'])) {
+                                    echo '&pesquisa=' . $_GET['pesquisa'] . '&categoria=' . '+';
+                                }
+                                ?>"><?= $i ?></a></li>
+                        <?php } ?>
+                        <li class="page-item"><a class="page-link" href="?pagina=<?= $this->view->total_de_paginas ?>
+								<?php
+                                if (isset($_GET['categoria']) && isset($_GET['subcategoria'])) {
+                                    echo '&categoria=' . $_GET['categoria'] . '&subcategoria=' . $_GET['subcategoria'];
+                                } else if (isset($_GET['pesquisa']) && isset($_GET['categoria']) && $_GET['categoria'] != ' ') {
+                                    echo '&pesquisa=' . $_GET['pesquisa'] . '&categoria=' . $_GET['categoria'];
+                                } else if (isset($_GET['categoria']) && $_GET['categoria'] != ' ') {
+                                    echo '&categoria=' . $_GET['categoria'];
+                                } else if (isset($_GET['pesquisa'])) {
+                                    echo '&pesquisa=' . $_GET['pesquisa'] . '&categoria=' . '+';
+                                }
+
+                                ?>">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <!-- End begin page content -->
+        <!-- Logout Modal-->
+        <!--<div class="modal fade" id="excluirProduto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Tem certeza que deseja excluir o produto?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Selecione "Excluir" abaixo se você deseja excluir o produto selecionado.</div>
+                    <div class="modal-footer">
+                        <a class="btn btn-primary" href="/admin/sair">Excluir</a>
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+    </div>

@@ -138,8 +138,8 @@ class Pedido extends Model {
             p.id, 
             u.email,
             p.id_usuario,
-            e.nome,
-            e.sobrenome,
+            u.nome,
+            u.sobrenome,
             p.total,
             p.data,
             p.status
@@ -174,8 +174,8 @@ class Pedido extends Model {
             p.id, 
             p.data,
             p.id_usuario,
-            e.nome,
-            e.sobrenome,
+            u.nome,
+            u.sobrenome,
             u.email,
             p.total,
             p.status
@@ -223,15 +223,15 @@ class Pedido extends Model {
     //recupera categoria pesquisada
     public function getTotalPesquisa($email) {
         $query = "
-        SELECT
-	        count(p.id) as total
-        FROM 
-            pedidos as p 
-        INNER JOIN 
-            usuarios as u 
-        ON u.id = p.id_usuario
-        WHERE
-            u.email LIKE :email
+                SELECT
+                    count(p.id) as total
+                FROM 
+                    pedidos as p 
+                INNER JOIN 
+                    usuarios as u 
+                ON u.id = p.id_usuario
+                WHERE
+                    u.email LIKE :email
         ";
 
         $stmt = $this->db->prepare($query);
@@ -239,6 +239,23 @@ class Pedido extends Model {
         $stmt->execute();
 
         return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function updatePedidoEnviado(){
+        $query = "
+                UPDATE 
+                    `pedidos` 
+                SET 
+                    `status` = :status 
+                WHERE 
+                    `pedidos`.`id` = :id";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $this->__get('id'));
+        $stmt->bindValue(':status', $this->__get('status'));
+        $stmt->execute();
+
+        return $this;    
     }
     
 }

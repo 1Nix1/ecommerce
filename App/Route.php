@@ -335,6 +335,42 @@ class Route extends Bootstrap
             'action' => 'editarPedido'
         );
 
+        $routes['edita_pedido_admin'] = array(
+            'route' => '/admin/edita_pedido',
+            'controller' => 'AdminController',
+            'action' => 'editaPedido'
+        );
+        
+        $routes['estados_admin'] = array(
+            'route' => '/admin/estados',
+            'controller' => 'AdminController',
+            'action' => 'estadosAdmin'
+        );
+        
+        $routes['novo_estado_admin'] = array(
+            'route' => '/admin/novo_estado',
+            'controller' => 'AdminController',
+            'action' => 'novoEstado'
+        );
+        
+        $routes['cadastra_estado_admin'] = array(
+            'route' => '/admin/cadastra_estado',
+            'controller' => 'AdminController',
+            'action' => 'cadastraEstado'
+        );
+        
+        $routes['editar_estado_admin'] = array(
+            'route' => '/admin/editar_estado',
+            'controller' => 'AdminController',
+            'action' => 'editarEstado'
+        );
+
+        $routes['edita_estado_admin'] = array(
+            'route' => '/admin/edita_estado',
+            'controller' => 'AdminController',
+            'action' => 'editaEstado'
+        );
+
         $this->setRoutes($routes);
     }
 }
