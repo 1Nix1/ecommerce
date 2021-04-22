@@ -21,7 +21,7 @@ class IndexController extends Action
         $subcategoria = Container::getModel('Subcategoria');
 
         //variaveis de páginação
-        $total_registros_pagina = 16;
+        $total_registros_pagina = 12;
         //$descocamento = 0;
         $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
         $deslocamento = ($pagina - 1) * $total_registros_pagina;
@@ -61,7 +61,7 @@ class IndexController extends Action
         $subcategoria = Container::getModel('Subcategoria');
 
         //variaveis de páginação
-        $total_registros_pagina = 16;
+        $total_registros_pagina = 12;
         $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
         $deslocamento = ($pagina - 1) * $total_registros_pagina;
         $this->view->pagina_ativa = $pagina;
@@ -110,7 +110,7 @@ class IndexController extends Action
         $subcategoria = Container::getModel('Subcategoria');
 
         //variaveis de páginação
-        $total_registros_pagina = 16;
+        $total_registros_pagina = 12;
         $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
         $deslocamento = ($pagina - 1) * $total_registros_pagina;
         $this->view->pagina_ativa = $pagina;

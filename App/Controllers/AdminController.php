@@ -37,7 +37,7 @@ class AdminController extends Action
         $produto = Container::getModel('Produto');
 
         //variaveis de páginação
-        $total_registros_pagina = 16;
+        $total_registros_pagina = 12;
         $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
         $deslocamento = ($pagina - 1) * $total_registros_pagina;
         $this->view->pagina_ativa = $pagina;
@@ -103,7 +103,7 @@ class AdminController extends Action
             header('Location: /admin/novo_produtos?campos_obrigatorios=true');
             exit();
         }
-
+        
         if(isset($_POST['enviar-formulario'])){
             $formatosPermitidos = array("png", "jpeg", "jpg");
             $extensao = pathinfo($_FILES['arquivo']['name'], PATHINFO_EXTENSION);
@@ -134,7 +134,7 @@ class AdminController extends Action
         $produto->__set('descricao', $_POST['descricao']);
         $produto->__set('valor', str_replace(",", ".", $_POST['preco']));
         $produto->__set('quantidade', $_POST['quantidade']);
-        $produto->__set('categoria', $_POST['categoria']);
+        $produto->__set('categoria', str_replace('/admin/novo_produtos?id_categoria=', '', $_POST['categoria']));
         $produto->__set('subcategoria', $_POST['subcategoria']);
         $produto->__set('imagem', $novoNome);
 
@@ -201,7 +201,7 @@ class AdminController extends Action
         $usuario->authLogin();
 
         //Verifica se á dados
-        if(empty($_POST['nome']) || empty($_POST['preco']) || empty($_POST['quantidade']) || empty($_POST['categoria']) || empty($_POST['subcategoria']) || empty($_FILES['arquivo'])) {
+        if(empty($_POST['id_produto']) ||empty($_POST['nome']) || empty($_POST['preco']) || empty($_POST['quantidade']) || empty($_POST['categoria']) || empty($_POST['subcategoria']) || empty($_FILES['arquivo'])) {
             header('Location: /admin/novo_produtos?campos_obrigatorios=true');
             exit();
         }
@@ -211,6 +211,9 @@ class AdminController extends Action
             exit();
         }
 
+        print_r($_POST);
+
+        echo str_replace('/admin/editar_produto?id_produto='.$_POST['id_produto'].'&id_categoria=', '', $_POST['categoria']);
         $produto = Container::getModel('Produto');
         if(isset($_FILES['arquivo']['name']) && $_FILES['arquivo']['name'] != ''){
             if(isset($_POST['enviar-formulario'])){
@@ -249,7 +252,7 @@ class AdminController extends Action
         $produto->__set('descricao', $_POST['descricao']);
         $produto->__set('valor', str_replace(",", ".", $_POST['preco']));
         $produto->__set('quantidade', $_POST['quantidade']);
-        $produto->__set('categoria', $_POST['categoria']);
+        $produto->__set('categoria', str_replace('/admin/editar_produto?id_produto='.$_POST['id_produto'].'&id_categoria=', '', $_POST['categoria']));
         $produto->__set('subcategoria', $_POST['subcategoria']);
         $produto->__set('imagem', $novoNome);
 
@@ -266,7 +269,7 @@ class AdminController extends Action
         $categoria = Container::getModel('Categoria');
 
         //variaveis de páginação
-        $total_registros_pagina = 16;
+        $total_registros_pagina = 12;
         $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
         $deslocamento = ($pagina - 1) * $total_registros_pagina;
         $this->view->pagina_ativa = $pagina;
@@ -277,6 +280,12 @@ class AdminController extends Action
         $this->view->total_de_paginas = ceil($total_categorias['total'] / $total_registros_pagina);
         $this->view->categorias = $categorias;
         
+        if(isset($_POST['pesquisa'])){
+            $categoria->__set('nome', $_POST['pesquisa']);
+            $total_categorias = $categoria->getTotalPesquisa();
+            $this->view->categorias = $categoria->pesquisaCategoria($total_registros_pagina, $deslocamento);
+        }
+
         $this->render('categorias', 'layout_admin');
     }
 
@@ -309,6 +318,11 @@ class AdminController extends Action
             $status = 'ativo';
         }
         
+        if(empty($_POST['nome']) || $_POST['nome'] == ''){
+            header('Location: /admin/nova_subcategoria?campos_obrigatorios=true');
+            exit();
+        }
+
         $categoria->__set('nome', $_POST['nome']);
         $categoria->__set('status', $status);
 
@@ -370,5 +384,203 @@ class AdminController extends Action
         $categoria->editaCategoria();
 
         header('Location: /admin/editar_categoria?campos_obrigatorios=false&id_categoria='.$_POST['id']);
+    }
+
+    public function subcategoriasAdmin(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $subcategoria = Container::getModel('Subcategoria');
+
+        //variaveis de páginação
+        $total_registros_pagina = 12;
+        $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+        $deslocamento = ($pagina - 1) * $total_registros_pagina;
+        $this->view->pagina_ativa = $pagina;
+
+        $subcategorias = $subcategoria->getAllPaginacao($total_registros_pagina, $deslocamento);
+        $total_subcategorias = $subcategoria->getTotal();
+
+        $this->view->total_de_paginas = ceil($total_subcategorias['total'] / $total_registros_pagina);
+        $this->view->subcategorias = $subcategorias;
+        
+        if(isset($_POST['pesquisa'])){
+            $subcategoria->__set('nome', $_POST['pesquisa']);
+            $total_subcategorias = $subcategoria->getTotalPesquisa();
+            $this->view->subcategorias = $subcategoria->pesquisaSubcategoria($total_registros_pagina, $deslocamento);
+        }
+
+        $this->render('subcategorias', 'layout_admin');
+    }
+
+    public function novaSubcategoria(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $categoria = Container::getModel('Categoria');
+
+        if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'true'){
+            $this->view->campos_obrigatorios = 'true';
+        } else if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'false') {
+            $this->view->campos_obrigatorios = 'false';
+        } else {
+            $this->view->campos_obrigatorios = '';
+        }
+        
+        //Buscar categorias
+        $this->view->categorias = $categoria->getAll();
+        $this->render('nova_subcategoria', 'layout_admin');
+    }
+
+    public function cadastraSubcategoria(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $subcategoria = Container::getModel('Subcategoria');
+
+        $status = '';
+
+        if(isset($_POST['ativado'])){
+            $status = 'ativo';
+        }
+
+        if(empty($_POST['nome']) || $_POST['nome'] == '' || empty($_POST['categoria']) || $_POST['categoria'] == ''){
+            header('Location: /admin/nova_subcategoria?campos_obrigatorios=true');
+            exit();
+        }
+
+        $subcategoria->__set('nome', $_POST['nome']);
+        $subcategoria->__set('id_categoria', $_POST['categoria']);
+        $subcategoria->__set('status', $status);
+
+        $subcategoria->cadastraSubcategoria();
+
+        header('Location: /admin/nova_subcategoria?campos_obrigatorios=false');
+    }
+
+    public function editarSubcategoria(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $categoria = Container::getModel('Categoria');
+        $subcategoria = Container::getModel('Subcategoria');
+
+        $subcategoria->__set('id', $_GET['id_subcategoria']);
+
+        $this->view->getEditSubcategoria = $subcategoria->getSubcategoria();
+
+        $this->view->edita_subcategoria = array(
+            'id' => $this->view->getEditSubcategoria['id'],
+            'nome' => $this->view->getEditSubcategoria['nome'],
+            'id_categoria' => $this->view->getEditSubcategoria['id_categoria'],
+            'categoria' => $this->view->getEditSubcategoria['categoria'],
+            'status' => $this->view->getEditSubcategoria['status']
+        );
+
+        if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'true'){
+            $this->view->campos_obrigatorios = 'true';
+        } else if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'false') {
+            $this->view->campos_obrigatorios = 'false';
+        } else {
+            $this->view->campos_obrigatorios = '';
+        }
+
+        //Buscar categorias
+        $this->view->categorias = $categoria->getAll();
+
+        $this->render('editar_subcategoria', 'layout_admin');
+    }
+
+    public function editaSubcategoria(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $subcategoria = Container::getModel('Subcategoria');
+
+        $status = '';
+
+        if(isset($_POST['ativado'])){
+            $status = 'ativo';
+        }
+
+        if(empty($_POST['id']) || $_POST['id'] == '' ||empty($_POST['nome']) || $_POST['nome'] == '' || empty($_POST['categoria']) || $_POST['categoria'] == ''){
+            header('Location: /admin/editar_subcategoria?campos_obrigatorios=true&id_subcategoria='.$_POST['id']);
+            exit();
+        }
+
+        $subcategoria->__set('id', $_POST['id']);
+        $subcategoria->__set('id_categoria', $_POST['categoria']);
+        $subcategoria->__set('nome', $_POST['nome']);
+        $subcategoria->__set('status', $status);
+
+        $subcategoria->editaSubcategoria();
+        
+        header('Location: /admin/editar_subcategoria?campos_obrigatorios=false&id_subcategoria='.$_POST['id']);
+    }
+
+    public function pedidosAdmin(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $pedido = Container::getModel('Pedido');
+
+        //variaveis de páginação
+        $total_registros_pagina = 12;
+        $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+        $deslocamento = ($pagina - 1) * $total_registros_pagina;
+        $this->view->pagina_ativa = $pagina;
+
+        $pedidos = $pedido->getPorPagina($total_registros_pagina, $deslocamento);
+        $total_pedidos = $pedido->getTotalRegistros();
+
+        //paginação
+        $this->view->total_de_paginas = ceil($total_pedidos['total'] / $total_registros_pagina);
+        $this->view->pedidos = $pedidos;
+        //retorna os pedidos
+        $this->view->pedidos = $pedidos;
+
+        if(isset($_POST['pesquisa'])){
+            $total_pedidos = $pedido->getTotalPesquisa($_POST['pesquisa']);
+            $this->view->pedidos = $pedido->pesquisaPedido($total_registros_pagina, $deslocamento, $_POST['pesquisa']);
+        }
+
+        $this->render('pedidos', 'layout_admin');
+    }
+
+    public function itensPedidoAdmin(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+        
+        $itens_pedido = Container::getModel('ItensPedido');
+
+        $itens_pedido->__set('id_pedido', $_GET['id_pedido']);
+        $itens_pedido->__set('id_usuario', $_GET['id_usuario']);
+        
+        $this->view->iten_pedido = $itens_pedido->getAll();
+        $this->view->email = $itens_pedido->getEmailUsuario();
+
+        $this->render('itens_pedido', 'layout_admin');
+    }
+
+    public function editarPedido(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $pedido = Container::getModel('Pedido');
+
+        $pedido->__set('id', $_GET['id_pedido']);
+        $pedido->__set('id_usuario', $_GET['id_usuario']);
+
+        $this->view->pedido = $pedido->getPedido();
+
+        $this->render('editar_pedido', 'layout_admin');
     }
 }

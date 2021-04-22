@@ -84,8 +84,50 @@ class Categoria extends Model {
         $stmt->execute();
 
         return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
 
+    //pesquisa por categoria
+    public function pesquisaCategoria($limit, $offset) {
+        $query = "
+        SELECT
+            id, 
+            nome,
+            status
+        FROM
+            categorias
+        WHERE
+            nome LIKE :nome
+        ORDER BY 
+            id 
+        DESC LIMIT 
+            $limit 
+        OFFSET 
+            $offset
+        ";
 
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':nome', '%'.$this->__get('nome').'%');
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    //recupera categoria pesquisada
+    public function getTotalPesquisa() {
+        $query = "
+        SELECT 
+            count(*) as total
+        FROM 
+            categorias
+        WHERE
+            nome LIKE :nome
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':nome', '%'.$this->__get('nome').'%');
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
     //recupera categoria por id
@@ -143,6 +185,8 @@ class Categoria extends Model {
         $stmt->bindValue(':status', $this->__get('status'));
         $stmt->execute();           
     }
+
+    
 
     
 }

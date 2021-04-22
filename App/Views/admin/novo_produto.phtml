@@ -21,6 +21,32 @@
             ?>
             <form action="/admin/cadastra_produto" method="POST" enctype="multipart/form-data">
                 <div class="form-row">
+                    <div class="form-group col-md-3 " id="categoriaDiv">
+                        <select name="categoria" id="categoria" class="custom-select resultado" onchange="location = this.value;" required>
+                            <option selected>Categoria</option>
+                            <?php
+                            foreach ($this->view->categorias as $idx_sub => $categoria) {
+                            ?>
+                                <option value="/admin/novo_produtos?id_categoria=<?= $categoria['id']; ?>" <?php echo isset($_GET['id_categoria']) && $categoria['id'] == $_GET['id_categoria'] ? 'selected' : ''; ?>><?= $categoria['nome']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <select name="subcategoria" class="custom-select resultado" required>
+                            <option selected>Subcategoria</option>
+                            <?php
+                            foreach ($this->view->subcategorias as $idx_sub => $subcategoria) {
+                                if($subcategoria['id_categoria'] == $_GET['id_categoria']){
+                            ?>
+                                <option value="<?= $subcategoria['id']; ?>"><?= $subcategoria['nome']; ?></option>
+                            <?php 
+                                }
+                            } 
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="nome">Nome</label>
                         <input name="nome" type="text" class="form-control" id="nome-produto" placeholder="Nome" required>
@@ -41,26 +67,6 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-3">
-                        <select name="categoria" class="custom-select resultado" required>
-                            <option selected>Categoria</option>
-                            <?php
-                            foreach ($this->view->categorias as $idx_sub => $categoria) {
-                            ?>
-                                <option value="<?= $categoria['id']; ?>"><?= $categoria['nome']; ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <select name="subcategoria" class="custom-select resultado" required>
-                            <option selected>Subcategoria</option>
-                            <?php
-                            foreach ($this->view->subcategorias as $idx_sub => $subcategoria) {
-                            ?>
-                                <option value="<?= $subcategoria['id']; ?>"><?= $subcategoria['nome']; ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
                     <div class="form-group col-md-6">
                         <input name="arquivo" type="file" class="custom-file-input" id="file-produto">
                         <label class="custom-file-label" for="file">Escolha um arquivo...</label>

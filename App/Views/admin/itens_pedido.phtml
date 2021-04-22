@@ -1,0 +1,82 @@
+<div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+            <!-- Sidebar Toggle (Topbar) -->
+            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                <i class="fa fa-bars"></i>
+            </button>
+
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="col-sm-3 col-lg-2 text-right ng-scope float-right" style="margin-bottom: 10px;">
+                <a class="btn btn-primary btn-block btn-new ng-binding text-light" href="/admin/pedidos">
+                    <i class="fas fa-reply"></i>
+                </a>
+            </div>
+            
+            <h1 class="h3 mb-2 text-gray-800 clearfix"><a href="/admin/pedidos" class="titulo_pag_admin">Itens Pedidos</a></h1>
+            
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary"><?= 'Usuario: '.$this->view->email['email'] ?></h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table text-dark" id="dataTable" width="100%">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Nome do Produto</th>
+                                    <th>Tamanho</th>
+                                    <th>Quantidade</th>
+                                    <th>Valor Unitário</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <?php foreach ($this->view->iten_pedido as $id_produto => $itens_pedido) { 
+                            ?>
+                                <tbody>
+                                    <tr class="text-center">
+                                        <td><?= $itens_pedido['nome'] ?></td>
+                                        <td><?= $itens_pedido['tamanho'] ?></td>
+                                        <td><?= $itens_pedido['quantidade'] ?></td>
+                                        <td><?= $itens_pedido['valor_unit'] ?></td>
+                                        <td><?= $itens_pedido['total'] ?></td>
+                                    </tr>
+                                </tbody>
+                            <?php } ?>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- End begin page content -->
+        <!-- Logout Modal-->
+        <!--<div class="modal fade" id="excluirProduto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Tem certeza que deseja excluir o produto?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Selecione "Excluir" abaixo se você deseja excluir o produto selecionado.</div>
+                    <div class="modal-footer">
+                        <a class="btn btn-primary" href="/admin/sair">Excluir</a>
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+    </div>

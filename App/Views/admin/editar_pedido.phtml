@@ -1,0 +1,77 @@
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+            <h1 class="h3 mb-2 text-gray-800 clearfix">Contato</h1>
+
+            <form action="/admin/edita_subcategoria" method="POST">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="email">Email</label>
+                        <input name="email" value="<?= $this->view->pedido['email'] ?>" type="text" class="form-control" id="email" placeholder="Email" disabled>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="telefone">Telefone</label>
+                        <input name="telefone" value="<?= $this->view->pedido['telefone'] ?>" type="text" class="form-control" id="telefone" placeholder="Telefone" disabled>
+                    </div>
+
+                    <h1 class="h3 mb-2 text-gray-800 clearfix col-md-12">Endereço</h1>
+
+                    <div class="form-group col-md-6">
+                        <input name="id" value="<?= $this->view->pedido['id'] ?>" type="hidden" required>
+                        <label for="nome">Nome</label>
+                        <input value="<?= $this->view->pedido['nome'] ?>" type="text" class="form-control" id="nome" placeholder="Nome" disabled>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="sobrenome">Sobrenome</label>
+                        <input value="<?= $this->view->pedido['sobrenome'] ?>" type="text" class="form-control" id="sobrenome" placeholder="Sobrenome" disabled>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="cep">CEP</label>
+                        <input value="<?= $this->view->pedido['cep'] ?>" type="text" class="form-control" id="cep" placeholder="CEP" disabled>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="cidade">Cidade</label>
+                        <input value="<?= $this->view->pedido['cidade'] ?>" type="text" class="form-control" id="cidade" placeholder="Cidade" disabled>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="estado">Cidade</label>
+                        <input value="<?= $this->view->pedido['estado'] ?>" type="text" class="form-control" id="estado" placeholder="Estado" disabled>
+                    </div>
+                    <div class="form-group col-md-9">
+                        <label for="rua">Rua</label>
+                        <input value="<?= $this->view->pedido['rua'] ?>" type="text" class="form-control" id="rua" placeholder="Rua" disabled>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="numero">Numero:</label>
+                        <input value="<?= $this->view->pedido['numero'] ?>" type="text" class="form-control" id="numero" placeholder="Numero" disabled>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="bairro">Bairro:</label>
+                        <input value="<?= $this->view->pedido['bairro'] ?>" type="text" class="form-control" id="bairro" placeholder="Bairro" disabled>
+                    </div>
+                    <div class="form-group col-md-9">
+                        <label for="complemento">Complemento:</label>
+                        <input value="<?= $this->view->pedido['complemento'] ?>" type="text" class="form-control" id="complemento" placeholder="Complemento" disabled>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <p>Enviado?</p>
+                        <div class="switch__container">
+                            <input id="switch-shadow" name="enviado" <?php echo $this->view->pedido['status'] == 'pago' ? '' : 'checked'; ?> class="switch switch--shadow" type="checkbox" />
+                            <label for="switch-shadow"></label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <button type="submit" name="enviar-formulario" class="btn btn-primary mt-3">Salvar</button>
+                <a type="submit" href="/admin/pedidos" class="btn btn-secondary mt-3">Cancelar</a>
+            </form>
+        </div>
+        <!-- End begin page content -->
+    </div>
+    <!-- End of Content Wrapper -->

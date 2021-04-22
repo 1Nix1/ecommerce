@@ -61,6 +61,36 @@ class ItensPedido extends Model {
 
     }
 
+    //recuperar
+    public function getEmailUsuario() {
+        $query = "
+        SELECT 
+            u.email
+        FROM 
+            itens_pedido as i
+        INNER JOIN
+            produtos as p
+        ON
+            p.id = i.id_produto
+        INNER JOIN
+            usuarios as u
+        ON
+            u.id = i.id_usuario
+        WHERE
+        	i.id_usuario = :id_usuario
+        AND
+            i.id_pedido = :id_pedido
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id_usuario', $this->__get('id_usuario'));
+        $stmt->bindValue(':id_pedido', $this->__get('id_pedido'));
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+
+    }
+
     //gera pedido
     public function geraItensPedido(){
         $query = "INSERT INTO itens_pedido (id, id_pedido, id_produto, id_usuario, tamanho, quantidade, valor_unit, total) VALUES (NULL, :id_pedido, :id_produto, :id_usuario, :tamanho, :quantidade, :valor_unit, :total)";

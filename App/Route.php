@@ -287,6 +287,54 @@ class Route extends Bootstrap
             'action' => 'editaCategoria'
         );
 
+        $routes['subcategorias_admin'] = array(
+            'route' => '/admin/subcategorias',
+            'controller' => 'AdminController',
+            'action' => 'subcategoriasAdmin'
+        );
+
+        $routes['nova_subcategoria_admin'] = array(
+            'route' => '/admin/nova_subcategoria',
+            'controller' => 'AdminController',
+            'action' => 'novaSubcategoria'
+        );
+
+        $routes['cadastra_subcategoria_admin'] = array(
+            'route' => '/admin/cadastra_subcategoria',
+            'controller' => 'AdminController',
+            'action' => 'cadastraSubcategoria'
+        );
+
+        $routes['editar_subcategoria_admin'] = array(
+            'route' => '/admin/editar_subcategoria',
+            'controller' => 'AdminController',
+            'action' => 'editarSubcategoria'
+        );
+
+        $routes['edita_subcategoria_admin'] = array(
+            'route' => '/admin/edita_subcategoria',
+            'controller' => 'AdminController',
+            'action' => 'editaSubcategoria'
+        );
+
+        $routes['pedidos_admin'] = array(
+            'route' => '/admin/pedidos',
+            'controller' => 'AdminController',
+            'action' => 'pedidosAdmin'
+        );
+
+        $routes['itens_pedido_admin'] = array(
+            'route' => '/admin/itens_pedido',
+            'controller' => 'AdminController',
+            'action' => 'itensPedidoAdmin'
+        );
+
+        $routes['editar_pedido_admin'] = array(
+            'route' => '/admin/editar_pedido',
+            'controller' => 'AdminController',
+            'action' => 'editarPedido'
+        );
+
         $this->setRoutes($routes);
     }
 }

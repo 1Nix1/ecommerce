@@ -67,7 +67,7 @@ class Produto extends Model {
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    //recuperar total de tweets
+    //recuperar total
     public function getTotalRegistros() {
         $query = "
         SELECT 
