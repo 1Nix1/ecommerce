@@ -9,15 +9,6 @@ use MF\Model\Container;
 class AdminController extends Action
 {
     //ADMIN
-    public function dashboard()
-    {
-        session_start();
-        $usuario = Container::getModel('UsuarioAdmin');
-        $usuario->authLogin();
-
-        $this->render('dashboard', 'layout_admin');
-    }
-
     public function loginAdmin(){
         session_start();
         if (isset($_SESSION['id'])) {
@@ -26,6 +17,15 @@ class AdminController extends Action
             $this->render('login', 'layout_login_admin');
         }
         
+    }
+    
+    public function dashboard()
+    {
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $this->render('dashboard', 'layout_admin');
     }
 
     public function produtosAdmin(){
@@ -856,4 +856,470 @@ class AdminController extends Action
 
         header('Location: /admin/editar_pais?campos_obrigatorios=false&id_pais='.$_POST['id']);
     }
+
+    //TRANSPORTADORAS
+    public function transportadorasAdmin(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $transportadora = Container::getModel('Transportadora');
+
+        //variaveis de páginação
+        $total_registros_pagina = 9;
+        $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+        $deslocamento = ($pagina - 1) * $total_registros_pagina;
+        $this->view->pagina_ativa = $pagina;
+
+        $transportadoras = $transportadora->getPorPagina($total_registros_pagina, $deslocamento);
+        $total_transportadoras = $transportadora->getTotal();
+
+        $this->view->total_de_paginas = ceil($total_transportadoras['total'] / $total_registros_pagina);
+        $this->view->transportadoras = $transportadoras;
+
+        if(isset($_POST['pesquisa'])){
+            $transportadora->__set('nome', $_POST['pesquisa']);
+            $total_transportadoras = $transportadora->getTotalPesquisa();
+            $this->view->transportadoras = $transportadora->pesquisaTransportadora($total_registros_pagina, $deslocamento);
+        }
+
+        $this->render('transportadoras', 'layout_admin');
+    }
+
+    public function novaTransportadora(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'true'){
+            $this->view->campos_obrigatorios = 'true';
+        } else if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'false') {
+            $this->view->campos_obrigatorios = 'false';
+        } else {
+            $this->view->campos_obrigatorios = '';
+        }
+
+        $this->render('nova_transportadora', 'layout_admin');
+    }
+
+    public function cadastraTransportadora(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $transportadora = Container::getModel('Transportadora');
+
+        $status = '';
+
+        if(isset($_POST['ativado'])){
+            $status = 'ativo';
+        }
+
+        if(empty($_POST['nome']) || $_POST['nome'] == '' || empty($_POST['tempo-entrega']) || $_POST['tempo-entrega'] == '' || empty($_POST['valor']) || $_POST['valor'] == ''){
+            header('Location: /admin/nova_transportadora?campos_obrigatorios=true');
+            exit();
+        }
+
+        print_r($_POST);
+        //seta os vslores do objeto
+        $transportadora->__set('nome', $_POST['nome']);
+        $transportadora->__set('tempo_entrega', $_POST['tempo-entrega']);
+        $transportadora->__set('valor', str_replace(",", ".", $_POST['valor']));
+        $transportadora->__set('status', $status);
+
+        $transportadora->salva();
+
+        header('Location: /admin/nova_transportadora?campos_obrigatorios=false');
+    }
+
+    public function editarTransportadora(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $transportadora = Container::getModel('Transportadora');
+
+        $transportadora->__set('id', $_GET['id_transportadora']);
+
+        $this->view->getEditTransportadora = $transportadora->getTransportadoraPorId();
+
+        $this->view->edita_transportadora = array(
+            'id' => $this->view->getEditTransportadora['id'],
+            'nome' => $this->view->getEditTransportadora['nome'],
+            'tempo_entrega' => $this->view->getEditTransportadora['tempo_entrega'],
+            'valor' => $this->view->getEditTransportadora['valor'],
+            'status' => $this->view->getEditTransportadora['status']
+        );
+
+        if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'true'){
+            $this->view->campos_obrigatorios = 'true';
+        } else if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'false') {
+            $this->view->campos_obrigatorios = 'false';
+        } else {
+            $this->view->campos_obrigatorios = '';
+        }
+
+        $this->render('editar_transportadora', 'layout_admin');
+    }
+
+    public function editaTransportadora(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $transportadora = Container::getModel('Transportadora');
+
+        $status = '';
+
+        if(isset($_POST['ativado'])){
+            $status = 'ativo';
+        }
+        
+        print_r($_POST);
+        if(empty($_POST['id']) || $_POST['id'] == '' || empty($_POST['nome']) || $_POST['nome'] == '' || empty($_POST['tempo-entrega']) || $_POST['tempo-entrega'] == '' || empty($_POST['valor']) || $_POST['valor'] == ''){
+            header('Location: /admin/editar_transportadora?campos_obrigatorios=true&id_transportadora='.$_POST['id']);
+            exit();
+        }
+
+        //seta os vslores do objeto
+        $transportadora->__set('id', $_POST['id']);
+        $transportadora->__set('nome', $_POST['nome']);
+        $transportadora->__set('tempo_entrega', $_POST['tempo-entrega']);
+        $transportadora->__set('valor', $_POST['valor']);
+        $transportadora->__set('status', $status);
+
+        $transportadora->updateTransportadora();
+
+        header('Location: /admin/editar_transportadora?campos_obrigatorios=false&id_transportadora='.$_POST['id']);
+
+    }
+
+    //USUARIOS ADMIN
+    public function usuariosAdmin(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        //variaveis de páginação
+        $total_registros_pagina = 9;
+        $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+        $deslocamento = ($pagina - 1) * $total_registros_pagina;
+        $this->view->pagina_ativa = $pagina;
+
+        $usuarios = $usuario->getPorPagina($total_registros_pagina, $deslocamento);
+        $total_usuarios = $usuario->getTotal();
+
+        $this->view->total_de_paginas = ceil($total_usuarios['total'] / $total_registros_pagina);
+        $this->view->usuarios = $usuarios;
+
+        if(isset($_POST['pesquisa'])){
+            $usuario->__set('email', $_POST['pesquisa']);
+            $total_usuarios = $usuario->getTotalPesquisa();
+            $this->view->usuarios = $usuario->pesquisaUsuarioAdmin($total_registros_pagina, $deslocamento);
+        }
+
+        $this->render('usuarios_admin', 'layout_admin');
+    }
+
+    public function novoUsuarioAdmin(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'true'){
+            $this->view->campos_obrigatorios = 'true';
+        } else if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'false') {
+            $this->view->campos_obrigatorios = 'false';
+        } else {
+            $this->view->campos_obrigatorios = '';
+        }
+
+        $this->render('novo_usuario_admin', 'layout_admin');
+    }
+
+    public function cadastraUsuarioAdmin(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $status = '';
+
+        if(isset($_POST['ativado'])){
+            $status = 'ativo';
+        }
+
+        if(empty($_POST['nome']) || $_POST['nome'] == '' || empty($_POST['sobrenome']) || $_POST['sobrenome'] == '' || empty($_POST['email']) || $_POST['email'] == '' || empty($_POST['senha']) || $_POST['senha'] == '' || empty($_POST['conf-senha']) || $_POST['conf-senha'] == ''){
+            header('Location: /admin/novo_usuario_admin?campos_obrigatorios=true');
+            exit();
+        }
+
+        //seta os vslores do objeto
+        $usuario->__set('nome', $_POST['nome']);
+        $usuario->__set('sobrenome', $_POST['sobrenome']);
+        $usuario->__set('email', $_POST['email']);
+        $usuario->__set('senha', md5($_POST['senha']));
+        $usuario->__set('conf_senha', md5($_POST['conf-senha']));
+        $usuario->__set('status', $status);
+
+        if($usuario->validaCadastro() && count($usuario->getUsuarioPorEmail()) == 0){
+
+            $usuario->salvar();
+            header('Location: /admin/novo_usuario_admin?campos_obrigatorios=false');
+        } else {
+            header('Location: /admin/novo_usuario_admin?campos_obrigatorios=true');
+            exit();
+        }
+    }
+
+    public function editarUsuarioAdmin(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $usuario->__set('id', $_GET['id_usuario']);
+
+        $this->view->getEditUsuario = $usuario->getUsuarioAdmin();
+
+        $this->view->edita_usuario = array(
+            'id' => $this->view->getEditUsuario['id'],
+            'nome' => $this->view->getEditUsuario['nome'],
+            'sobrenome' => $this->view->getEditUsuario['sobrenome'],
+            'email' => $this->view->getEditUsuario['email'],
+            'status' => $this->view->getEditUsuario['status']
+        );
+
+        if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'true'){
+            $this->view->campos_obrigatorios = 'true';
+        } else if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'false') {
+            $this->view->campos_obrigatorios = 'false';
+        } else {
+            $this->view->campos_obrigatorios = '';
+        }
+
+        $this->render('editar_usuario_admin', 'layout_admin');
+    }
+
+    public function editaUsuarioAdmin(){
+        session_start();
+        $usuario = Container::getModel('UsuarioAdmin');
+        $usuario->authLogin();
+
+        $status = '';
+
+        if(isset($_POST['ativado'])){
+            $status = 'ativo';
+        }
+        
+        if(empty($_POST['nome']) || $_POST['nome'] == '' || empty($_POST['sobrenome']) || $_POST['sobrenome'] == '' || empty($_POST['email']) || $_POST['email'] == ''){
+            header('Location: /admin/editar_usuario_admin?campos_obrigatorios=true&id_usuario='.$_POST['id'].'&primeiro');
+            exit();
+        }
+
+        if(isset($_POST['senha']) && isset($_POST['senha']) && $_POST['senha'] != '' && $_POST['senha'] != ''){
+            //seta os vslores do objeto
+            $usuario->__set('id', $_POST['id']);
+            $usuario->__set('nome', $_POST['nome']);
+            $usuario->__set('sobrenome', $_POST['sobrenome']);
+            $usuario->__set('email', $_POST['email']);
+            $usuario->__set('senha', md5($_POST['senha']));
+            $usuario->__set('conf_senha', md5($_POST['conf-senha']));
+            $usuario->__set('status', $status);
+
+            if($usuario->validaCadastro()){
+
+                $usuario->updateUsuario();
+                header('Location: /admin/editar_usuario_admin?campos_obrigatorios=false&id_usuario='.$_POST['id']);
+            } else {
+                header('Location: /admin/editar_usuario_admin?campos_obrigatorios=true&id_usuario='.$_POST['id']);
+                exit();
+            }
+
+        }else{
+            //seta os vslores do objeto
+            $usuario->__set('id', $_POST['id']);
+            $usuario->__set('nome', $_POST['nome']);
+            $usuario->__set('sobrenome', $_POST['sobrenome']);
+            $usuario->__set('email', $_POST['email']);
+            $usuario->__set('status', $status);
+
+            if($usuario->validaCadastroSemSenha()){
+
+                $usuario->updateUsuarioSemSenha();
+                header('Location: /admin/editar_usuario_admin?campos_obrigatorios=false&id_usuario='.$_POST['id']);
+            } else {
+                header('Location: /admin/editar_usuario_admin?campos_obrigatorios=true&id_usuario='.$_POST['id']);
+                exit();
+            }
+        }
+    }
+    
+    //USUARIOS
+    public function usuarios(){
+        session_start();
+        $usuario_admin = Container::getModel('UsuarioAdmin');
+        $usuario_admin->authLogin();
+
+        $usuario = Container::getModel('Usuario');
+
+        //variaveis de páginação
+        $total_registros_pagina = 9;
+        $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+        $deslocamento = ($pagina - 1) * $total_registros_pagina;
+        $this->view->pagina_ativa = $pagina;
+
+        $usuarios = $usuario->getPorPagina($total_registros_pagina, $deslocamento);
+        $total_usuarios = $usuario->getTotal();
+
+        $this->view->total_de_paginas = ceil($total_usuarios['total'] / $total_registros_pagina);
+        $this->view->usuarios = $usuarios;
+
+        if(isset($_POST['pesquisa'])){
+            $usuario->__set('email', $_POST['pesquisa']);
+            $total_usuarios = $usuario->getTotalPesquisa();
+            $this->view->usuarios = $usuario->pesquisaUsuario($total_registros_pagina, $deslocamento);
+        }
+
+        $this->render('usuarios', 'layout_admin');
+    }
+
+    public function novoUsuario(){
+        session_start();
+        $usuario_admin = Container::getModel('UsuarioAdmin');
+        $usuario_admin->authLogin();
+
+        $usuario = Container::getModel('Usuario');
+
+        if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'true'){
+            $this->view->campos_obrigatorios = 'true';
+        } else if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'false') {
+            $this->view->campos_obrigatorios = 'false';
+        } else {
+            $this->view->campos_obrigatorios = '';
+        }
+
+        $this->render('novo_usuario', 'layout_admin');
+    }
+
+    public function cadastraUsuario(){
+        session_start();
+        $usuario_admin = Container::getModel('UsuarioAdmin');
+        $usuario_admin->authLogin();
+
+        $usuario = Container::getModel('Usuario');
+
+        $status = '';
+
+        if(isset($_POST['ativado'])){
+            $status = 'ativo';
+        }
+
+        if(empty($_POST['nome']) || $_POST['nome'] == '' || empty($_POST['sobrenome']) || $_POST['sobrenome'] == '' || empty($_POST['cpf']) || $_POST['cpf'] == '' || empty($_POST['email']) || $_POST['email'] == '' || empty($_POST['senha']) || $_POST['senha'] == '' || empty($_POST['conf-senha']) || $_POST['conf-senha'] == ''){
+            header('Location: /admin/novo_usuario_admin?campos_obrigatorios=true');
+            exit();
+        }
+
+        //seta os vslores do objeto
+        $usuario->__set('nome', $_POST['nome']);
+        $usuario->__set('sobrenome', $_POST['sobrenome']);
+        $usuario->__set('email', $_POST['email']);
+        $usuario->__set('cpf', $_POST['cpf']);
+        $usuario->__set('senha', md5($_POST['senha']));
+        $usuario->__set('conf_senha', md5($_POST['conf-senha']));
+        $usuario->__set('status', $status);
+
+        if($usuario->validaCadastro() && count($usuario->getUsuarioPorEmail()) == 0){
+
+            $usuario->salvar();
+            header('Location: /admin/novo_usuario?campos_obrigatorios=false');
+        } else {
+            header('Location: /admin/novo_usuario?campos_obrigatorios=true');
+            exit();
+        }
+    }
+
+    public function editarUsuario(){
+        session_start();
+        $usuario_admin = Container::getModel('UsuarioAdmin');
+        $usuario_admin->authLogin();
+
+        $usuario = Container::getModel('Usuario');
+        
+        $usuario->__set('id', $_GET['id_usuario']);
+
+        $this->view->getEditUsuario = $usuario->getUsuario();
+
+        $this->view->edita_usuario = array(
+            'id' => $this->view->getEditUsuario['id'],
+            'nome' => $this->view->getEditUsuario['nome'],
+            'sobrenome' => $this->view->getEditUsuario['sobrenome'],
+            'email' => $this->view->getEditUsuario['email'],
+            'cpf' => $this->view->getEditUsuario['cpf'],
+            'status' => $this->view->getEditUsuario['status']
+        );
+
+        if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'true'){
+            $this->view->campos_obrigatorios = 'true';
+        } else if(isset($_GET['campos_obrigatorios']) && $_GET['campos_obrigatorios'] == 'false') {
+            $this->view->campos_obrigatorios = 'false';
+        } else {
+            $this->view->campos_obrigatorios = '';
+        }
+
+        $this->render('editar_usuario', 'layout_admin');
+    }
+
+    public function editaUsuario(){
+        session_start();
+        $usuario_admin = Container::getModel('UsuarioAdmin');
+        $usuario_admin->authLogin();
+
+        $usuario = Container::getModel('Usuario');
+
+        $status = '';
+
+        if(isset($_POST['ativado'])){
+            $status = 'ativo';
+        }
+        
+        if(empty($_POST['nome']) || $_POST['nome'] == '' || empty($_POST['sobrenome']) || $_POST['sobrenome'] == '' || empty($_POST['email']) || empty($_POST['cpf']) || $_POST['cpf'] == '' || $_POST['email'] == ''){
+            header('Location: /admin/editar_usuario?campos_obrigatorios=true&id_usuario='.$_POST['id'].'&primeiro');
+            exit();
+        }
+        print_r($_POST);
+        //seta os vslores do objeto
+        $usuario->__set('id', $_POST['id']);
+        $usuario->__set('nome', $_POST['nome']);
+        $usuario->__set('sobrenome', $_POST['sobrenome']);
+        $usuario->__set('email', $_POST['email']);
+        $usuario->__set('cpf', $_POST['cpf']);
+        $usuario->__set('status', $status);
+
+        if(isset($_POST['senha']) && isset($_POST['conf-senha']) && $_POST['senha'] != '' && $_POST['conf-senha'] != ''){
+
+            $usuario->__set('senha', md5($_POST['senha']));
+            $usuario->__set('conf_senha', md5($_POST['conf-senha']));
+            
+
+            if($usuario->validaCadastro()){
+
+                $usuario->updateUsuarioComSenha();
+                header('Location: /admin/editar_usuario?campos_obrigatorios=false&id_usuario='.$_POST['id'].'&senha');
+            } else {
+                header('Location: /admin/editar_usuario?campos_obrigatorios=true&id_usuario='.$_POST['id'].'&segundo');
+                exit();
+            }
+
+        }else{
+
+            if($usuario->validaCadastroSemSenha()){
+
+                $usuario->updateUsuarioSemSenha();
+                header('Location: /admin/editar_usuario?campos_obrigatorios=false&id_usuario='.$_POST['id']);
+            } else {
+                header('Location: /admin/editar_usuario?campos_obrigatorios=true&id_usuario='.$_POST['id'].'&terceiro');
+                exit();
+            }
+        }
+    }
 }
+

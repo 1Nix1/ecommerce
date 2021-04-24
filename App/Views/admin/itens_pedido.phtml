@@ -35,6 +35,7 @@
                         <table class="table text-dark" id="dataTable" width="100%">
                             <thead>
                                 <tr class="text-center">
+                                    <th>ID</th>
                                     <th>Nome do Produto</th>
                                     <th>Tamanho</th>
                                     <th>Quantidade</th>
@@ -46,6 +47,7 @@
                             ?>
                                 <tbody>
                                     <tr class="text-center">
+                                        <td><?= $itens_pedido['id_produto'] ?></td>
                                         <td><?= $itens_pedido['nome'] ?></td>
                                         <td><?= $itens_pedido['tamanho'] ?></td>
                                         <td><?= $itens_pedido['quantidade'] ?></td>

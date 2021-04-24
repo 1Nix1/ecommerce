@@ -17,6 +17,14 @@
     margin-top: -8px;
 }
 
+.vermelho {
+    color: rgb(255, 0, 0);
+}
+
+.verde {
+    color: rgb(30, 255, 0);
+}
+
 
 /* Check box nova categoris */
 

@@ -38,18 +38,18 @@ class Pais extends Model {
     //recuperar
     public function getPorPagina($limit, $offset) {
         $query = "
-        SELECT 
-            id, 
-            nome,
-            status
-        FROM 
-            pais
-        ORDER BY 
-            id 
-        DESC LIMIT 
-            $limit 
-        OFFSET 
-            $offset
+                SELECT 
+                    id, 
+                    nome,
+                    status
+                FROM 
+                    pais
+                ORDER BY 
+                    id 
+                DESC LIMIT 
+                    $limit 
+                OFFSET 
+                    $offset
         ";
 
         $stmt = $this->db->prepare($query);
@@ -58,7 +58,6 @@ class Pais extends Model {
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    //pesquisa por categoria
     public function pesquisaPais($limit, $offset) {
         $query = "
         SELECT
@@ -84,7 +83,7 @@ class Pais extends Model {
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    //recupera categoria pesquisada
+    //recupera pesquisa
     public function getTotal() {
         $query = "
         SELECT 
@@ -99,7 +98,7 @@ class Pais extends Model {
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
-    //recupera categoria pesquisada
+    //recupera pesquisa
     public function getTotalPesquisa() {
         $query = "
         SELECT 
@@ -117,7 +116,7 @@ class Pais extends Model {
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
-    //recupera categoria por id
+    //recupera por id
     public function getPais(){
         $query = "
         SELECT 

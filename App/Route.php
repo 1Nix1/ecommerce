@@ -400,6 +400,97 @@ class Route extends Bootstrap
             'controller' => 'AdminController',
             'action' => 'editaPais'
         );
+        //TRANSPORTADORAS
+        $routes['transportadoras_admin'] = array(
+            'route' => '/admin/transportadoras',
+            'controller' => 'AdminController',
+            'action' => 'transportadorasAdmin'
+        );
+        
+        $routes['nova_transportadora_admin'] = array(
+            'route' => '/admin/nova_transportadora',
+            'controller' => 'AdminController',
+            'action' => 'novaTransportadora'
+        );
+        
+        $routes['cadastra_transportadora_admin'] = array(
+            'route' => '/admin/cadastra_transportadora',
+            'controller' => 'AdminController',
+            'action' => 'cadastraTransportadora'
+        );
+        
+        $routes['editar_transportadora_admin'] = array(
+            'route' => '/admin/editar_transportadora',
+            'controller' => 'AdminController',
+            'action' => 'editarTransportadora'
+        );
+
+        $routes['edita_transportadora_admin'] = array(
+            'route' => '/admin/edita_transportadora',
+            'controller' => 'AdminController',
+            'action' => 'editaTransportadora'
+        );
+        //USUARIOS ADMIN
+        $routes['usuarios_adm_admin'] = array(
+            'route' => '/admin/usuarios_admin',
+            'controller' => 'AdminController',
+            'action' => 'usuariosAdmin'
+        );
+        
+        $routes['novo_usuario_adm_admin'] = array(
+            'route' => '/admin/novo_usuario_admin',
+            'controller' => 'AdminController',
+            'action' => 'novoUsuarioAdmin'
+        );
+        
+        $routes['cadastra_usuario_adm_admin'] = array(
+            'route' => '/admin/cadastra_usuario_admin',
+            'controller' => 'AdminController',
+            'action' => 'cadastraUsuarioAdmin'
+        );
+        
+        $routes['editar_usuario_adm_admin'] = array(
+            'route' => '/admin/editar_usuario_admin',
+            'controller' => 'AdminController',
+            'action' => 'editarUsuarioAdmin'
+        );
+
+        $routes['edita_usuario_adm_admin'] = array(
+            'route' => '/admin/edita_usuario_admin',
+            'controller' => 'AdminController',
+            'action' => 'editaUsuarioAdmin'
+        );
+        //USUARIOS
+        $routes['usuarios_admin'] = array(
+            'route' => '/admin/usuarios',
+            'controller' => 'AdminController',
+            'action' => 'usuarios'
+        );
+        
+        $routes['novo_usuario_admin'] = array(
+            'route' => '/admin/novo_usuario',
+            'controller' => 'AdminController',
+            'action' => 'novoUsuario'
+        );
+        
+        $routes['cadastra_usuario_admin'] = array(
+            'route' => '/admin/cadastra_usuario',
+            'controller' => 'AdminController',
+            'action' => 'cadastraUsuario'
+        );
+        
+        $routes['editar_usuario_admin'] = array(
+            'route' => '/admin/editar_usuario',
+            'controller' => 'AdminController',
+            'action' => 'editarUsuario'
+        );
+
+        $routes['edita_usuario_admin'] = array(
+            'route' => '/admin/edita_usuario',
+            'controller' => 'AdminController',
+            'action' => 'editaUsuario'
+        );
+        
 
         $this->setRoutes($routes);
     }

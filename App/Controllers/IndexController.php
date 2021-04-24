@@ -82,7 +82,9 @@ class IndexController extends Action
 
         $this->view->total_de_paginas = ceil($total_produtos['total'] / $total_registros_pagina);
 
-        $carrinho->__set('id_usuario', $_SESSION['id']);
+        if(isset($_SESSION['id'])){
+            $carrinho->__set('id_usuario', $_SESSION['id']);
+        }
         //quantidades de itens no carrinho
         $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
         
@@ -123,7 +125,10 @@ class IndexController extends Action
 
         $this->view->total_de_paginas = ceil($total_produtos['total'] / $total_registros_pagina);
 
-        $carrinho->__set('id_usuario', $_SESSION['id']);
+        if(isset($_SESSION['id'])){
+            $carrinho->__set('id_usuario', $_SESSION['id']);
+        }
+        
         //quantidades de itens no carrinho
         $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
         //carrega produtos
@@ -187,7 +192,7 @@ class IndexController extends Action
 
             //seta os vslores do objeto
             $usuario->__set('nome', $_POST['nome']);
-            $usuario->__set('nome', $_POST['sobrenome']);
+            $usuario->__set('sobrenome', $_POST['sobrenome']);
             $usuario->__set('email', $_POST['email']);
             $usuario->__set('cpf', $_POST['cpf']);
             $usuario->__set('senha', md5($_POST['senha']));
@@ -265,8 +270,11 @@ class IndexController extends Action
         $this->view->produtos = $produto->getProdutoPorId();
 
         $categoria->__set('id', $this->view->produtos['id_categoria']);
-        $carrinho->__set('id_usuario', $_SESSION['id']);
-
+        
+        if(isset($_SESSION['id'])){
+            $carrinho->__set('id_usuario', $_SESSION['id']);
+        }
+        
         //retorna a categoria do produto
         $this->view->categorias_especifica = $categoria->getCategoria();
 

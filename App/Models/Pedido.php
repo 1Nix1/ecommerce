@@ -42,6 +42,7 @@ class Pedido extends Model {
         	p.id_usuario = :id_usuario
         ORDER BY 
             p.id 
+        DESC
         ";
 
         $stmt = $this->db->prepare($query);

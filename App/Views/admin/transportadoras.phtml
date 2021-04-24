@@ -14,7 +14,7 @@
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
                 <!-- Pesquisa -->
-                <form class="form-inline mr-auto w-100 navbar-search" method="POST" action="/admin/pedidos">
+                <form class="form-inline mr-auto w-100 navbar-search" method="POST" action="/admin/transportadoras">
                     <div class="input-group">
                         <input name="pesquisa" type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search">
                         <div class="input-group-append">
@@ -35,46 +35,43 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-            <h1 class="h3 mb-2 text-gray-800 clearfix"><a href="/admin/pedidos" class="titulo_pag_admin">Pedidos</a></h1>
+            <!-- Page Heading -->
+            <div class="col-sm-3 col-lg-2 text-right ng-scope float-right" style="margin-bottom: 10px;">
+                <a class="btn btn-primary btn-block btn-new ng-binding text-light" href="/admin/nova_transportadora">
+                    <span class="icon fa fa-plus"></span>
+                    Novo Registro
+                </a>
+            </div>
+
+            <h1 class="h3 mb-2 text-gray-800 clearfix"><a href="/admin/transportadoras" class="titulo_pag_admin">Transportadoras</a></h1>
 
             <!-- DataTales Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Tabela de pedidos</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Tabela de paises</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table text-dark" id="dataTable" width="100%">
                             <thead>
                                 <tr class="text-center">
-                                    <th>ID</th>
-                                    <th>E-mail</th>
                                     <th>Nome</th>
-                                    <th>Total</th>
-                                    <th>Data</th>
+                                    <th>Tempo de entrega</th>
+                                    <th>Valor</th>
                                     <th>Status</th>
                                     <th>Ação</th>
                                 </tr>
                             </thead>
-                            <?php foreach ($this->view->pedidos as $id_produto => $pedidos) { 
-                                $date = new DateTime($pedidos['data']);
-                                $data = $date->format('d/m/Y');
-                            ?>
+                            <?php foreach ($this->view->transportadoras as $id_transportadora => $transportadoras) { ?>
                                 <tbody>
                                     <tr class="text-center">
-                                        <td><?= $pedidos['id'] ?></td>
-                                        <td><?= $pedidos['email'] ?></td>
-                                        <td><?= $pedidos['nome'].' '.$pedidos['sobrenome'] ?></td>
-                                        <td><?= $pedidos['total'] ?></td>
-                                        <td><?= $data ?></td>
-                                        <td><?= $pedidos['status'] == 'pago' ? '<span class="vermelho">'.$pedidos['status'].'</span>' : '<span class="verde">'.$pedidos['status'].'</span>' ?></td>
+                                        <td><?= $transportadoras['nome'] ?></td>
+                                        <td><?= $transportadoras['tempo_entrega'] ?></td>
+                                        <td><?= $transportadoras['valor'] ?></td>
+                                        <td><?php echo $transportadoras['status'] != '' ? $transportadoras['status'] :  'inativo'; ?></td>
                                         <td class="text-right btn-column ng-scope" style="width: 10%;">
                                             <div class="btn btn-group float-rigth">
-                                                <a href="/admin/itens_pedido?id_pedido=<?= $pedidos['id'] ?>&id_usuario=<?= $pedidos['id_usuario'] ?>" id="edita" class="btn btn-primary">
-                                                    <i class="far fa-eye"></i>
-                                                </a>
-
-                                                <a href="/admin/editar_pedido?id_pedido=<?= $pedidos['id'] ?>&id_usuario=<?= $pedidos['id_usuario'] ?>" id="edita" class="btn btn-primary">
+                                                <a href="/admin/editar_transportadora?id_transportadora=<?= $transportadoras['id'] ?>" id="edita" class="btn btn-primary">
                                                     <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
                                                     </svg>

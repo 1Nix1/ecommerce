@@ -1,0 +1,63 @@
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+            <h1 class="h3 mb-2 text-gray-800 clearfix">Editar Usuário</h1>
+
+            <?php
+            if (isset($this->view->campos_obrigatorios) && $this->view->campos_obrigatorios == 'true') {
+            ?>
+                <p class="text-danger">Campos obrigatorios não preenchidos</p>
+            <?php
+            } else if ($this->view->campos_obrigatorios == 'false') {
+            ?>
+                <p class="text-success">Editado com sucesso</p>
+            <?php
+            }
+            ?>
+            <form action="/admin/edita_usuario" method="POST">
+                <div class="form-row">
+                    <input name="id" type="hidden" value="<?= $this->view->edita_usuario['id'] ?>">
+                    <div class="form-group col-md-6">
+                        <label for="nome">Nome</label>
+                        <input name="nome" type="text" value="<?= $this->view->edita_usuario['nome'] ?>" class="form-control" id="nome" placeholder="Nome" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="sobrenome">Sobrenome</label>
+                        <input name="sobrenome" type="text" value="<?= $this->view->edita_usuario['sobrenome'] ?>" class="form-control" id="sobrenome" placeholder="Sobrenome" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="email">Email</label>
+                        <input name="email" type="text" value="<?= $this->view->edita_usuario['email'] ?>" class="form-control" id="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="cpf">CPF</label>
+                        <input name="cpf" type="text" value="<?= $this->view->edita_usuario['cpf'] ?>" class="form-control" id="cpf" placeholder="CPF" required>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="senha">Senha</label>
+                        <input name="senha" type="password" class="form-control" id="senha" placeholder="Senha">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="conf-senha">Confirmar Senha</label>
+                        <input name="conf-senha" type="password" class="form-control" id="conf-senha" placeholder="Confirmar senha">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <p>Status</p>
+                        <div class="switch__container">
+                            <input id="switch-shadow" name="ativado" <?php echo $this->view->edita_usuario['status'] == 'ativo' ? 'checked' : ''; ?> class="switch switch--shadow" type="checkbox" />
+                            <label for="switch-shadow"></label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Salvar</button>
+                <a type="submit" href="/admin/usuarios" class="btn btn-secondary mt-3">Cancelar</a>
+            </form>
+        </div>
+        <!-- End begin page content -->
+    </div>
+    <!-- End of Content Wrapper -->

@@ -6,7 +6,7 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-            <h1 class="h3 mb-2 text-gray-800 clearfix">Cadastrar Pais</h1>
+            <h1 class="h3 mb-2 text-gray-800 clearfix">Cadastrar Transportadora</h1>
 
             <?php
             if (isset($this->view->campos_obrigatorios) && $this->view->campos_obrigatorios == 'true') {
@@ -19,11 +19,19 @@
             <?php
             }
             ?>
-            <form action="/admin/cadastra_pais" method="POST">
+            <form action="/admin/cadastra_transportadora" method="POST">
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="nome">Nome</label>
                         <input name="nome" type="text" class="form-control" id="nome" placeholder="Nome" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="tempo-entrega">Tempo de entrega</label>
+                        <input name="tempo-entrega" type="text" class="form-control" id="tempo-entrega" placeholder="Tempo de entrga" required>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label for="valor">Valor</label>
+                        <input name="valor" type="text" class="form-control" id="valor" placeholder="Valor" required>
                     </div>
                     <div class="form-group col-md-3">
                     <p>Status</p>
@@ -34,7 +42,7 @@
         </div>
                 </div>
                 <button type="submit" name="enviar-formulario" class="btn btn-primary mt-3">Salvar</button>
-                <a type="submit" href="/admin/paises" class="btn btn-secondary mt-3">Cancelar</a>
+                <a type="submit" href="/admin/transportadoras" class="btn btn-secondary mt-3">Cancelar</a>
             </form>
         </div>
         <!-- End begin page content -->
