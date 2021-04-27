@@ -25,11 +25,14 @@ class Pais extends Model {
             nome
         FROM 
             pais
+        WHERE
+            status = :status
         ORDER BY 
             id 
         ";
 
         $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':status', 'ativo');
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);

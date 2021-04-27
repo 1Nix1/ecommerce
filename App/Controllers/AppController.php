@@ -56,7 +56,6 @@ class AppController extends Action
 
         $carrinho = Container::getModel('Carrinho');
 
-
         if (isset($_POST['tamanho-camisa']) && isset($_POST['quantidade']) && $_POST['quantidade'] >= 1) {
             $carrinho->__set('id_produto', $_POST['id_produto']);
             $carrinho->__set('id_usuario', $_SESSION['id']);

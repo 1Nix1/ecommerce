@@ -330,7 +330,7 @@ class Usuario extends Model {
     //Autenticar usuario
     public function autenticar() {
 
-        $query = "SELECT id, nome, sobrenome, email FROM usuarios WHERE email = :email AND senha = :senha AND status = :status";
+        $query = "SELECT id, nome, sobrenome, email, status FROM usuarios WHERE email = :email AND senha = :senha AND status = :status";
         try{
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':email', $this->__get('email'));

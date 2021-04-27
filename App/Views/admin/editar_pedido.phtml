@@ -6,11 +6,18 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-            <h1 class="h3 mb-2 text-gray-800 clearfix">Contato</h1>
+            
 
             <form action="/admin/edita_pedido" method="POST">
                 <div class="form-row">
                     <input name="id" value="<?= $this->view->pedido['id'] ?>" type="hidden">
+                    <h1 class="h3 mb-2 text-gray-800 clearfix col-md-12">Transportadora</h1>
+                    <div class="form-group col-md-6">
+                        <label for="transportadora">Transportadora</label>
+                        <input value="<?= $this->view->pedido['transportadora'] ?>" type="text" class="form-control" id="transportadora" placeholder="Transportadora" disabled>
+                    </div>
+
+                    <h1 class="h3 mb-2 text-gray-800 clearfix col-md-12">Contato</h1>
                     <input name="id_usuario" value="<?= $this->view->pedido['id_usuario'] ?>" type="hidden">
                     <div class="form-group col-md-6">
                         <label for="email">Email</label>
@@ -22,7 +29,6 @@
                     </div>
 
                     <h1 class="h3 mb-2 text-gray-800 clearfix col-md-12">Endereço</h1>
-
                     <div class="form-group col-md-6">
                         <label for="nome">Nome</label>
                         <input value="<?= $this->view->pedido['nome'] ?>" type="text" class="form-control" id="nome" placeholder="Nome" disabled>

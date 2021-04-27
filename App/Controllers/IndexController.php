@@ -93,7 +93,7 @@ class IndexController extends Action
         $this->view->categorias = $categoria->getAll();
         //Buscar subcategorias
         $this->view->subcategorias = $subcategoria->getAll();
-
+        
         $this->render('index');
     }
 
@@ -181,6 +181,7 @@ class IndexController extends Action
 
         session_start();
 
+        $carrinho = Container::getModel('Carrinho');
         $categoria = Container::getModel('Categoria');
         $subcategoria = Container::getModel('Subcategoria');
 
@@ -198,6 +199,8 @@ class IndexController extends Action
             $usuario->__set('senha', md5($_POST['senha']));
             $usuario->__set('conf_senha', md5($_POST['conf-senha']));
 
+            //quantidades de itens no carrinho
+            $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
             //Buscar categorias
             $this->view->categorias = $categoria->getAll();
             //Buscar subcategorias

@@ -80,48 +80,53 @@ class Pedido extends Model {
     //recuperar com paginação
     public function getPedido() {
         $query = "
-        SELECT 
-            p.id, 
-            u.email,
-            p.id_usuario,
-            e.nome,
-            e.sobrenome,
-            e.telefone,
-            e.cep,
-            e.cidade,
-            es.nome as estado,
-            e.rua,
-            e.bairro,
-            e.numero,
-            e.complemento,
-            pa.nome as pais,
-            p.total,
-            p.data,
-            p.status
-        FROM 
-            pedidos as p
-        INNER JOIN
-        	enderecos as e
-        ON
-        	e.id = p.id_endereco
-        INNER JOIN 
-            usuarios as u
-        ON
-            u.id = p.id_usuario
-        INNER JOIN 
-            estados as es
-        ON
-            e.id_estado = es.id
-        INNER JOIN
-            pais as pa
-        ON
-            e.id_pais = pa.id
-        WHERE
-            p.id = :id
-        AND
-            p.id_usuario = :id_usuario
-        ORDER BY 
-            p.id 
+            SELECT 
+                p.id, 
+                u.email,
+                p.id_usuario,
+                e.nome,
+                e.sobrenome,
+                e.telefone,
+                tr.nome as transportadora,
+                e.cep,
+                e.cidade,
+                es.nome as estado,
+                e.rua,
+                e.bairro,
+                e.numero,
+                e.complemento,
+                pa.nome as pais,
+                p.total,
+                p.data,
+                p.status
+            FROM 
+                pedidos as p
+            INNER JOIN
+                enderecos as e
+            ON
+                e.id = p.id_endereco
+            INNER JOIN 
+                usuarios as u
+            ON
+                u.id = p.id_usuario
+            INNER JOIN 
+                estados as es
+            ON
+                e.id_estado = es.id
+            INNER JOIN
+                pais as pa
+            ON
+                e.id_pais = pa.id
+            INNER JOIN
+                transportadoras as tr
+            ON
+                p.id_transportadora = tr.id
+            WHERE
+                p.id = :id
+            AND
+                p.id_usuario = :id_usuario
+            ORDER BY 
+                p.id 
         ";
 
         $stmt = $this->db->prepare($query);
