@@ -185,8 +185,4 @@ class Categoria extends Model {
         $stmt->bindValue(':status', $this->__get('status'));
         $stmt->execute();           
     }
-
-    
-
-    
 }
