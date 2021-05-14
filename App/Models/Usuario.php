@@ -13,6 +13,7 @@ class Usuario extends Model {
     private $cpf;
     private $senha;
     private $conf_senha;
+    private $status;
 
     public function __get($atributo) {
         return $this->$atributo;

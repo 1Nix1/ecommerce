@@ -68,3 +68,18 @@ BEGIN
                                                'ativo'); 
 END $$
 DELIMITER ;
+
+/*TRIGGER DEFERIR PRODUTO*/
+DELIMITER $
+CREATE TRIGGER tr_deferir_produto BEFORE INSERT
+ON itens_pedido
+FOR EACH ROW
+BEGIN
+    SET @id_produto = NEW.id_produto;
+    SET @quantidade = NEW.quantidade;
+    SET @quantidade_atual = (SELECT quantidade FROM produtos WHERE id = @id_produto);
+    SET @nova_quantidade = @quantidade_atual - @quantidade;
+
+    UPDATE `produtos` SET `quantidade` =  @nova_quantidade WHERE `produtos`.`id` = @id_produto;
+END$
+DELIMITER ;

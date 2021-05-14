@@ -8,6 +8,7 @@ class Pais extends Model {
 
     private $id;
     private $nome;
+    private $status;
 
     public function __get($atributo) {
         return $this->$atributo;
