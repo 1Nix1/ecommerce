@@ -663,20 +663,20 @@ class AppController extends Action
             $pedido->__set('total', $item['total']);
         }
         print_r($this->view->itens);
-        //$pedido->geraPedido();
+        $pedido->geraPedido();
 
         //Gera o itens pedido
-        //$id_pedido = $this->geraItensPedido();
+        $id_pedido = $this->geraItensPedido();
 
         //altera o status do pedido para pago
-        //$pedido->__set('id', $id_pedido);
-        //$pedido->alterStatusPago();
+        $pedido->__set('id', $id_pedido);
+        $pedido->alterStatusPago();
 
         //Após a compra, remove os itens do carrinho do usuario
-        //$this->removeItensCarrinho($_SESSION['id']);
+        $this->removeItensCarrinho($_SESSION['id']);
 
         
-        //header('Location: /');
+        header('Location: /');
     }
 
     public function geraItensPedido()
