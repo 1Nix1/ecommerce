@@ -371,5 +371,15 @@ class Produto extends Model {
         return $this;
     }
 
+    public function getQuantidade(){
+        $query = "SELECT quantidade FROM `produtos` WHERE id = :id";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $this->__get('id'));
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
     
 }

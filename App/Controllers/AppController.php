@@ -55,8 +55,12 @@ class AppController extends Action
         $usuario->authLogin();
 
         $carrinho = Container::getModel('Carrinho');
+        $produto = Container::getModel('Produto');
 
-        if (isset($_POST['tamanho-camisa']) && isset($_POST['quantidade']) && $_POST['quantidade'] >= 1) {
+        $produto->__set('id', $_POST['id_produto']);
+        $quantidade = $produto->getQuantidade();
+
+        if (isset($_POST['tamanho-camisa']) && isset($_POST['quantidade']) && $_POST['quantidade'] >= 1 && $_POST['quantidade'] <= $quantidade['quantidade']) {
             $carrinho->__set('id_produto', $_POST['id_produto']);
             $carrinho->__set('id_usuario', $_SESSION['id']);
             $carrinho->__set('tamanho', $_POST['tamanho-camisa']);
@@ -68,6 +72,8 @@ class AppController extends Action
             header('Location: /carrinho');
         } else if (!isset($_POST['tamanho-camisa']) || !isset($_POST['quantidade']) || $_POST['quantidade'] <= 0 || !isset($_POST['tamanho-camisa'])) {
             header('Location: /produto?id=' . $_POST['id_produto'] . '&errorCampos=true');
+        } else if ($_POST['quantidade'] > $quantidade['quantidade']){
+            header('Location: /produto?id=' . $_POST['id_produto'] . '&quantidade=true');
         } else {
             header('Location: /produto?id=' . $_POST['id_produto']);
         }
@@ -656,19 +662,21 @@ class AppController extends Action
             $pedido->__set('id_transportadora', $item['transportadora']);
             $pedido->__set('total', $item['total']);
         }
-        $pedido->geraPedido();
+        print_r($this->view->itens);
+        //$pedido->geraPedido();
 
         //Gera o itens pedido
-        $id_pedido = $this->geraItensPedido();
+        //$id_pedido = $this->geraItensPedido();
 
         //altera o status do pedido para pago
-        $pedido->__set('id', $id_pedido);
-        $pedido->alterStatusPago();
+        //$pedido->__set('id', $id_pedido);
+        //$pedido->alterStatusPago();
 
         //Após a compra, remove os itens do carrinho do usuario
-        $this->removeItensCarrinho($_SESSION['id']);
+        //$this->removeItensCarrinho($_SESSION['id']);
 
-        header('Location: /');
+        
+        //header('Location: /');
     }
 
     public function geraItensPedido()

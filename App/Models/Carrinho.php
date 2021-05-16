@@ -29,7 +29,7 @@ class Carrinho extends Model {
                 i.id_usuario,
                 i.transportadora, 
                 i.endereco,
-                SUM(i.total + t.valor) AS total 
+                SUM(i.total) + t.valor AS total 
         FROM 
             itens_carrinho AS i 
         INNER JOIN 

@@ -66,6 +66,8 @@
 										if(isset($_GET['errorCampos']) && $_GET['errorCampos'] == 'true'){
 									?>
 									<p class="text-danger">Campos não preenchidos ou invalidos</p>
+									<?php } else if(isset($_GET['quantidade']) && $_GET['quantidade'] == 'true'){ ?>
+									<p class="text-danger">Desculpe, não há produtos suficientes em estoque</p>
 									<?php } ?>
 									<div class="form-check form-check-inline">
 										<label class="form-check-label">
