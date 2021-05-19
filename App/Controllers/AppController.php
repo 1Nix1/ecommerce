@@ -649,6 +649,8 @@ class AppController extends Action
         //$itensPedido = Container::getModel('ItensPedido');
         $carrinho = Container::getModel('Carrinho');
         $pedido = Container::getModel('Pedido');
+        $categoria = Container::getModel('Categoria');
+        $subcategoria = Container::getModel('Subcategoria');
 
         $carrinho->__set('id_usuario', $_SESSION['id']);
 
@@ -662,7 +664,7 @@ class AppController extends Action
             $pedido->__set('id_transportadora', $item['transportadora']);
             $pedido->__set('total', $item['total']);
         }
-        print_r($this->view->itens);
+
         $pedido->geraPedido();
 
         //Gera o itens pedido
@@ -675,8 +677,17 @@ class AppController extends Action
         //Após a compra, remove os itens do carrinho do usuario
         $this->removeItensCarrinho($_SESSION['id']);
 
+        if (isset($_SESSION['id'])) {
+            $carrinho->__set('id_usuario', $_SESSION['id']);
+        }
+        //quantidades de itens no carrinho
+        $this->view->quantidadeItensCarrinho = $carrinho->contaItensCarrinho();
+        //Buscar categorias
+        $this->view->categorias = $categoria->getAll();
+        //Buscar subcategorias
+        $this->view->subcategorias = $subcategoria->getAll();
         
-        header('Location: /');
+        $this->render('compra_sucesso');
     }
 
     public function geraItensPedido()
