@@ -220,6 +220,7 @@ class Route extends Bootstrap
             'controller' => 'AuthController',
             'action' => 'sairAdmin'
         );
+        
         //PRODUTO
         $routes['produtos_admin'] = array(
             'route' => '/admin/produtos',

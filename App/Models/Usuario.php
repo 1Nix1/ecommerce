@@ -133,9 +133,9 @@ class Usuario extends Model {
             $valido = false;
         }
 
-        /*if(!$this->validaCPF($this->__get('cpf'))) {
+        if(strlen($this->__get('cpf')) < 11 || strlen($this->__get('cpf')) > 11) {
             $valido = false;
-        }*/
+        }
 
         if(strlen($this->__get('senha')) < 4){
             $valido = false;
